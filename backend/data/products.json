@@ -1,0 +1,111 @@
+[
+    {
+        "productName": "White Kurta",
+        "productPriceMax": 5000,
+        "productPriceMin": 4000,
+        "productDescription": "A beautiful and simple designed white kurta, which can be worn by anyone (not really lol)",
+        "productGender": "Male",
+        "productSizes": [
+            {
+                "size": "XL",
+                "productStock": 40,
+                "productColors": ["Green", "Brown", "Red"]
+            },
+            {
+                "size": "M",
+                "productStock": 10,
+                "productColors": ["Red", "Brown"]
+            },
+            {
+                "size": "S",
+                "productStock": 25,
+                "productColors": ["White"]
+            }
+        ],
+        "productImages": [
+            {
+                "public_id": "products/exclusive-kurta-pajama-500x500_oyaosx.jpg",
+                "url": "https://res.cloudinary.com/dzffhd8uo/image/upload/v1647791861/products/371mw49-vasmpt001wh_ezkxnt.jpg"
+            },
+            {
+                "public_id": "products/371mw49-vasmpt001wh_ezkxnt.jpg",
+                "url": "https://res.cloudinary.com/dzffhd8uo/image/upload/v1647792075/products/exclusive-kurta-pajama-500x500_oyaosx.jpg"
+            }
+        ],
+        "productCategory": "stitched",
+        "productSubCategory": "Bottoms",
+        "numOfReviews": 2,
+        "ratings": 4.5,
+        "productReviews": [
+            {
+                "name": "Talha",
+                "rating": 5,
+                "comment": "An excellent product"
+            },
+            {
+                "name": "Usman",
+                "rating": 4,
+                "comment": "An Satisfactory product"
+            }
+        ]
+    },
+    {
+        "productName": "Shirt",
+        "productPriceMax": 4000,
+        "productPriceMin": 3500,
+        "productDescription": "A simple skin colored shirt, which can be worn by anyone (not really lol)",
+        "productGender": "Female",
+        "productSizes": [
+            {
+                "size": "L",
+                "productStock": 40,
+                "productColors": ["Skin", "Brown"]
+            },
+            {
+                "size": "M",
+                "productStock": 10,
+                "productColors": ["Skin"]
+            },
+            {
+                "size": "S",
+                "productStock": 25,
+                "productColors": ["Skin"]
+            }
+        ],
+        "productImages": [
+            {
+                "public_id": "products/cv0q-forever-21-women-skin-solid-round-neck-t-shirt_500x500_0_kzle4e.jpg",
+                "url": "https://res.cloudinary.com/dzffhd8uo/image/upload/v1647792366/products/cv0q-forever-21-women-skin-solid-round-neck-t-shirt_500x500_0_kzle4e.jpg"
+            },
+            {
+                "public_id": "products/b79feb5a885c8139601a232626b95ce3_utaaxo.jpg",
+                "url": "https://res.cloudinary.com/dzffhd8uo/image/upload/v1647792366/products/b79feb5a885c8139601a232626b95ce3_utaaxo.jpg"
+            },
+            {
+                "public_id": "products/738c232b5e088f52ba93e8f1c19e085a_g1ggqb.jpg",
+                "url": "https://res.cloudinary.com/dzffhd8uo/image/upload/v1647792366/products/738c232b5e088f52ba93e8f1c19e085a_g1ggqb.jpg"
+            }
+        ],
+        "productCategory": "stitched",
+        "productSubCategory": "Bottoms",
+        "numOfReviews": 3,
+        "ratings": 4,
+        "productReviews": [
+            {
+                "name": "Talha",
+                "rating": 4,
+                "comment": "An excellent product"
+            },
+            {
+                "name": "Usman",
+                "rating": 4,
+                "comment": "An Satisfactory product"
+            },
+            {
+                "name": "Umer",
+                "rating": 4,
+                "comment": "A good product"
+            }
+        ]
+    }
+]
