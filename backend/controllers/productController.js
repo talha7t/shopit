@@ -3,12 +3,16 @@ const asyncHandler = require("express-async-handler");
 const Product = require("../models/Product");
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
+const ApiFeatures = require("../utilities/ApiFeautres");
 
 // @desc        Get all products
-// @route       GET /api/products
+// @route       GET /api/products?keyword=yourKeyword
 // @access      Private
 const getProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await Product.find();
+  const apiFeatures = new ApiFeatures(Product.find(), req.query)
+    .search()
+    .filter();
+  const products = await apiFeatures.query;
 
   if (!products) {
     return next(new ErrorHandler("Products not found", 404));
