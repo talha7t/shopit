@@ -32,9 +32,17 @@ class ApiFeatures {
     queryString = queryString.replace(/\b(gt|gte|lt|lte)\b/g, (match) => {
       return `$${match}`;
     });
-    console.log(queryString);
 
     this.query = this.query.find(JSON.parse(queryString));
+    return this;
+  }
+
+  pagination(resultsPerPage) {
+    const currentPage = Number(this.queryString.page) || 1;
+    const skipResults = resultsPerPage * (currentPage - 1); // skip products for current the current page
+
+    this.query = this.query.limit(resultsPerPage).skip(skipResults);
+    // limit, limits the number of documents that will be returned, skips the number of results passed and returns the results within the limit
     return this;
   }
 }
