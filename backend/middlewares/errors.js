@@ -1,7 +1,10 @@
+const ErrorHandler = require("../utilities/ErrorHandler");
+
 const errorHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal server error";
 
+  // handling development errors
   if (process.env.NODE_ENV === "development") {
     res.status(err.statusCode).json({
       success: false,
@@ -11,13 +14,26 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
+  // handling production errors
   if (process.env.NODE_ENV === "production") {
     let error = { ...err };
     error.message = err.message;
 
-    res.status(err.statusCode).json({
+    // wrong mongoose Object ID error
+    if (err.name === "CastError") {
+      const message = `Resource not Found. Invalid: ${err.path}`;
+      error = new ErrorHandler(message, 400);
+    }
+
+    //Handling Mongoose Valiidation Error
+    if (err.name === "ValidationError") {
+      const message = Object.values(err.errors).map((value) => value.message);
+      error = new ErrorHandler(message, 400);
+    }
+
+    res.status(error.statusCode).json({
       success: false,
-      message: err.message || "internal server error",
+      message: error.message || "internal server error",
     });
   }
 };
