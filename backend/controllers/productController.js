@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 
 const Product = require("../models/Product");
+const ErrorHandler = require("../utilities/ErrorHandler");
 
 // @desc        Get all products
 // @route       GET /api/products
@@ -14,12 +15,11 @@ const getProducts = asyncHandler(async (req, res) => {
 // @desc        Get all products
 // @route       GET /api/products
 // @access      Private
-const getProduct = asyncHandler(async (req, res) => {
+const getProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
-    res.status(400);
-    throw new Error();
+    return next(new ErrorHandler("Product not found", 404));
   }
 
   res.status(200).json({ product });
