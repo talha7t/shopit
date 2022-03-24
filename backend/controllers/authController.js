@@ -32,6 +32,10 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+// @desc        Login a user
+// @route       GET /api/login
+// @access      Public
+
 const loginUser = catchAsyncErrors(async (req, res, next) => {
   const { userEmail, userPassword } = req.body;
 
@@ -57,7 +61,18 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+// @desc        Logout a user
+// @route       GET /api/logout
+// @access      Public
+
+const logoutUser = catchAsyncErrors(async (req, res, next) => {
+  res.cookie("token", null, { expires: new Date(Date.now()), httpOnly: true });
+
+  res.status(200).json({ success: true, message: "User logged out" });
+});
+
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
 };
