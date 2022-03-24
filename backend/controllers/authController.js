@@ -1,8 +1,11 @@
-const User = require("../models/User");
+const crypto = require("crypto");
 
+const User = require("../models/User");
 const ErrorHandler = require("../utilities/ErrorHandler");
+
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const sendToken = require("../utilities/jwtToken");
+const sendEmail = require("../utilities/sendEmail");
 
 // @desc        Register a user
 // @route       GET /api/register
@@ -61,6 +64,89 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+// @desc        Reset Password when password forgot
+// @route       GET /api/password/forgot
+// @access      Public
+
+const forgotPassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findOne({ userEmail: req.body.userEmail });
+  if (!user) {
+    return next(
+      new ErrorHandler(
+        "User not found with email address: " + req.body.userEmail
+      ),
+      404
+    );
+  }
+
+  // get reset token
+  const resetToken = user.getResetPasswordToken();
+  await user.save({ validateBeforeSave: false });
+
+  // create reset password URL
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/password/reset/${resetToken}`;
+
+  const message = `Your password reset token is: ${resetUrl}\n\n`;
+
+  try {
+    await sendEmail({
+      email: user.userEmail,
+      subject: "Shop IT Password Recovery",
+      message,
+    });
+    res
+      .status(200)
+      .json({ success: true, message: `Email sent to ${user.userEmail}` });
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
+// @desc        save reset password as new password
+// @route       GET /api/password/reset:token
+// @access      Public
+
+const resetPassword = catchAsyncErrors(async (req, res, next) => {
+  // Hash URL tokens
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler(
+        "Password reset token is either invalid or has been expired",
+        400
+      )
+    );
+  }
+
+  if (req.body.userPassword !== req.body.confirmPassword) {
+    return next(new ErrorHandler("Passwords do not match", 400));
+  }
+
+  // set up new password
+  user.userPassword = req.body.userPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  sendToken(user, 200, res);
+});
+
 // @desc        Logout a user
 // @route       GET /api/logout
 // @access      Public
@@ -74,5 +160,7 @@ const logoutUser = catchAsyncErrors(async (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
+  forgotPassword,
+  resetPassword,
   logoutUser,
 };
