@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
-// checks if the user is authenticated and
+// Checks if the user is authenticated and
 exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
 
@@ -20,4 +20,19 @@ exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   next();
 });
 
-// module.exports = isAuthenticatedUser;
+// Handle user roles
+
+exports.authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.userRole)) {
+      return next(
+        new ErrorHandler(
+          `User with Role ${req.user.userRole} is not allowed to use this feature`,
+          403
+        )
+      );
+    }
+
+    next();
+  };
+};
