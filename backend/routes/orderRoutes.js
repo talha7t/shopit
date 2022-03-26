@@ -5,5 +5,7 @@ const orderController = require("../controllers/orderController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 router.post("/order/new", isAuthenticatedUser, orderController.createOrder);
+router.get("/order/:id", isAuthenticatedUser, orderController.getSingleOrder);
+router.get("/orders/me", isAuthenticatedUser, orderController.myOrders);
 
 module.exports = router;

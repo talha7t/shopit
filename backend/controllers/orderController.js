@@ -39,6 +39,39 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
   res.status(201).json({ success: true, order });
 });
 
+// @desc        Get single order
+// @access      Private
+// @route       GET /api/order/:id
+
+const getSingleOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found", 404));
+  }
+
+  res.status(200).json({ success: true, order });
+});
+
+// @desc        Get logged in user orders
+// @access      Private
+// @route       GET /api/orders/me
+
+const myOrders = catchAsyncErrors(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user.id });
+
+  if (!orders) {
+    return next(new ErrorHandler("No orders Found", 404));
+  }
+
+  res.status(200).json({ success: true, totalOrder: orders.length, orders });
+});
+
 module.exports = {
   createOrder,
+  getSingleOrder,
+  myOrders,
 };
