@@ -67,11 +67,33 @@ const myOrders = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("No orders Found", 404));
   }
 
-  res.status(200).json({ success: true, totalOrder: orders.length, orders });
+  res.status(200).json({ success: true, totalOrders: orders.length, orders });
+});
+
+// @desc        Admin get all orders
+// @access      Private
+// @route       GET /api/orders
+
+const getAllOrders = catchAsyncErrors(async (req, res, next) => {
+  const orders = await Order.find();
+
+  if (!orders) {
+    return next(new ErrorHandler("No orders Found", 404));
+  }
+
+  let totalAmount = 0;
+  orders.forEach((order) => {
+    totalAmount += order.totalPrice;
+  });
+
+  res
+    .status(200)
+    .json({ success: true, totalOrders: orders.length, totalAmount, orders });
 });
 
 module.exports = {
   createOrder,
   getSingleOrder,
+  getAllOrders,
   myOrders,
 };
