@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/errors");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const connectDB = require("./utilities/db");
 
 // Handling uncaught exceptions
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/products", productRoutes);
 app.use("/api", authRoutes);
+app.use("/api", orderRoutes);
 
 app.use(errorHandler);
 
