@@ -36,7 +36,7 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // @desc        Login a user
-// @route       GET /api/login
+// @route       POST /api/login
 // @access      Public
 
 const loginUser = catchAsyncErrors(async (req, res, next) => {
@@ -65,7 +65,7 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // @desc        Reset Password when password forgot
-// @route       GET /api/password/forgot
+// @route       POST /api/password/forgot
 // @access      Public
 
 const forgotPassword = catchAsyncErrors(async (req, res, next) => {
@@ -109,7 +109,7 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
 });
 
 // @desc        save reset password as new password
-// @route       GET /api/password/reset:token
+// @route       PUT /api/password/reset:token
 // @access      Public
 
 const resetPassword = catchAsyncErrors(async (req, res, next) => {
@@ -157,10 +157,141 @@ const logoutUser = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, message: "User logged out" });
 });
 
+// @desc        Customer view account details
+// @route       GET /api/logout
+// @access      Public
+
+const getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  res.status(200).json({ success: true, user });
+});
+
+// @desc        Customer Update account details
+// @route       PUT /api/me/update
+// @access      Public
+
+const updateProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUserData = {
+    userName: req.body.userName,
+    userEmail: req.body.userEmail,
+  };
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  res.status(200).json({ success: true });
+});
+
+// @desc        Customer Update Password
+// @route       PUT /api/password/update
+// @access      Public
+
+const updatePassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+userPassword");
+
+  // check if old password is correct
+  const isMatched = await user.comparePassword(req.body.oldPassword);
+  if (!isMatched) {
+    return next(new ErrorHandler("Old Password is incorrect", 400));
+  }
+
+  user.userPassword = req.body.userPassword;
+  await user.save();
+
+  sendToken(user, 200, res);
+});
+
+// @desc        Admin get all users
+// @route       GET /api/users
+// @access      Private
+
+const getAllUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find();
+
+  if (!users) {
+    return next(new ErrorHandler("No users Found"), 400);
+  }
+
+  res.status(200).json({ success: true, users });
+});
+
+// @desc        Admin get specific users
+// @access      Private
+// @route       GET /api/users/:id
+
+const getUser = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not Found"), 404);
+  }
+
+  res.status(200).json({ success: true, user });
+});
+
+// @desc        Admin update user profile
+// @route       PUT /api/user/:id
+// @access      Private
+
+const adminUpdateProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUserData = {
+    userName: req.body.userName,
+    userEmail: req.body.userEmail,
+    userRole: req.body.userRole,
+  };
+
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  res.status(200).json({ success: true });
+});
+
+// @desc        Admin delete a specific suer
+// @access      Private
+// @route       DELETE /api/user/:id
+
+const adminDeleteProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not Found"), 404);
+  }
+
+  await user.remove();
+
+  res.status(200).json({ success: true });
+});
+
 module.exports = {
   registerUser,
   loginUser,
   forgotPassword,
   resetPassword,
   logoutUser,
+  getUserProfile,
+  updateProfile,
+  updatePassword,
+  getAllUsers,
+  getUser,
+  adminUpdateProfile,
+  adminDeleteProfile,
 };
