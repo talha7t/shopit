@@ -38,6 +38,7 @@ const orderSchema = mongoose.Schema(
         name: { type: String, required: true },
         quantity: { type: Number, required: true },
         productImage: { type: String, required: true },
+        productSize: { type: String, required: true },
         price: { type: Number, required: true },
         product: {
           type: mongoose.Schema.Types.ObjectId,
@@ -55,7 +56,7 @@ const orderSchema = mongoose.Schema(
     taxPrice: { type: Number, required: true, default: 0.0 },
     shippingPrice: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
-    orderStatus: { type: String, required: true, default: "Incomplete" },
+    orderStatus: { type: String, required: true, default: "incomplete" },
     deliveredAt: { type: Date },
   },
   { timestamps: true }

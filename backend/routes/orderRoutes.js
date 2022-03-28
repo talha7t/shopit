@@ -13,5 +13,17 @@ router.get(
   orderController.getAllOrders
 );
 router.get("/orders/me", isAuthenticatedUser, orderController.myOrders);
+router.put(
+  "/order/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  orderController.updateOrder
+);
 
+router.delete(
+  "/order/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  orderController.deleteOrder
+);
 module.exports = router;

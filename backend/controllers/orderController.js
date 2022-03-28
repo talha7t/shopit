@@ -36,6 +36,10 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
+  order.orderItems.forEach(async (item) => {
+    await updateStock(item.product, item.quantity, item.productSize, "create");
+  });
+
   res.status(201).json({ success: true, order });
 });
 
@@ -91,9 +95,76 @@ const getAllOrders = catchAsyncErrors(async (req, res, next) => {
     .json({ success: true, totalOrders: orders.length, totalAmount, orders });
 });
 
+// @desc        Admin update order
+// @access      Private
+// @route       PUT /api/order/:id
+
+const updateOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("No order Found", 404));
+  }
+
+  if (order.orderStatus === "delivered") {
+    return next(new ErrorHandler("Order has already been delivered", 400));
+  }
+
+  order.orderStatus = req.body.orderStatus;
+  if (order.orderStatus === "delivered") {
+    order.deliveredAt = Date.now();
+  }
+  await order.save();
+  res.status(200).json({ success: true });
+});
+
+// @desc        Admin Delete an order
+// @access      Private
+// @route       Delete /api/order/:id
+
+const deleteOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("Order not found", 404));
+  }
+
+  if (order.orderStatus === "incomplete") {
+    order.orderItems.forEach(async (item) => {
+      await updateStock(
+        item.product,
+        item.quantity,
+        item.productSize,
+        "delete"
+      );
+    });
+  }
+
+  await order.remove();
+
+  res.status(200).json({ success: true });
+});
+
 module.exports = {
   createOrder,
   getSingleOrder,
   getAllOrders,
   myOrders,
+  updateOrder,
+  deleteOrder,
 };
+
+async function updateStock(id, quantity, size, updateFor) {
+  const product = await Product.findById(id);
+
+  // create order on basis of stock avialability later
+  product.productSizes.forEach((productSize) => {
+    // update stock based on selected size
+    if (productSize.size === size && updateFor === "create") {
+      productSize.productStock -= quantity;
+    } else if (productSize.size === size && updateFor === "delete") {
+      productSize.productStock += quantity;
+    }
+  });
+  await product.save({ validateBeforeSave: false });
+}
