@@ -117,6 +117,11 @@ const productSchema = mongoose.Schema(
     },
     productReviews: [
       {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: "User",
+          required: true,
+        },
         name: {
           type: String,
           required: true,

@@ -21,7 +21,8 @@ const errorHandler = (err, req, res, next) => {
 
     // wrong mongoose Object ID error
     if (err.name === "CastError") {
-      const message = `Resource not Found. Invalid: ${err.path}`;
+      const message = `Resource not Found. Invalid: ${err}`;
+      // const message = `Resource not Found. Invalid: ${err.path}`;
       error = new ErrorHandler(message, 400);
     }
 

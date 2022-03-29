@@ -44,6 +44,7 @@ const getProduct = catchAsyncErrors(async (req, res, next) => {
 // @route       POST /api/products
 // @access      Private
 const createProduct = catchAsyncErrors(async (req, res, next) => {
+  // req.body.user = req.user._id;
   req.body.user = req.user.id;
   const product = await Product.create(req.body);
 
@@ -81,10 +82,57 @@ const deleteProduct = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, message: `Deleted Product` });
 });
 
+// @desc        Create a Review
+// @route       PUT /api/products/review/
+// @access      Private
+
+const createProductReview = catchAsyncErrors(async (req, res, next) => {
+  const { rating, comment, productId } = req.body;
+  const review = {
+    user: req.user._id,
+    name: req.user.userName,
+    rating: Number(rating),
+    comment,
+  };
+  const product = await Product.findById(productId);
+
+  const isReviewed = product.productReviews.find(
+    (review) => review.user.toString() === req.user._id.toString()
+  );
+  if (isReviewed) {
+    product.productReviews.forEach((review) => {
+      if (review.user.toString() === req.user._id.toString()) {
+        review.comment = comment;
+        review.rating = rating;
+      }
+    });
+  } else {
+    product.productReviews.push(review);
+
+    product.numOfReviews = product.productReviews.length;
+  }
+  let ratingSum = 0;
+
+  product.productReviews.map((item) => {
+    console.log(`rating: ${item.rating}`); // clg
+    ratingSum += item.rating;
+    return ratingSum;
+  });
+
+  console.log(ratingSum);
+
+  product.ratings = ratingSum / product.productReviews.length;
+
+  console.log(`Product rating: ${product.ratings}`);
+  await product.save({ validateBeforeSave: false });
+  res.status(201).json({ success: true });
+});
+
 module.exports = {
   getProducts,
   getProduct,
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
 };

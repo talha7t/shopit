@@ -1,6 +1,7 @@
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("./catchAsyncErrors");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const User = require("../models/User");
 
@@ -15,8 +16,8 @@ exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   }
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = await User.findById(decoded.id); // store id of currently logged in user in req.user
 
+  req.user = await User.findById(decoded.id); // store id of currently logged in user in req.user
   next();
 });
 
