@@ -4,6 +4,7 @@ const Product = require("../models/Product");
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ApiFeatures = require("../utilities/ApiFeautres");
+const { query } = require("express");
 
 // @desc        Get all products
 // @route       GET /api/products?keyword=yourKeyword
@@ -83,7 +84,7 @@ const deleteProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 // @desc        Create a Review
-// @route       PUT /api/products/review/
+// @route       PUT /api/products/review?id=productId
 // @access      Private
 
 const createProductReview = catchAsyncErrors(async (req, res, next) => {
@@ -114,18 +115,74 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
   let ratingSum = 0;
 
   product.productReviews.map((item) => {
-    console.log(`rating: ${item.rating}`); // clg
     ratingSum += item.rating;
     return ratingSum;
   });
-
-  console.log(ratingSum);
 
   product.ratings = ratingSum / product.productReviews.length;
 
   console.log(`Product rating: ${product.ratings}`);
   await product.save({ validateBeforeSave: false });
   res.status(201).json({ success: true });
+});
+
+// @desc        get all reviews
+// @route       GET /api/products/reviews/
+// @access      Private
+
+const getProductReviews = catchAsyncErrors(async (req, res, next) => {
+  const product = await Product.findById(req.query.id);
+
+  res.status(200).json({ success: true, reviews: product.productReviews });
+});
+
+// @desc        delete a product review
+// @route       DELETE /api/products/review/
+// @access      Private
+
+const deleteReview = catchAsyncErrors(async (req, res, next) => {
+  const product = await Product.findById(req.query.productId);
+
+  // console.log(`query id: ${req.query.id}`);
+
+  const productReview = product.productReviews.filter((review) => {
+    // console.log(`review id: ${review.user}`);
+    return review.user.toString() === req.query.id.toString();
+  });
+
+  if (!productReview[0]) {
+    return next(
+      new ErrorHandler("You have not provided any review to this product.", 404)
+    );
+  }
+  // console.log(productReview[0].user);
+  const numOfReviews = product.productReviews.length;
+  // console.log(`num of reviews: ${numOfReviews}`);
+  let ratingSum = 0;
+
+  product.productReviews.map((item) => {
+    ratingSum += item.rating;
+    return ratingSum;
+  });
+
+  // console.log(`rating Sum before: ${ratingSum}`);
+  ratingSum -= productReview[0].rating;
+  // console.log(`rating Sum after: ${ratingSum}`);
+
+  const ratings = ratingSum / (numOfReviews - 1);
+  // console.log(`overall rating: ${ratings}`);
+
+  // await Product.findByIdAndUpdate(
+  //   req.query.productId,
+  //   {
+  //     productReviews,
+  //     numOfReviews: productReviews.length,
+  //     ratings,
+  //   },
+  //   { new: true, runValidators: true, useFindAndModify: false }
+  // );
+
+  res.status(200).json({ success: true, reviews: product.productReviews });
 });
 
 module.exports = {
@@ -135,4 +192,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   createProductReview,
+  getProductReviews,
+  deleteReview,
 };

@@ -10,6 +10,13 @@ router.put(
   productController.createProductReview
 );
 
+router.get("/products/reviews", productController.getProductReviews);
+router.delete(
+  "/products/review",
+  isAuthenticatedUser,
+  productController.deleteReview
+);
+
 router.get("/products/", productController.getProducts);
 router.get("/products/:id", productController.getProduct);
 
