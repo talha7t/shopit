@@ -142,45 +142,33 @@ const getProductReviews = catchAsyncErrors(async (req, res, next) => {
 
 const deleteReview = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.query.productId);
-
-  // console.log(`query id: ${req.query.id}`);
-
-  const productReview = product.productReviews.filter((review) => {
-    // console.log(`review id: ${review.user}`);
-    return review.user.toString() === req.query.id.toString();
+  const productReviews = product.productReviews.filter((review) => {
+    return review._id.toString() !== req.query.id.toString();
   });
 
-  if (!productReview[0]) {
-    return next(
-      new ErrorHandler("You have not provided any review to this product.", 404)
-    );
+  if (!productReviews) {
+    return next(new ErrorHandler("No such review found.", 404));
   }
-  // console.log(productReview[0].user);
-  const numOfReviews = product.productReviews.length;
-  // console.log(`num of reviews: ${numOfReviews}`);
+  const numOfReviews = productReviews.length;
   let ratingSum = 0;
 
-  product.productReviews.map((item) => {
+  productReviews.map((item) => {
     ratingSum += item.rating;
     return ratingSum;
   });
 
-  // console.log(`rating Sum before: ${ratingSum}`);
-  ratingSum -= productReview[0].rating;
-  // console.log(`rating Sum after: ${ratingSum}`);
+  const ratings =
+    productReviews.length > 0 ? ratingSum / productReviews.length : 0;
 
-  const ratings = ratingSum / (numOfReviews - 1);
-  // console.log(`overall rating: ${ratings}`);
-
-  // await Product.findByIdAndUpdate(
-  //   req.query.productId,
-  //   {
-  //     productReviews,
-  //     numOfReviews: productReviews.length,
-  //     ratings,
-  //   },
-  //   { new: true, runValidators: true, useFindAndModify: false }
-  // );
+  await Product.findByIdAndUpdate(
+    req.query.productId,
+    {
+      productReviews,
+      numOfReviews,
+      ratings,
+    },
+    { new: true, runValidators: true, useFindAndModify: false }
+  );
 
   res.status(200).json({ success: true, reviews: product.productReviews });
 });

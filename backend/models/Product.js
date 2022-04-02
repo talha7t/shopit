@@ -114,6 +114,8 @@ const productSchema = mongoose.Schema(
     ratings: {
       type: Number,
       default: 0,
+      max: 5,
+      min: 0,
     },
     productReviews: [
       {
