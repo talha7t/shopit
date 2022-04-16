@@ -1,10 +1,8 @@
-const asyncHandler = require("express-async-handler");
-
+// const asyncHandler = require("express-async-handler");
 const Product = require("../models/Product");
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ApiFeatures = require("../utilities/ApiFeautres");
-const { query } = require("express");
 
 // @desc        Get all products
 // @route       GET /api/products?keyword=yourKeyword
