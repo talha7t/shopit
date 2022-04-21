@@ -24,6 +24,37 @@
   background-size: cover;
 }
 
+/* ========================LOADER======================== */
+
+.loader {
+  display: block;
+  margin: 20% auto 0;
+  height: 80px;
+  width: 80px;
+  padding-left: 0;
+}
+
+.loader::after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid rgb(110, 103, 103);
+  border-color: rgb(110, 103, 103) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
 @media screen and (min-width: 768px) {
   .nav-item {
     margin: 0 10px;

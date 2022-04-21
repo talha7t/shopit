@@ -1,0 +1,91 @@
+.card-container {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.card-part-1 {
+  cursor: pointer;
+  height: 60vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 2px 0 4px (0, 0, 0, 0.25);
+}
+
+.card-container .card-part-1:hover img {
+  transform: scale(1.1);
+}
+
+.card-part-1 img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.icons {
+  bottom: 10px;
+  position: absolute;
+  display: flex;
+  transform: translateY(50px);
+  transition: all 0.3s ease;
+}
+
+.icons a {
+  background-color: #fff;
+  z-index: 1;
+  padding: 5px 10px;
+  margin: 0 10px;
+  text-decoration: none;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons a i,
+.icons a span {
+  color: #000;
+  transition: color 0.2s ease-in-out;
+}
+
+.icons a span {
+  font-family: "roboto", sans-serif;
+  font-weight: 400;
+}
+
+.icons a:hover {
+  border: 1px solid #ff6363;
+}
+
+.icons a:hover i,
+.icons a:hover span {
+  color: #ff6363;
+}
+
+.card-part-2 {
+  margin: 1rem;
+}
+
+.product-name {
+  font-size: 1.3rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  color: #333;
+}
+
+.product-price {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.card-part-1:hover .icons {
+  bottom: 10px;
+  transform: translateY(0);
+}
+
+@media screen and (max-width: 992px) {
+  .icons {
+    transform: translateY(0);
+  }
+}
