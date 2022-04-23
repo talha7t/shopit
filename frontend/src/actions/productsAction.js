@@ -11,24 +11,28 @@ import {
 } from "../constants/productConstants";
 
 // get products action creator
-export const getProducts = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: ALL_PRODUCTS_REQUEST,
-    });
+export const getProducts =
+  (keyword = "", currentPage = 1) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: ALL_PRODUCTS_REQUEST,
+      });
 
-    const { data } = await axios.get("/api/products");
-    dispatch({
-      type: ALL_PRODUCTS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: ALL_PRODUCTS_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&page=${currentPage}`
+      );
+      dispatch({
+        type: ALL_PRODUCTS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_PRODUCTS_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // get product details action with
 export const getProductDetails = (id) => async (dispatch) => {

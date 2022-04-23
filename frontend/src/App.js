@@ -9,7 +9,8 @@ function App() {
       <div className="APP">
         <Header />
         <Route path="/" component={Home} exact />
-        <Route path="/product/:id" componenent={ProductDetails} exact />
+        <Route path="/search/:keyword" component={Home} />
+        <Route path="/products/:id" component={ProductDetails} exact />
       </div>
     </Router>
   );

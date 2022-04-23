@@ -4,59 +4,144 @@ import "../styles/productDetails.css";
 export const ProductDetails = () => {
   return (
     <div class="container container-fluid">
-      <div class="row d-flex justify-content-between">
-        <div class="col-12 col-lg-8 mt-5 order-details">
-          <h1 class="my-5">Order # 4543f34f545</h1>
+      <div class="row f-flex justify-content-around">
+        <div class="col-12 col-lg-5 img-fluid" id="product_image">
+          <img
+            src="https://i5.walmartimages.com/asr/1223a935-2a61-480a-95a1-21904ff8986c_1.17fa3d7870e3d9b1248da7b1144787f5.jpeg?odnWidth=undefined&odnHeight=undefined&odnBg=ffffff"
+            alt="sdf"
+            height="500"
+            width="500"
+          />
+        </div>
 
-          <h4 class="mb-4">Shipping Info</h4>
+        <div class="col-12 col-lg-5 mt-5">
+          <h3>onn. 32” Class HD (720P) LED Roku Smart TV (100012589)</h3>
+          <p id="product_id">Product # sklfjdk35fsdf5090</p>
+
+          <hr />
+
+          <div class="rating-outer">
+            <div class="rating-inner"></div>
+          </div>
+          <span id="no_of_reviews">(5 Reviews)</span>
+
+          <hr />
+
+          <p id="product_price">$108.00</p>
+          <div class="stockCounter d-inline">
+            <span class="btn btn-danger minus">-</span>
+
+            <input
+              type="number"
+              class="form-control count d-inline"
+              value="1"
+              readOnly
+            />
+
+            <span class="btn btn-primary plus">+</span>
+          </div>
+          <button
+            type="button"
+            id="cart_btn"
+            class="btn btn-primary d-inline ml-4"
+          >
+            Add to Cart
+          </button>
+
+          <hr />
+
           <p>
-            <b>Name:</b> John
-          </p>
-          <p>
-            <b>Phone:</b> 111 111 1111
-          </p>
-          <p class="mb-4">
-            <b>Address:</b>Address of user
-          </p>
-          <p>
-            <b>Amount:</b> $1111
+            Status: <span id="stock_status">In Stock</span>
           </p>
 
           <hr />
 
-          <h4 class="my-4">Payment</h4>
-          <p class="greenColor">
-            <b>PAID</b>
+          <h4 class="mt-2">Description:</h4>
+          <p>
+            Binge on movies and TV episodes, news, sports, music and more! We
+            insisted on 720p High Definition for this 32" LED TV, bringing out
+            more lifelike color, texture and detail. We also partnered with Roku
+            to bring you the best possible content with thousands of channels to
+            choose from, conveniently presented through your own custom home
+            screen.
           </p>
-
-          <h4 class="my-4">Order Status:</h4>
-          <p class="greenColor">
-            <b>Delivered</b>
-          </p>
-
-          <h4 class="my-4">Order Items:</h4>
-
           <hr />
-          <div class="cart-item my-1">
-            <div class="row my-5">
-              <div class="col-4 col-lg-2">
-                <img src="" alt="Laptop" height="45" width="65" />
-              </div>
+          <p id="product_seller mb-3">
+            Sold by: <strong>Amazon</strong>
+          </p>
 
-              <div class="col-5 col-lg-5">
-                <a href="/">Mic</a>
-              </div>
+          <button
+            id="review_btn"
+            type="button"
+            class="btn btn-primary mt-4"
+            data-toggle="modal"
+            data-target="#ratingModal"
+          >
+            Submit Your Review
+          </button>
 
-              <div class="col-4 col-lg-2 mt-4 mt-lg-0">
-                <p>$33</p>
-              </div>
+          <div class="row mt-2 mb-5">
+            <div class="rating w-50">
+              <div
+                class="modal fade"
+                id="ratingModal"
+                tabIndex="-1"
+                role="dialog"
+                aria-labelledby="ratingModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ratingModalLabel">
+                        Submit Review
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="stars">
+                        <li class="star">
+                          <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star">
+                          <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star">
+                          <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star">
+                          <i class="fa fa-star"></i>
+                        </li>
+                        <li class="star">
+                          <i class="fa fa-star"></i>
+                        </li>
+                      </ul>
 
-              <div class="col-4 col-lg-3 mt-4 mt-lg-0">
-                <p>2 Piece(s)</p>
+                      <textarea
+                        name="review"
+                        id="review"
+                        class="form-control mt-3"
+                      ></textarea>
+                      <button
+                        class="btn my-3 float-right review-btn px-4 text-white"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <hr />
         </div>
       </div>
     </div>
