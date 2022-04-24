@@ -8,7 +8,7 @@ const ApiFeatures = require("../utilities/ApiFeautres");
 // @route       GET /api/products?keyword=yourKeyword
 // @access      Private
 const getProducts = catchAsyncErrors(async (req, res, next) => {
-  const resultsPerPage = 3;
+  const resultsPerPage = 10;
 
   const productCount = await Product.countDocuments();
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
@@ -21,9 +21,13 @@ const getProducts = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Products not found", 404));
   }
 
-  res
-    .status(200)
-    .json({ success: true, count: products.length, productCount, products });
+  res.status(200).json({
+    success: true,
+    // count: products.length,
+    productCount,
+    products,
+    resultsPerPage,
+  });
 });
 
 // @desc        Get all products

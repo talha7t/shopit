@@ -7,7 +7,7 @@ import { getProducts } from "../actions/productsAction";
 import Loader from "./commons/Loader";
 import { useAlert } from "react-alert";
 import "../styles/Home.css";
-import { AlertTemplate } from "react-alert-template-basic";
+// import { AlertTemplate } from "react-alert-template-basic";
 import { SearchBar } from "./commons/SearchBar";
 import { Route } from "react-router-dom";
 

@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema(
   {
+    productModel: {
+      type: String,
+      trim: true,
+      unique: true,
+      maxLength: [11, "Product Model can not exceed 10 characters"],
+      required: [true, "Please provide a Model Number for product"],
+    },
     productName: {
       type: String,
       trim: true,
@@ -26,11 +33,17 @@ const productSchema = mongoose.Schema(
       maxLength: [1000, "Product description can not exceed 1000 characters"],
       required: [true, "Please provide a description for product"],
     },
+    productColor: {
+      type: String,
+      trim: true,
+      maxLength: [40, "Product color can not exceed 40 characters"],
+      required: [true, "Please provide a color for product"],
+    },
     productGender: {
       type: String,
       required: [true, "Please provide the gender for product"],
     },
-    productSizes: [
+    inventory: [
       {
         size: {
           type: String,
@@ -43,12 +56,6 @@ const productSchema = mongoose.Schema(
           maxLength: [5, "Product stock can not exceed 5 characters"],
           default: 0,
         },
-        productColors: [
-          {
-            type: String,
-            required: [true, "Please provide a color for your product"],
-          },
-        ],
       },
     ],
     productImages: [
@@ -63,29 +70,29 @@ const productSchema = mongoose.Schema(
         },
       },
     ],
-    productCategory: {
+    productType: {
       type: String,
       required: [true, "Please select a category for this product"],
       enum: {
-        values: ["stitched", "unstitched", "Accessories"],
+        values: ["stitched", "unstitched", "accessories"],
         message: "Please select a correct category for your product",
       },
     },
-    productSubCategory: {
+    productCategory: {
       type: String,
       required: [true, "Please select a subcategory for your product"],
       enum: {
         values: [
-          "Kurtas",
+          "Kurta",
           "Kurta Shalwar",
           "Prince Coats",
           "Waistcoats",
           "Sherwani",
           "Bottoms",
           "Denim",
-          "Night suits",
-          "T-Shirts",
-          "Shirts",
+          "Night suit",
+          "T-Shirt",
+          "Shirt",
           "Gowns",
           "1 Piece",
           "2 Piece",
@@ -138,6 +145,13 @@ const productSchema = mongoose.Schema(
           maxLength: [500, "Product review can not exceed 500 characters"],
           required: true,
         },
+      },
+    ],
+    productTags: [
+      {
+        type: String,
+        maxLength: [20, "A product tag can not have more than 15 characters"],
+        trim: true,
       },
     ],
     user: {
