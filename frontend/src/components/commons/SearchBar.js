@@ -19,7 +19,7 @@ export const SearchBar = ({ history }) => {
         <input
           type="text"
           id="search-field"
-          classname="form-control"
+          className="form-control"
           placeholder="Product Name"
           onChange={(e) => setKeyword(e.target.value)}
         />

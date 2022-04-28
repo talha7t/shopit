@@ -1,6 +1,7 @@
 //importing bootstrap 5 css
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import { Link } from "react-router-dom";
 import "../../App.css";
 // import "../../styles/navbar.css";
 
@@ -330,9 +331,12 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
-              <a href="/" className="nav-link font-weight-bold text-uppercase">
+              <Link
+                to="/login"
+                className="nav-link font-weight-bold text-uppercase"
+              >
                 Login
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
