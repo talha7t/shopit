@@ -6,6 +6,7 @@ const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const connectDB = require("./utilities/db");
+// const bodyParser = require("body-parser");
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -23,6 +24,14 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({extended: true}));
+
+// setting up cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.COUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.use("/api", productRoutes);
 app.use("/api", authRoutes);

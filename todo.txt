@@ -1,0 +1,9 @@
+2. add filter and search feature to users
+3. when creating order check stock availability as well.
+4. allow only authorized users to delete reviews
+6. Ask ma'am if we should use cloudinary or drag and drop
+7: add favourites to user schema
+8. add custom title to product details page (see pagination video)
+9. Reduce character limit from model
+10. use phone numbers from: https://www.npmjs.com/package/react-phone-number-input?activeTab=readme
+provide enum for orderStatus
