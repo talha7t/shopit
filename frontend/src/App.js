@@ -1,11 +1,18 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/commons/Header";
 import Home from "./components/Home";
+import store from "./store";
 import { ProductDetails } from "./components/ProductDetails";
 import { Login } from "./components/user/Login";
 import { Register } from "./components/user/Register";
+import { loadUser } from "./actions/userActions";
 
 function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <Router>
       <div className="APP">
