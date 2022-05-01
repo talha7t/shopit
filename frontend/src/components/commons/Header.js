@@ -1,17 +1,27 @@
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+// import { useAlert } from "react-alert";
+
 //importing bootstrap 5 css
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import { Link } from "react-router-dom";
+
 import "../../App.css";
-// import "../../styles/navbar.css";
 
 function Header() {
+  // const dipatch = useDispatch();
+  // const alert = useAlert();
+
+  const { user, loading } = useSelector((state) => state.auth);
+
+  // useEffect(() => {})
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
       <div className="container-fluid">
-        <a href="/#" className="navbar-brand font-weight-bold d-block">
+        <Link to="/" className="navbar-brand font-weight-bold d-block">
           SHOP IT
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -31,6 +41,7 @@ function Header() {
                 href="/"
                 // id="dropdownMenuButton1"
                 data-bs-toggle="dropdown"
+                data-bs-auto-close="true"
                 aria-expanded="false"
                 className="nav-link dropdown-toggle font-weight-bold text-uppercase dropdown-toggle"
               >
@@ -331,54 +342,68 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
-              <Link
+              {/* if user is logged in display their name and dropdown else display login button*/}
+              {user ? (
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn dropdown-toggle ps-0"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {user && user.userName}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      {user && user.userRole !== "admin" ? (
+                        <Link class="dropdown-item" to="/orders/me">
+                          Orders
+                        </Link>
+                      ) : (
+                        <Link className="dropdown-item" to="/dashboard">
+                          Dashboard
+                        </Link>
+                      )}
+                    </li>
+                    <li>
+                      <Link class="dropdown-item" to="/me">
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link class="dropdown-item text-danger" href="/logout">
+                        Logout
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              ) : (
+                !loading && (
+                  <Link
+                    to="/login"
+                    data-toggle="collapse"
+                    className="nav-link font-weight-bold text-uppercase"
+                  >
+                    Login
+                  </Link>
+                )
+              )}
+              {/* <Link
                 to="/login"
+                data-toggle="collapse"
+                data-target=".navbar-collapse"
                 className="nav-link font-weight-bold text-uppercase"
               >
                 Login
-              </Link>
+              </Link> */}
             </li>
           </ul>
         </div>
       </div>
     </nav>
-
-    // <nav className="navbar row">
-    //   <div className="col-12 col-md-3">
-    //     <div className="navbar-brand">
-    //       <img src="./images/logo.png" alt="logo" />
-    //     </div>
-    //   </div>
-
-    //   <div className="col-12 col-md-6 mt-2 mt-md-0">
-    //     <div className="input-group">
-    //       <input
-    //         type="text"
-    //         id="search_field"
-    //         className="form-control"
-    //         placeholder="Enter Product Name ..."
-    //       />
-    //       <div className="input-group-append">
-    //         <button id="search_btn" className="btn">
-    //           <i className="fa fa-search" aria-hidden="true"></i>
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-    //     <button className="btn" id="login_btn">
-    //       Login
-    //     </button>
-
-    //     <span id="cart" className="ml-3">
-    //       Cart
-    //     </span>
-    //     <span className="ml-1" id="cart_count">
-    //       2
-    //     </span>
-    //   </div>
-    // </nav>
   );
 }
 export default Header;
