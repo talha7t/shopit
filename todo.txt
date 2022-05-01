@@ -6,4 +6,5 @@
 8. add custom title to product details page (see pagination video)
 9. Reduce character limit from model
 10. use phone numbers from: https://www.npmjs.com/package/react-phone-number-input?activeTab=readme
+11. do something about alert when wrong credentials are provided for login
 provide enum for orderStatus

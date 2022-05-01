@@ -44,10 +44,12 @@ const userSchema = new mongoose.Schema(
     userAddress: {
       type: String,
       maxLength: [100, "User address cannot exceed 100 characters"],
+      required: [true, "Please provide your address"],
     },
     userContact: {
       type: String,
-      maxLength: [12, "User contact cannot exceed 12 characters"],
+      maxLength: [15, "User contact cannot exceed 12 characters"],
+      required: [true, "Please provide your Phone Number"],
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,

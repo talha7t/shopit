@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import Loader from "../commons/Loader";
+import { MetaData } from "../commons/MetaData";
+
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { MetaData } from "../commons/MetaData";
-import Loader from "../commons/Loader";
-import { login, clearErrors } from "../../actions/userActions";
+import { register, clearErrors } from "../../actions/userActions";
 
 import "../../styles/login-register.css";
 
-export const Login = ({ history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export const Register = ({ history }) => {
+  const [userName, setName] = useState("");
+  const [userEmail, setEmail] = useState("");
+  const [userPassword, setPassword] = useState("");
+  const [userAddress, setAddress] = useState("");
+  const [userContact, setContact] = useState("");
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -23,19 +28,23 @@ export const Login = ({ history }) => {
     if (isAuthenticated) {
       history.push("/");
     }
-
     if (error) {
       alert.error(error);
-
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, isAuthenticated, error, history]);
+  }, [isAuthenticated, error, alert, dispatch, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(login(email, password));
+    dispatch(
+      register(userName, userEmail, userPassword, userAddress, userContact)
+    );
   };
+
+  // const onChange = (e) => {
+  //   setUser({ ...user, [e.target.name]: e.target.value });
+  // };
 
   return (
     // if the page is aoding then display the loader
@@ -45,13 +54,13 @@ export const Login = ({ history }) => {
       ) : (
         // if not loading, then display the login page
         <div>
-          <MetaData title={"login"} />
+          <MetaData title={"register"} />
 
           <section className="ftco-section">
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-md-6 text-center mb-5">
-                  <h2 className="heading-section">Login</h2>
+                  <h2 className="heading-section">Register</h2>
                 </div>
               </div>
               <div className="row justify-content-center">
@@ -61,26 +70,30 @@ export const Login = ({ history }) => {
                     <div className="login-wrap p-4 p-md-5">
                       <div className="d-flex">
                         <div className="w-100">
-                          <h3 className="mb-4">Login</h3>
+                          <h3 className="mb-4">Register</h3>
                         </div>
                       </div>
                       <form
-                        action="/login"
+                        action="/register"
                         onSubmit={submitHandler}
                         className="signin-form"
                       >
-                        {/* <div className="form-group mb-3">
-                          <label className="label" htmlFor="user-name">
+                        <div className="form-group mb-3">
+                          <label className="label" htmlFor="userName">
                             Username
                           </label>
                           <input
+                            name="userName"
                             type="text"
-                            id="user-name"
+                            id="userName"
                             className="form-control"
                             placeholder="Username"
+                            // onChange={onChange}
+                            onChange={(e) => setName(e.target.value)}
+                            value={userName}
                             required
                           />
-                        </div> */}
+                        </div>
                         <div className="form-group mb-3">
                           <label className="label" htmlFor="userEmail">
                             Email
@@ -88,9 +101,10 @@ export const Login = ({ history }) => {
                           <input
                             type="email"
                             className="form-control"
+                            name="userEmail"
                             id="email"
                             placeholder="Email"
-                            value={email}
+                            value={userEmail}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                           />
@@ -104,40 +118,77 @@ export const Login = ({ history }) => {
                             className="form-control"
                             id="password"
                             placeholder="Password"
-                            value={password}
+                            value={userPassword}
+                            name="userPassword"
                             onChange={(e) => setPassword(e.target.value)}
+                            // onChange={onChange}
                             required
                           />
                         </div>
                         {/* <div className="form-group mb-3">
-                          <label className="label" htmlFor="confirm-password">
+                          <label className="label" htmlFor="confirmPassword">
                             Confirm Password
                           </label>
                           <input
                             type="password"
                             className="form-control"
                             placeholder="Confirm Password"
-                            id="confirm-password"
+                            id="confirmPassword"
+                            value={userPasswordConfirm}
+                            onChange={onChange}
                             required
                           />
                         </div> */}
+                        <div className="form-group mb-3">
+                          <label className="label" htmlFor="userAddress">
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            name="userAddress"
+                            className="form-control"
+                            placeholder="Address"
+                            onChange={(e) => setAddress(e.target.value)}
+                            // onChange={onChange}
+                            value={userAddress}
+                            id="userAddress"
+                            required
+                          />
+                        </div>
+                        <div className="form-group mb-3">
+                          <label className="label" htmlFor="userContact">
+                            Contact Number
+                          </label>
+                          <input
+                            type="tel"
+                            name="userContact"
+                            className="form-control"
+                            placeholder="Contact Number"
+                            id="userContact"
+                            value={userContact}
+                            onChange={(e) => setContact(e.target.value)}
+                            // onChange={onChange}
+                            required
+                          />
+                        </div>
                         <div className="form-group">
                           <button
                             type="submit"
+                            disabled={loading ? true : false}
                             className="form-control btn btn-primary rounded submit px-3 mb-2"
                           >
-                            Sign In
+                            Sign Up
                           </button>
                         </div>
                       </form>
 
-                      <div className="w-100 text-center mt-2">
+                      {/* <div className="w-100 text-center mt-2">
                         <Link to="/password/forgot">Forgot Password</Link>
-                      </div>
+                      </div> */}
                       <div className="w-100 text-center mt-2">
-                        Not a member?
-                        <Link to="/register" className="ms-1" data-toggle="tab">
-                          Sign Up
+                        Already a member?
+                        <Link to="/Login" data-toggle="tab">
+                          Login
                         </Link>
                       </div>
                     </div>

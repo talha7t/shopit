@@ -30,7 +30,6 @@ export const login = (userEmail, userPassword) => async (dispatch) => {
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: LOGIN_FAIL,
       payload: error.response.data.message,
@@ -38,38 +37,32 @@ export const login = (userEmail, userPassword) => async (dispatch) => {
   }
 };
 
-export const register = (userData) => async (dispatch) => {
-  try {
-    dispatch({
-      REGISTER_USER_REQUEST,
-    });
-    const config = {
-      headers: {
-        "Content-Type": "Application/json",
-      },
-    };
-    const { data } = await axios.post(
-      "/api/register",
-      {
-        userData,
-        // userName,
-        // userEmail,
-        // userPassword,
-        // userAddress,
-        // userContact,
-      },
-      config
-    );
+export const register =
+  (userName, userEmail, userPassword, userAddress, userContact) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: REGISTER_USER_REQUEST,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "Application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "/api/register",
+        { userName, userEmail, userPassword, userAddress, userContact },
+        config
+      );
 
-    dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
-  } catch (error) {
-    console.log(error.response.data.message);
-    dispatch({
-      type: REGISTER_USER_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+    } catch (error) {
+      dispatch({
+        type: REGISTER_USER_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // clear errors
 

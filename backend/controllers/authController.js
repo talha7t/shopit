@@ -32,6 +32,12 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
     userContact,
   });
 
+  // if (!user) {
+  //   return next(
+  //     new ErrorHandler("Something went wrong. Please try again", 401)
+  //   );
+  // }
+
   sendToken(user, 200, res);
 });
 
@@ -224,7 +230,7 @@ const getAllUsers = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("No users Found"), 400);
   }
 
-  res.status(200).json({ success: true, users });
+  res.status(200).json({ success: true, usersCount: users.length, users });
 });
 
 // @desc        Admin get specific users
