@@ -10,6 +10,10 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_RESET,
+  UPDATE_PROFILE_FAIL,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   CLEAR_ERRORS,
@@ -70,6 +74,7 @@ export const register =
     }
   };
 
+// Load User
 export const loadUser = () => async (dispatch) => {
   try {
     dispatch({
@@ -103,6 +108,34 @@ export const logoutUser = () => async (dispatch) => {
     });
   }
 };
+
+// Update Profile
+export const updateProfile =
+  (userName, userEmail, userPassword, userAddress, userContact) =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_PROFILE_REQUEST,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "Application/json",
+        },
+      };
+      const { data } = await axios.put(
+        "/api/me/update",
+        { userName, userEmail, userPassword, userAddress, userContact },
+        config
+      );
+
+      dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
+    } catch (error) {
+      dispatch({
+        type: UPDATE_PROFILE_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // clear errors
 
