@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-// import { useAlert } from "react-alert";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../actions/userActions";
+import { useAlert } from "react-alert";
 
 //importing bootstrap 5 css
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,12 +10,16 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "../../App.css";
 
 function Header() {
-  // const dipatch = useDispatch();
-  // const alert = useAlert();
+  const dispatch = useDispatch();
+  const alert = useAlert();
 
   const { user, loading } = useSelector((state) => state.auth);
 
-  // useEffect(() => {})
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+
+    alert.success("Logged out successfully");
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
@@ -344,19 +349,19 @@ function Header() {
             <li className="nav-item">
               {/* if user is logged in display their name and dropdown else display login button*/}
               {user ? (
-                <div class="btn-group">
+                <div className="btn-group">
                   <button
                     type="button"
-                    class="btn dropdown-toggle ps-0"
+                    className="btn dropdown-toggle ps-0"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     {user && user.userName}
                   </button>
-                  <ul class="dropdown-menu">
+                  <ul className="dropdown-menu">
                     <li>
                       {user && user.userRole !== "admin" ? (
-                        <Link class="dropdown-item" to="/orders/me">
+                        <Link className="dropdown-item" to="/orders/me">
                           Orders
                         </Link>
                       ) : (
@@ -366,15 +371,19 @@ function Header() {
                       )}
                     </li>
                     <li>
-                      <Link class="dropdown-item" to="/me">
+                      <Link className="dropdown-item" to="/me">
                         Profile
                       </Link>
                     </li>
                     <li>
-                      <hr class="dropdown-divider" />
+                      <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link class="dropdown-item text-danger" href="/logout">
+                      <Link
+                        className="dropdown-item text-danger"
+                        to="/"
+                        onClick={logoutHandler}
+                      >
                         Logout
                       </Link>
                     </li>
