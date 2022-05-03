@@ -73,7 +73,7 @@ export const Profile = () => {
             </div>
             <div className="col-5 col-md-4 d-flex justify-content-start">
               <Link
-                to=""
+                to="/update/me"
                 className="btn btn-primary text-success"
                 id="edit-btn"
               >

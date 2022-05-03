@@ -12,10 +12,13 @@ import {
   LOAD_USER_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
-  UPDATE_PROFILE_RESET,
   UPDATE_PROFILE_FAIL,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
+  UPDATE_PASSWORD_REQUEST,
+  UPDATE_PASSWORD_SUCCESS,
+  UPDATE_PASSWORD_RESET,
+  UPDATE_PASSWORD_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -111,20 +114,18 @@ export const logoutUser = () => async (dispatch) => {
 
 // Update Profile
 export const updateProfile =
-  (userName, userEmail, userPassword, userAddress, userContact) =>
-  async (dispatch) => {
+  (userName, userEmail, userAddress, userContact) => async (dispatch) => {
     try {
       dispatch({
         type: UPDATE_PROFILE_REQUEST,
       });
       const config = {
-        headers: {
-          "Content-Type": "Application/json",
-        },
+        headers: { "Content-Type": "Application/json" },
       };
+
       const { data } = await axios.put(
         "/api/me/update",
-        { userName, userEmail, userPassword, userAddress, userContact },
+        { userName, userEmail, userAddress, userContact },
         config
       );
 
@@ -132,6 +133,28 @@ export const updateProfile =
     } catch (error) {
       dispatch({
         type: UPDATE_PROFILE_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+// Update Password
+export const updatePassword =
+  (oldPassword, newPassword) => async (dispatch) => {
+    try {
+      dispatch({ type: UPDATE_PASSWORD_REQUEST });
+
+      const config = { headers: { "Content-Type": "application/json" } };
+
+      const { data } = await axios.put(
+        "/api/password/update",
+        { oldPassword, newPassword },
+        config
+      );
+      dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success });
+    } catch (error) {
+      dispatch({
+        type: UPDATE_PASSWORD_FAIL,
         payload: error.response.data.message,
       });
     }

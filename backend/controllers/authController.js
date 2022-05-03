@@ -185,6 +185,8 @@ const updateProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
     userName: req.body.userName,
     userEmail: req.body.userEmail,
+    userAddress: req.body.userAddress,
+    userContact: req.body.userContact,
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
@@ -213,7 +215,7 @@ const updatePassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Old Password is incorrect", 400));
   }
 
-  user.userPassword = req.body.userPassword;
+  user.userPassword = req.body.newPassword;
   await user.save();
 
   sendToken(user, 200, res);

@@ -121,24 +121,9 @@ export const Register = ({ history }) => {
                             value={userPassword}
                             name="userPassword"
                             onChange={(e) => setPassword(e.target.value)}
-                            // onChange={onChange}
                             required
                           />
                         </div>
-                        {/* <div className="form-group mb-3">
-                          <label className="label" htmlFor="confirmPassword">
-                            Confirm Password
-                          </label>
-                          <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Confirm Password"
-                            id="confirmPassword"
-                            value={userPasswordConfirm}
-                            onChange={onChange}
-                            required
-                          />
-                        </div> */}
                         <div className="form-group mb-3">
                           <label className="label" htmlFor="userAddress">
                             Address
@@ -149,7 +134,6 @@ export const Register = ({ history }) => {
                             className="form-control"
                             placeholder="Address"
                             onChange={(e) => setAddress(e.target.value)}
-                            // onChange={onChange}
                             value={userAddress}
                             id="userAddress"
                             required
@@ -163,11 +147,10 @@ export const Register = ({ history }) => {
                             type="tel"
                             name="userContact"
                             className="form-control"
-                            placeholder="Contact Number"
+                            placeholder="e.g. +923034255227"
                             id="userContact"
                             value={userContact}
                             onChange={(e) => setContact(e.target.value)}
-                            // onChange={onChange}
                             required
                           />
                         </div>
@@ -181,10 +164,6 @@ export const Register = ({ history }) => {
                           </button>
                         </div>
                       </form>
-
-                      {/* <div className="w-100 text-center mt-2">
-                        <Link to="/password/forgot">Forgot Password</Link>
-                      </div> */}
                       <div className="w-100 text-center mt-2">
                         Already a member?
                         <Link to="/Login" data-toggle="tab">
