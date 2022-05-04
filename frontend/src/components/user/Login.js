@@ -109,18 +109,6 @@ export const Login = ({ history }) => {
                             required
                           />
                         </div>
-                        {/* <div className="form-group mb-3">
-                          <label className="label" htmlFor="confirm-password">
-                            Confirm Password
-                          </label>
-                          <input
-                            type="password"
-                            className="form-control"
-                            placeholder="Confirm Password"
-                            id="confirm-password"
-                            required
-                          />
-                        </div> */}
                         <div className="form-group">
                           <button
                             type="submit"
