@@ -38,11 +38,14 @@ export const productsReducer = (state = { products: [] }, action) => {
 };
 
 export const productDetailsReducer = (state = { product: {} }, action) => {
-  switch (action.payload) {
+  switch (action.type) {
     case PRODUCT_DETAILS_REQUEST:
       return { ...state, loading: true };
     case PRODUCT_DETAILS_SUCCESS:
-      return { loading: false, product: action.payload };
+      return {
+        loading: false,
+        product: action.payload,
+      };
     case PRODUCT_DETAILS_FAIL:
       return { ...state, error: null };
     case CLEAR_ERRORS:

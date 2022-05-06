@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from "./components/commons/Header";
 import Home from "./components/Home";
 import store from "./store";
-import { ProductDetails } from "./components/ProductDetails";
+import { ProductDetails } from "./components/user/ProductDetails";
 import { Login } from "./components/user/Login";
 import { Register } from "./components/user/Register";
 import { loadUser } from "./actions/userActions";
@@ -16,7 +16,7 @@ import { NewPassword } from "./components/user/NewPassword";
 
 function App() {
   useEffect(() => {
-    store.dispatch(loadUser);
+    store.dispatch(loadUser());
   }, []);
 
   return (

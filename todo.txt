@@ -8,4 +8,7 @@
 10. use phone numbers from: https://www.npmjs.com/package/react-phone-number-input?activeTab=readme
 11. do something about alert when wrong credentials are provided for login
 12. close navbar when a link is clicked: https://stackoverflow.com/questions/16877429/twitter-bootstrap-mobile-nav-hide-menu-after-clicking-menu-link
+13. implement confirm password
+
+
 provide enum for orderStatus
