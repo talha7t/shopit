@@ -7,12 +7,14 @@ function Card({ product }) {
   return (
     <div className="col-12 col-md-6 col-lg-4 my-3 mb-4">
       <div className="card-container">
-        <Link to={`/products/${product._id}`} className="d-block card-part-1">
-          <img
-            className="product-image"
-            src={product.productImages[0].url}
-            alt="product"
-          />
+        <div className="card-part-1">
+          <Link to={`/products/${product._id}`}>
+            <img
+              className="product-image"
+              src={product.productImages[0].url}
+              alt="product"
+            />
+          </Link>
           <div className="icons">
             <a className="icon" href={`/`}>
               <i className="fas fa-shopping-cart"></i>
@@ -24,7 +26,7 @@ function Card({ product }) {
               <span>Details</span>
             </Link>
           </div>
-        </Link>
+        </div>
         <div className="card-part-2">
           <h2 className="product-name">{product.productName}</h2>
           <h3 className="product-price">

@@ -13,11 +13,6 @@ ul {
   font-weight: 700;
 }
 
-#product_image {
-  min-height: 50vh !important;
-  max-height: 75vh !important;
-}
-
 #product_image img {
   width: 100%;
 }

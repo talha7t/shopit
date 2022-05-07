@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails, clearErrors } from "../../actions/productsAction";
 import Loader from "../commons/Loader";
@@ -12,9 +12,14 @@ export const ProductDetails = ({ match }) => {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
+
+  const quantityRef = useRef();
+
   const [imageUrl, setUrl] = useState("");
+
   const [selectedSize, setSize] = useState("");
   const [stock, setStock] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (error) {
@@ -29,11 +34,33 @@ export const ProductDetails = ({ match }) => {
     setUrl(e.target.src);
   };
 
-  const handleSize = (e) => {
-    setSize(e.target.value);
+  const getStock = () => {
+    if (selectedSize) {
+      product.inventory.map((item) => {
+        return selectedSize === item.size
+          ? setStock(item.productStock)
+          : "Please Select a size";
+      });
+    }
   };
-  const decreaseStock = (e) => {};
-  const increaseStock = (e) => {};
+
+  const decreaseStock = (e) => {
+    if (selectedSize) {
+      if (parseInt(quantityRef.current.value) > 1) {
+        setQuantity(parseInt(quantityRef.current.value) - 1);
+      }
+      return;
+    }
+  };
+
+  const increaseStock = (e) => {
+    if (selectedSize) {
+      // console.log(typeof );
+      if (parseInt(quantityRef.current.value) < stock) {
+        setQuantity(parseInt(quantityRef.current.value) + 1);
+      } else return;
+    }
+  };
 
   return (
     <>
@@ -80,9 +107,9 @@ export const ProductDetails = ({ match }) => {
               <div className="col-12 col-lg-5 mt-5">
                 <h3>{product.productName}</h3>
                 <p id="product_id">Product # {product.productModel}</p>
-                <div class="rating-outer">
+                <div className="rating-outer">
                   <div
-                    class="rating-inner"
+                    className="rating-inner"
                     style={{ width: `${(product.ratings / 5) * 100}%` }}
                   ></div>
                 </div>
@@ -114,7 +141,11 @@ export const ProductDetails = ({ match }) => {
                             type="radio"
                             name="size-radio"
                             value={item.size}
-                            onClick={handleSize}
+                            onClick={() => {
+                              setSize(item.size);
+                              setQuantity(1);
+                              getStock();
+                            }}
                           />
                         </li>
                       );
@@ -132,7 +163,8 @@ export const ProductDetails = ({ match }) => {
                   <input
                     type="number"
                     className="count d-inline-block"
-                    value="1"
+                    ref={quantityRef}
+                    value={quantity}
                     readOnly
                   />
 
@@ -154,11 +186,13 @@ export const ProductDetails = ({ match }) => {
                 <p className="mt-3">
                   Availability:
                   <span id="stock_status">
-                    {selectedSize
+                    {stock ? stock : "Please select a size"}
+                    {/* {getStock} */}
+                    {/* {selectedSize
                       ? product.inventory.map((item) =>
                           item.size === selectedSize ? item.productStock : ""
                         )
-                      : "Please Select a size"}
+                      : "Please Select a size"} */}
                   </span>
                 </p>
 
