@@ -1,16 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart, removeIteFromCart } from "../../actions/cartActions";
-
+import { Link } from "react-router-dom";
+import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
 import { MetaData } from "../commons/MetaData";
-import { useAlert } from "react-alert";
 
 import "../../styles/cart.css";
-import { Link } from "react-router-dom";
 
-export const Cart = () => {
+export const Cart = ({ history }) => {
   const dispatch = useDispatch();
-  const alert = useAlert();
   const { cartItems } = useSelector((state) => state.cart);
 
   const decreaseQuantity = (id, quantity, stock, size) => {
@@ -29,7 +26,14 @@ export const Cart = () => {
   };
 
   const removeCartItem = (id) => {
-    dispatch(removeIteFromCart(id));
+    dispatch(removeItemFromCart(id));
+  };
+
+  const checkoutHandler = () => {
+    // if the user is not logged in redirect to login
+    // history.push("/login?redirect=shiping");
+
+    history.push("/shipping");
   };
 
   return (
@@ -155,7 +159,11 @@ export const Cart = () => {
                   </p>
 
                   <hr />
-                  <button id="checkout_btn" className="btn btn-primary">
+                  <button
+                    onClick={checkoutHandler}
+                    id="checkout_btn"
+                    className="btn btn-primary"
+                  >
                     Check out
                   </button>
                 </div>
