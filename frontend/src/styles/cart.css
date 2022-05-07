@@ -29,10 +29,18 @@
 
 #checkout_btn,
 .review-btn {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #333 !important;
+  border-color: #333 !important;
+  font-weight: 600;
+  letter-spacing: 1px;
   margin-top: 2rem;
-  border-radius: 5rem;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+#checkout_btn:hover {
+  background-color: #fff !important;
+  color: #333 !important;
 }
 
 #view_order_details {

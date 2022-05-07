@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetails, clearErrors } from "../../actions/productsAction";
-import { addItemToCart } from "../../actions/cartActions";
+import { addItemToCart, removeIteFromCart } from "../../actions/cartActions";
 
 import { MetaData } from "../commons/MetaData";
 import { useAlert } from "react-alert";
@@ -21,7 +20,6 @@ export const Cart = () => {
   };
 
   const increaseQuantity = (id, quantity, stock, size) => {
-    console.log(cartItems);
     const newQty = quantity + 1;
     if (newQty > stock) {
       return;
@@ -30,11 +28,15 @@ export const Cart = () => {
     }
   };
 
+  const removeCartItem = (id) => {
+    dispatch(removeIteFromCart(id));
+  };
+
   return (
-    <>
+    <div className="container">
       <MetaData title="Cart" />
       {cartItems.length === 0 ? (
-        <h2 className="mt-5">Cart is Empty</h2>
+        <h2 className="mt-5 cart-heading">Cart is Empty</h2>
       ) : (
         <>
           <div className="container container-fluid">
@@ -50,7 +52,7 @@ export const Cart = () => {
                       <hr />
                       <div className="cart-item">
                         <div className="row">
-                          <div className="col-4 col-lg-3">
+                          <div className="col-4 col-lg-3 align-self-start">
                             <img
                               src={item.image}
                               alt="Laptop"
@@ -59,7 +61,7 @@ export const Cart = () => {
                             />
                           </div>
 
-                          <div className="col-5 col-lg-3">
+                          <div className="col-5 col-lg-3 align-self-start">
                             <Link to={`/products/${item.product}`}>
                               {item.productName}
                             </Link>
@@ -69,11 +71,11 @@ export const Cart = () => {
                             </p>
                           </div>
 
-                          <div className="col-4 col-lg-2 mt-4 mt-lg-0">
+                          <div className="col-4 col-lg-2 mt-4 mt-lg-0 align-self-start">
                             <p id="card_item_price">Rs. {item.price}</p>
                           </div>
 
-                          <div className="col-6 col-md-4 col-lg-3 mt-4 mt-lg-0">
+                          <div className="col-6 col-md-4 col-lg-3 mt-4 mt-lg-0 align-self-start">
                             <span
                               onClick={() =>
                                 decreaseQuantity(
@@ -90,8 +92,6 @@ export const Cart = () => {
                             <input
                               type="number"
                               className="count d-inline-block"
-                              //   ref={quantityRef}
-                              // value={quantity}
                               value={item.quantity}
                               readOnly
                             />
@@ -110,8 +110,9 @@ export const Cart = () => {
                             </span>
                           </div>
 
-                          <div className="col-4 col-lg-1 mt-4 mt-lg-3 ">
+                          <div className="col-4 col-lg-1 mt-2 align-self-start ">
                             <i
+                              onClick={() => removeCartItem(item.product)}
                               id="delete_cart_item"
                               className="fas fa-trash"
                             ></i>
@@ -131,18 +132,30 @@ export const Cart = () => {
                   <hr />
                   <p>
                     Subtotal:{" "}
-                    <span className="order-summary-values">3 (Units)</span>
+                    <span className="order-summary-values">
+                      {cartItems.reduce(
+                        (acc, item) => acc + Number(item.quantity),
+                        0
+                      )}{" "}
+                      (Units)
+                    </span>
                   </p>
                   <p>
                     Est. total:{" "}
-                    <span className="order-summary-values">$765.56</span>
+                    <span className="order-summary-values">
+                      Rs.{" "}
+                      {cartItems
+                        .reduce(
+                          (acc, item) => acc + item.quantity * item.price,
+                          0
+                        )
+                        .toFixed(2)}
+                      {/* to fixed rounds of to two decimal number */}
+                    </span>
                   </p>
 
                   <hr />
-                  <button
-                    id="checkout_btn"
-                    className="btn btn-primary btn-block"
-                  >
+                  <button id="checkout_btn" className="btn btn-primary">
                     Check out
                   </button>
                 </div>
@@ -151,6 +164,6 @@ export const Cart = () => {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
