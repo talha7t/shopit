@@ -14,6 +14,7 @@ function Header() {
   const alert = useAlert();
 
   const { user, loading } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const logoutHandler = () => {
     dispatch(logoutUser());
@@ -346,6 +347,16 @@ function Header() {
                 Contact
               </a>
             </li>
+
+            <li className="nav-item">
+              <Link
+                to="/cart"
+                className="nav-link font-weight-bold text-uppercase"
+              >
+                Cart({cartItems.length})
+              </Link>
+            </li>
+
             <li className="nav-item">
               {/* if user is logged in display their name and dropdown else display login button*/}
               {user ? (
@@ -400,14 +411,6 @@ function Header() {
                   </Link>
                 )
               )}
-              {/* <Link
-                to="/login"
-                data-toggle="collapse"
-                data-target=".navbar-collapse"
-                className="nav-link font-weight-bold text-uppercase"
-              >
-                Login
-              </Link> */}
             </li>
           </ul>
         </div>

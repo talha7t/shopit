@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails, clearErrors } from "../../actions/productsAction";
+import { addItemToCart } from "../../actions/cartActions";
 import Loader from "../commons/Loader";
 import { MetaData } from "../commons/MetaData";
 import { useAlert } from "react-alert";
@@ -44,7 +45,7 @@ export const ProductDetails = ({ match }) => {
     }
   };
 
-  const decreaseStock = (e) => {
+  const decreaseQuantity = (e) => {
     if (selectedSize) {
       if (parseInt(quantityRef.current.value) > 1) {
         setQuantity(parseInt(quantityRef.current.value) - 1);
@@ -53,13 +54,18 @@ export const ProductDetails = ({ match }) => {
     }
   };
 
-  const increaseStock = (e) => {
+  const increaseQuantity = (e) => {
     if (selectedSize) {
       // console.log(typeof );
       if (parseInt(quantityRef.current.value) < stock) {
         setQuantity(parseInt(quantityRef.current.value) + 1);
       } else return;
     }
+  };
+
+  const addToCart = () => {
+    dispatch(addItemToCart(match.params.id, quantity, selectedSize, stock));
+    alert.success("item added to cart");
   };
 
   return (
@@ -154,7 +160,7 @@ export const ProductDetails = ({ match }) => {
 
                 <div className="stockCounter d-inline-flex align-items-center justify-content-center mt-4">
                   <span
-                    onClick={decreaseStock}
+                    onClick={decreaseQuantity}
                     className="minus d-inline-flex align-items-center"
                   >
                     <i className="fas fa-minus"></i>
@@ -169,7 +175,7 @@ export const ProductDetails = ({ match }) => {
                   />
 
                   <span
-                    onClick={increaseStock}
+                    onClick={increaseQuantity}
                     className="plus d-inline-flex align-items-center "
                   >
                     <i className="fas fa-plus"></i>
@@ -178,21 +184,16 @@ export const ProductDetails = ({ match }) => {
                 <button
                   type="button"
                   id="cart_btn"
+                  onClick={addToCart}
+                  disabled={stock > 0 && selectedSize !== "" ? false : true}
                   className="btn btn-primary add-to-cart_btn d-inline-block ms-4"
                 >
                   Add to Cart
                 </button>
-
                 <p className="mt-3">
                   Availability:
                   <span id="stock_status">
                     {stock ? stock : "Please select a size"}
-                    {/* {getStock} */}
-                    {/* {selectedSize
-                      ? product.inventory.map((item) =>
-                          item.size === selectedSize ? item.productStock : ""
-                        )
-                      : "Please Select a size"} */}
                   </span>
                 </p>
 

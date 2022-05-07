@@ -6,6 +6,7 @@ import {
   userReducer,
   forgotPasswordReducer,
 } from "./userReducers";
+import { cartReducer } from "./cartReducers";
 
 export default combineReducers({
   products: productsReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   auth: authReducer,
   user: userReducer,
   forgotPassword: forgotPasswordReducer,
+  cart: cartReducer,
 });

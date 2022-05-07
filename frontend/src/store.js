@@ -3,7 +3,15 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducers from "./reducers";
 
-let initialState = {};
+let initialState = {
+  // putting all products from cart into initial state (so that they are available if page is refreshed)
+  cart: {
+    cartItems: localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [],
+  },
+};
+
 const store = createStore(
   reducers,
   initialState,
