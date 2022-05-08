@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { countries } from "countries-list";
 import { saveShippingInfo } from "../../actions/cartActions";
+import { CheckoutSteps } from "./CheckoutSteps";
 import { MetaData } from "../commons/MetaData";
 
 export const ShippingInfo = ({ history }) => {
@@ -24,6 +25,10 @@ export const ShippingInfo = ({ history }) => {
   return (
     <>
       <MetaData title="Shipping Info" />
+
+      {/* checkout steps */}
+      <CheckoutSteps shipping />
+      {/* shipping content */}
       <div className="row wrapper justify-content-center align-content-center">
         <div className="col-10 col-lg-5 align-self-center">
           <form onSubmit={submitHandler} className="shadow-lg">
