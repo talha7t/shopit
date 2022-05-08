@@ -41,11 +41,6 @@ export const Register = ({ history }) => {
       register(userName, userEmail, userPassword, userAddress, userContact)
     );
   };
-
-  // const onChange = (e) => {
-  //   setUser({ ...user, [e.target.name]: e.target.value });
-  // };
-
   return (
     // if the page is aoding then display the loader
     <>

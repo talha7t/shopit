@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-// import axios from "axios";
+import React, { useEffect, useRef } from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 // import { saveShippingInfo } from "../../actions/cartActions";
 import { CheckoutSteps } from "./CheckoutSteps";
@@ -27,7 +27,57 @@ export const Payment = ({ history }) => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
 
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
+
+  const submitRef = useRef();
+  const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
+  const paymentData = { amount: Math.round(orderInfo.totalPrice * 100) };
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    submitRef.current.disabled = true;
+    let res;
+    try {
+      const config = {
+        headers: { "Content-Type": "application/json" },
+      };
+
+      res = await axios.post("/api/payment/process", paymentData, config);
+      const clientSecret = res.data.client_secret;
+
+      if (!stripe || !elements) {
+        return;
+      }
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardNumberElement),
+          billing_details: {
+            name: user.userName,
+            email: user.userEmail,
+          },
+        },
+      });
+
+      if (result.error) {
+        alert.error(result.error.message);
+        submitRef.current.disabled = false;
+      } else {
+        // payment processed or not
+        if (user.paymentIntent === "succeeded") {
+          // TODO: New order
+          history.push("/success");
+        } else {
+          alert.error(
+            "An issue occured while processing payment please try again"
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      submitRef.current.disabled = false;
+      alert.error(error.response.data.message);
+    }
+  };
 
   return (
     <>
@@ -37,7 +87,7 @@ export const Payment = ({ history }) => {
 
       <div className="row wrapper justify-content-center">
         <div className="col-10 col-lg-5">
-          <form className="shadow-lg">
+          <form onSubmit={submitHandler} className="shadow-lg">
             <h1 className="mb-4">Card Info</h1>
             <div className="form-group">
               <label htmlFor="card_num_field">Card Number</label>
@@ -69,8 +119,13 @@ export const Payment = ({ history }) => {
               />
             </div>
 
-            <button id="pay_btn" type="submit" className="btn btn-block py-3">
-              Pay
+            <button
+              ref={submitRef}
+              id="pay_btn"
+              type="submit"
+              className="btn btn-block py-3"
+            >
+              Pay {` - ${orderInfo && orderInfo.totalPrice}`}
             </button>
           </form>
         </div>

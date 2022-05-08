@@ -9,7 +9,6 @@ const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
-// const bodyParser = require("body-parser");
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {

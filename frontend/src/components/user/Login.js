@@ -22,15 +22,15 @@ export const Login = ({ history, location }) => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
-    if (isAuthenticated) {
-      // history.push("/");
-      history.push(redirect);
-    }
-
     if (error) {
       alert.error(error);
 
       dispatch(clearErrors());
+    }
+
+    if (isAuthenticated) {
+      // history.push("/");
+      history.push(redirect);
     }
   }, [dispatch, alert, isAuthenticated, error, history, redirect]);
 
@@ -72,18 +72,6 @@ export const Login = ({ history, location }) => {
                         onSubmit={submitHandler}
                         className="signin-form"
                       >
-                        {/* <div className="form-group mb-3">
-                          <label className="label" htmlFor="user-name">
-                            Username
-                          </label>
-                          <input
-                            type="text"
-                            id="user-name"
-                            className="form-control"
-                            placeholder="Username"
-                            required
-                          />
-                        </div> */}
                         <div className="form-group mb-3">
                           <label className="label" htmlFor="userEmail">
                             Email

@@ -35,7 +35,7 @@ export const login = (userEmail, userPassword) => async (dispatch) => {
     });
     const config = {
       headers: {
-        "Content-Type": "Application/json",
+        "Content-Type": "application/json",
       },
     };
 
@@ -64,7 +64,7 @@ export const register =
       });
       const config = {
         headers: {
-          "Content-Type": "Application/json",
+          "Content-Type": "application/json",
         },
       };
       const { data } = await axios.post(
@@ -123,7 +123,7 @@ export const updateProfile =
         type: UPDATE_PROFILE_REQUEST,
       });
       const config = {
-        headers: { "Content-Type": "Application/json" },
+        headers: { "Content-Type": "application/json" },
       };
 
       const { data } = await axios.put(
