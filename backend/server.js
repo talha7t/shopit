@@ -7,6 +7,7 @@ const errorHandler = require("./middlewares/errors");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
 // const bodyParser = require("body-parser");
 
@@ -39,6 +40,7 @@ cloudinary.config({
 app.use("/api", productRoutes);
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
+app.use("/api", paymentRoutes);
 
 app.use(errorHandler);
 
