@@ -25,7 +25,7 @@ export const ConfirmOrder = ({ history }) => {
       totalPrice,
     };
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
-    history.push("/");
+    history.push("/payment");
   };
   return (
     <>
@@ -36,7 +36,7 @@ export const ConfirmOrder = ({ history }) => {
           <div className="col-12 col-lg-8 mt-5 order-confirm">
             <h4 className="mb-3">Shipping Info</h4>
             <p>
-              <b>Name:</b> {user && user.name}
+              <b>Name:</b> {user && user.userName}
             </p>
             <p>
               <b>Phone:</b>

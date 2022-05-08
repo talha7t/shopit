@@ -31,9 +31,9 @@ export const Cart = ({ history }) => {
 
   const checkoutHandler = () => {
     // if the user is not logged in redirect to login
-    // history.push("/login?redirect=shiping");
+    history.push("/login?redirect=shipping");
 
-    history.push("/shipping");
+    // history.push("/shipping");
   };
 
   return (

@@ -10,6 +10,6 @@ router.post(
   paymentController.processPayment
 );
 
-// router.get("/orders/me", isAuthenticatedUser, paymentController.myOrders);
+router.get("/stripeapi", isAuthenticatedUser, paymentController.sendStripeApi);
 
 module.exports = router;
