@@ -21,7 +21,8 @@ export const Cart = ({ history }) => {
     if (newQty > stock) {
       return;
     } else {
-      dispatch(addItemToCart(id, newQty, size, stock));
+      // dispatch(addItemToCart(id, newQty, size, stock));
+      dispatch(addItemToCart(id, newQty, size));
     }
   };
 

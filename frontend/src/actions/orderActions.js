@@ -13,7 +13,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const config = {
       headers: { "Content-Type": "application/json" },
     };
-
+    console.log(order);
     const { data } = await axios.post("/api/order/new", order, config);
     dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
   } catch (error) {

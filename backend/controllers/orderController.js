@@ -12,7 +12,6 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
     orderItems,
     shippingInfo,
     itemsPrice,
-    taxPrice,
     shippingPrice,
     totalPrice,
     paymentInfo,
@@ -22,7 +21,7 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
     orderItems,
     shippingInfo,
     itemsPrice,
-    taxPrice,
+    // taxPrice,
     shippingPrice,
     totalPrice,
     paymentInfo,
@@ -37,7 +36,7 @@ const createOrder = catchAsyncErrors(async (req, res, next) => {
   }
 
   order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.quantity, item.productSize, "create");
+    await updateStock(item.product, item.quantity, item.size, "create");
   });
 
   res.status(201).json({ success: true, order });
@@ -158,12 +157,12 @@ async function updateStock(id, quantity, size, updateFor) {
   const product = await Product.findById(id);
 
   // create order on basis of stock avialability later
-  product.productSizes.forEach((productSize) => {
+  product.inventory.forEach((item) => {
     // update stock based on selected size
-    if (productSize.size === size && updateFor === "create") {
-      productSize.productStock -= quantity;
-    } else if (productSize.size === size && updateFor === "delete") {
-      productSize.productStock += quantity;
+    if (item.size === size && updateFor === "create") {
+      item.productStock -= quantity;
+    } else if (item.size === size && updateFor === "delete") {
+      item.productStock += quantity;
     }
   });
   await product.save({ validateBeforeSave: false });

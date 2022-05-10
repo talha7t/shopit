@@ -64,7 +64,8 @@ export const ProductDetails = ({ match }) => {
   };
 
   const addToCart = () => {
-    dispatch(addItemToCart(match.params.id, quantity, selectedSize, stock));
+    // dispatch(addItemToCart(match.params.id, quantity, selectedSize, stock));
+    dispatch(addItemToCart(match.params.id, quantity, selectedSize));
     alert.success("item added to cart");
   };
 

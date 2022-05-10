@@ -72,7 +72,7 @@ export const ConfirmOrder = ({ history }) => {
                     <div className="col-4 col-lg-4 mt-4 mt-lg-0">
                       <p>
                         {item.quantity} x Rs. {item.price} ={" "}
-                        <b>Rs. {item.quantity * item.price}</b>
+                        <b>Rs. {(item.quantity * item.price).toFixed(2)}</b>
                       </p>
                     </div>
                   </div>

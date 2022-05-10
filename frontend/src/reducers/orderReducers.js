@@ -28,8 +28,6 @@ export const newOrderReducer = (state = {}, action) => {
         error: null,
       };
     default:
-      return {
-        state,
-      };
+      return state;
   }
 };

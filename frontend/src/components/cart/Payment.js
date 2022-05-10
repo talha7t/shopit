@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-// import { saveShippingInfo } from "../../actions/cartActions";
+import { createOrder, clearErrors } from "../../actions/orderActions";
 import { CheckoutSteps } from "./CheckoutSteps";
 import { MetaData } from "../commons/MetaData";
 import { useAlert } from "react-alert";
@@ -26,14 +26,32 @@ export const Payment = ({ history }) => {
 
   const { user } = useSelector((state) => state.auth);
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
+  const { error } = useSelector((state) => state.newOrder);
 
-  // useEffect(() => {}, []);
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, alert, error]);
 
   const submitRef = useRef();
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
   const paymentData = { amount: Math.round(orderInfo.totalPrice * 100) };
+
+  const order = {
+    orderItems: cartItems,
+    shippingInfo,
+  };
+  if (orderInfo) {
+    order.itemsPrice = orderInfo.itemsPrice;
+    order.shippingPrice = orderInfo.shippingPrice;
+    order.totalPrice = orderInfo.totalPrice;
+  }
+
   const submitHandler = async (e) => {
     e.preventDefault();
+
     submitRef.current.disabled = true;
     let res;
     try {
@@ -63,8 +81,14 @@ export const Payment = ({ history }) => {
         submitRef.current.disabled = false;
       } else {
         // payment processed or not
-        if (user.paymentIntent === "succeeded") {
-          // TODO: New order
+        if (result.paymentIntent.status === "succeeded") {
+          // create new order
+          order.paymentInfo = {
+            id: result.paymentIntent.id,
+            status: result.paymentIntent.status,
+          };
+
+          dispatch(createOrder(order));
           history.push("/success");
         } else {
           alert.error(
@@ -73,7 +97,7 @@ export const Payment = ({ history }) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.respomse.data.message);
       submitRef.current.disabled = false;
       alert.error(error.response.data.message);
     }
