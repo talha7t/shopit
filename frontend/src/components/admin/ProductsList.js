@@ -1,0 +1,243 @@
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import { useAlert } from "react-alert";
+import ToolkitProvider, {Search } from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min';
+import { adminGetProducts, clearErrors } from "../../actions/productsAction";
+import { MetaData } from "../commons/MetaData";
+import Loader from "../commons/Loader";
+import SideBar from "./SideBar";
+
+import "../../styles/productslist.css";
+
+const ProductsList = ({ history }) => {
+  const alert = useAlert();
+  const dispatch = useDispatch();
+
+  const { loading, error, products } = useSelector((state) => state.products);
+
+  useEffect(() => {
+    dispatch(adminGetProducts());
+
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error, alert]);
+
+  // table related stuff
+  const headerClasses = "customize-header";
+  const rowClasses = "row-customize";
+  const { SearchBar } = Search;
+
+  const headerFormatter = (data) => {
+    return (
+      <span style={{ cursor: "pointer" }}>
+        {data.text} <i className="fas fa-angle-down"></i>
+      </span>
+    );
+  };
+
+  const priceFormatter = (data) => {
+    return `Rs. ${data}`;
+  };
+
+  const actionFormatter = (data) => {
+    return (
+      <div className="dropdown">
+        <i
+          className="fa fa-cog 2x"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        ></i>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li>
+            <a className="dropdown-item" href="#">
+              View Details
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item" href="#">
+              Edit
+            </a>
+          </li>
+          <li>
+            <a className="dropdown-item text-danger" href="#">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
+  const sizePerPageRenderer = ({
+    values = [
+      {
+        text: "1",
+        page: 1,
+      },
+      {
+        text: "2",
+        page: 2,
+      },
+      {
+        text: "3",
+        page: 3,
+      },
+      {
+        text: "All",
+        page: products.length,
+      },
+    ],
+    currSizePerPage,
+    onSizePerPageChange,
+  }) => (
+    <div className="btn-group" role="group">
+      {values.map((option) => {
+        const isSelect = currSizePerPage === `${option.page}`;
+        return (
+          <button
+            key={option.text}
+            type="button"
+            onClick={() => onSizePerPageChange(option.page)}
+            className={`btn ${isSelect ? "btn-selected" : "btn-unselected"}`}
+          >
+            {option.text}
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  const options = {
+    paginationSize: 4,
+    // showTotal: true,
+    pageStartIndex: 1,
+    withFirstAndLast: true,
+    firstPageText: "First",
+    lastPageText: "Last",
+    firstPageTitle: "Next page",
+    lastPageTitle: "Last page",
+    disablePageTitle: true,
+    alwaysShowAllBtns: true,
+    sizePerPageRenderer,
+  };
+
+  // function nameFilter(value){};
+  let nameFilter;
+
+  const columns = [
+    {
+      dataField: "productModel",
+      text: "Model",
+      sort: true,
+      classes: "no-border-right text table-data-customize",
+      headerFormatter: headerFormatter,
+    },
+    {
+      dataField: "productName",
+      text: "Product Name",
+      // sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+    },
+    {
+      dataField: "maxPrice",
+      text: "Max Price",
+      sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+      headerFormatter: headerFormatter,
+      formatter: priceFormatter,
+    },
+    {
+      dataField: "minPrice",
+      text: "Min Price",
+      sort: true,
+      classes: "no-border-left no-border-right text table-data-customize",
+      headerFormatter: headerFormatter,
+      formatter: priceFormatter,
+    },
+    {
+      dataField: "productGender",
+      text: "Gender",
+      sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+      headerFormatter: headerFormatter,
+      // filter: textFilter(),
+    },
+    {
+      dataField: "action",
+      text: "Actions",
+      classes: "no-border-left text table-data-customize",
+      // headerFormatter: headerFormatter,
+      formatter: actionFormatter,
+    },
+  ];
+
+  const setData = () => {
+    let data = [];
+
+    products.forEach((product) => {
+      data.push({
+        productModel: product.productModel,
+        productName: product.productName,
+        maxPrice: product.productPriceMax,
+        minPrice: product.productPriceMin,
+        productGender: product.productGender,
+        action: <i className="fa fa-eye"></i>,
+      });
+    });
+    return data;
+  };
+  return (
+    <>
+      <MetaData title="All Products" />
+
+      <SideBar />
+      <section className="admin-main-section py-3">
+        <div className="text d-flex justify-content-between p-0">
+          <h1 className="text admin-main-heading">All products</h1>
+          <button className="create-btn me-5 d-flex align-items-center">
+            <Link to="/admin/product" className="px-3 py-0">
+              Create Product
+            </Link>
+          </button>
+        </div>
+
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="mx-5 mt-3">
+            <ToolkitProvider
+              data={setData()}
+              keyField="productModel"
+              columns={columns}
+              search
+            >
+              {(props) => (
+                <div>
+                  <SearchBar {...props.searchProps} className="custom-search-field" />
+                  <hr />
+                  <BootstrapTable
+                    classes="row-border-spacing"
+                    pagination={paginationFactory(options)}
+                    bordered={false}
+                    headerClasses={headerClasses}
+                    rowClasses={rowClasses}
+                    {...props.baseProps}
+                  />
+                </div>
+              )}
+            </ToolkitProvider>
+          </div>
+        )}
+      </section>
+    </>
+  );
+};
+
+export default ProductsList;

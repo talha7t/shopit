@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+
 .megamenu {
   position: static;
 }
@@ -59,4 +68,30 @@
   .nav-item {
     margin: 0 10px;
   }
+}
+
+
+/* ============== new product =============== */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+
+  font-weight: 700;
+}
+
+.wrapper form {
+  padding: 2.5rem 3rem;
+}
+
+.wrapper form .btn {
+  background-color: #fa9c23;
+  border-color: #fa9c23;
+  color: white;
+  margin-top: 2.5rem;
+}
+
+.form-group{
+  margin-top: 1rem !important;
 }

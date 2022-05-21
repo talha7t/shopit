@@ -17,11 +17,12 @@ router.delete(
   productController.deleteReview
 );
 
+router.get("/admin/products/", isAuthenticatedUser, authorizeRoles("admin"), productController.adminGetProducts);
 router.get("/products/", productController.getProducts);
 router.get("/products/:id", productController.getProduct);
 
 router.post(
-  "/products/",
+  "/admin/product/new",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   productController.createProduct

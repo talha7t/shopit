@@ -147,13 +147,13 @@ const productSchema = mongoose.Schema(
         },
       },
     ],
-    productTags: [
-      {
-        type: String,
-        maxLength: [20, "A product tag can not have more than 15 characters"],
-        trim: true,
-      },
-    ],
+    // productTags: [
+    //   {
+    //     type: String,
+    //     maxLength: [21, "A product tag can not have more than 20 characters"],
+    //     trim: true,
+    //   },
+    // ],
     user: {
       type: mongoose.Schema.ObjectId,
       ref: "User",

@@ -9,3 +9,5 @@
 9. fix the double click for size selection
 
 provide enum for orderStatus
+
+https://stackoverflow.com/questions/62712681/if-user-is-not-logged-in-dont-try-to-attempt-to-get-the-user-react

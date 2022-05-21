@@ -22,15 +22,16 @@ export const Login = ({ history, location }) => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
-    if (error) {
-      alert.error(error);
-
-      dispatch(clearErrors());
-    }
+   
 
     if (isAuthenticated) {
       // history.push("/");
       history.push(redirect);
+    }
+    if (error) {
+      alert.error(error);
+
+      dispatch(clearErrors());
     }
   }, [dispatch, alert, isAuthenticated, error, history, redirect]);
 

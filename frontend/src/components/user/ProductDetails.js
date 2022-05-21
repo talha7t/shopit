@@ -1,35 +1,61 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetails, clearErrors } from "../../actions/productsAction";
+import { getProductDetails, clearErrors, newReview } from "../../actions/productsAction";
+// import { myOrders } from "../../actions/orderActions";
 import { addItemToCart } from "../../actions/cartActions";
 import Loader from "../commons/Loader";
 import { MetaData } from "../commons/MetaData";
 import { useAlert } from "react-alert";
+import { NEW_REVIEW_RESET } from "../../constants/productConstants";
+import ListReviews from "../review/ListReviews";
+
 import "../../styles/product-details.css";
 
 export const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
-  const { product, loading, error } = useSelector(
-    (state) => state.productDetails
-  );
-
-  const quantityRef = useRef();
-
+  
   const [imageUrl, setUrl] = useState("");
-
+  // const [isOrdered, setIsOrdered] = useState(false);
   const [selectedSize, setSize] = useState("");
   const [stock, setStock] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState(""); 
+
+  const { product, loading, error } = useSelector(
+    (state) => state.productDetails
+  );
+  const { user } = useSelector((state) => state.auth);
+  // const { orders } = useSelector((state) => state.myOrders);
+const {error: reviewError, success} = useSelector(state => state.newReview)
+
+  const quantityRef = useRef();
 
   useEffect(() => {
+    // if(orders){
+    //   dispatch(myOrders());
+    // }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors());
+    }
+
+    if(success) {
+      alert.success("Review posted successfully");
+      dispatch({type: NEW_REVIEW_RESET})
+    }
 
     dispatch(getProductDetails(match.params.id));
-  }, [dispatch, error, match.params.id, alert]);
+  }, [dispatch, error, match.params.id, success, reviewError, alert]);
+
+  // if (!user) {
+  //   return;
+  // }
 
   const setImageUrl = (e) => {
     setUrl(e.target.src);
@@ -56,7 +82,6 @@ export const ProductDetails = ({ match }) => {
 
   const increaseQuantity = (e) => {
     if (selectedSize) {
-      // console.log(typeof );
       if (parseInt(quantityRef.current.value) < stock) {
         setQuantity(parseInt(quantityRef.current.value) + 1);
       } else return;
@@ -64,11 +89,54 @@ export const ProductDetails = ({ match }) => {
   };
 
   const addToCart = () => {
-    // dispatch(addItemToCart(match.params.id, quantity, selectedSize, stock));
     dispatch(addItemToCart(match.params.id, quantity, selectedSize));
     alert.success("item added to cart");
   };
 
+  function setUserRatings(){
+    const stars = document.querySelectorAll(".star");
+
+    stars.forEach((star, index)=>{
+      star.starValue = index + 1;
+
+      ["click", "mouseover", "mouseout"].forEach(function(e){
+        star.addEventListener(e, showRatings);
+      })
+    })
+
+    function showRatings(e) {
+      stars.forEach((star, index) =>{
+        if(e.type === "click"){
+          if(index < this.starValue){
+            star.classList.add("orange")
+            setRating(this.starValue)
+          }
+          else {
+            star.classList.remove("orange")
+          }
+        }
+
+        if(e.type === "mouseover"){
+          if(index < this.starValue){
+            star.classList.add("yellow")
+          }
+          else {
+            star.classList.remove("yellow")
+          }
+        }
+        
+        if(e.type === "mouseout"){
+            star.classList.remove("yellow")
+        }
+      })
+      
+    }
+  }
+
+  const reviewHandler = (e) =>{
+    dispatch(newReview(match.params.id, rating, comment))
+  }
+  
   return (
     <>
       {loading ? (
@@ -203,16 +271,42 @@ export const ProductDetails = ({ match }) => {
                 <h4 className="mt-2">Description:</h4>
                 <p>{product.productDescription}</p>
                 <hr />
-
-                <button
-                  id="review_btn"
-                  type="button"
-                  className="btn btn-primary mt-4"
-                  data-bs-toggle="modal"
-                  data-bs-target="#ratingModal"
-                >
-                  Submit Your Review
-                </button>
+                {/* {user &&
+                  orders &&
+                  orders.map((order) => {
+                    order.orderItems.find((item) => {
+                      if (item.product === product._id) {
+                        setIsOrdered(true);
+                        return;
+                      }
+                    });
+                  })} */}
+                {
+                  user ? (
+                    <button
+                      id="review_btn"
+                      type="button"
+                      className="btn btn-primary mt-4"
+                      data-bs-toggle="modal"
+                      data-bs-target="#ratingModal"
+                      onClick={setUserRatings}
+                    >
+                      Submit Your Review
+                    </button>
+                  ) : (
+                    <div className="text-danger alert alert-danger mt-5">
+                      Login to submit review
+                    </div>
+                  )
+                  // <button
+                  //   id="review_btn"
+                  //   type="button"
+                  //   className="btn btn-primary mt-4"
+                  //   disabled={true}
+                  // >
+                  //   Login to Submit Review
+                  // </button>
+                }
 
                 <div className="row mt-2 mb-5">
                   <div className="rating w-50">
@@ -243,7 +337,7 @@ export const ProductDetails = ({ match }) => {
                             </button>
                           </div>
                           <div className="modal-body">
-                            <ul className="stars d-flex">
+                            <ul className="stars d-flex ps-0">
                               <li className="star">
                                 <i className="fa fa-star"></i>
                               </li>
@@ -261,16 +355,21 @@ export const ProductDetails = ({ match }) => {
                               </li>
                             </ul>
 
-                            <textarea
-                              name="review"
-                              id="review"
-                              className="form-control mt-3"
-                            ></textarea>
+                            <div className="input-group">
+                              <textarea
+                                name="review"
+                                id="review"
+                                value={comment}
+                                onChange={(e)=> setComment(e.target.value)}
+                                className="form-control mt-3"
+                              ></textarea>
+                            </div>
 
                             <button
-                              className="btn my-3 float-right review-btn px-4 "
+                              className="btn btn-primary my-3 float-right review-btn px-4 "
                               data-bs-dismiss="modal"
                               aria-label="Close"
+                              onClick={reviewHandler}
                             >
                               Submit
                             </button>
@@ -283,6 +382,10 @@ export const ProductDetails = ({ match }) => {
               </div>
             </div>
           </div>
+          
+          {product.productReviews && product.productReviews.length > 0 && (
+            <ListReviews reviews={product.productReviews} />
+          )}
         </>
       )}
     </>

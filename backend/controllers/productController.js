@@ -3,10 +3,11 @@ const Product = require("../models/Product");
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ApiFeatures = require("../utilities/ApiFeautres");
+const cloudinary = require("cloudinary");
 
-// @desc        Get all products
+// @desc        User Get all products
 // @route       GET /api/products?keyword=yourKeyword
-// @access      Private
+// @access      Public
 const getProducts = catchAsyncErrors(async (req, res, next) => {
   const resultsPerPage = 10;
 
@@ -23,15 +24,14 @@ const getProducts = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    // count: products.length,
     productCount,
     products,
     resultsPerPage,
   });
 });
 
-// @desc        Get all products
-// @route       GET /api/products
+// @desc        Get single products
+// @route       GET /api/product/:id
 // @access      Private
 const getProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
@@ -43,12 +43,54 @@ const getProduct = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, product });
 });
 
+// @desc        Admin Get all products
+// @route       GET /api/admin/products
+// @access      Public
+const adminGetProducts = catchAsyncErrors(async (req, res, next) => {
+  const products = await Product.find();
+
+  if (!products) {
+    return next(new ErrorHandler("Products not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
+
 // @desc        Create a product
 // @route       POST /api/products
 // @access      Private
 const createProduct = catchAsyncErrors(async (req, res, next) => {
-  // req.body.user = req.user._id;
+
+  let images = [];
+  req.body.inventory = JSON.parse(req.body.inventory)
+
+  if (typeof req.body.productImages === "string") {
+    // if only one image is uploaded then just push the image into array
+    images.push(req.body.productImages);
+  } else {
+    // else replace the array with array of images
+    images = req.body.productImages;
+  }
+
+
+  let imagesLinks = [];
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "products",
+      });
+      
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+
+  req.body.productImages = imagesLinks;
   req.body.user = req.user.id;
+  
   const product = await Product.create(req.body);
 
   res.status(200).json({ success: true, product });
@@ -178,6 +220,7 @@ const deleteReview = catchAsyncErrors(async (req, res, next) => {
 module.exports = {
   getProducts,
   getProduct,
+  adminGetProducts,
   createProduct,
   updateProduct,
   deleteProduct,

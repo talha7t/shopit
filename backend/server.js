@@ -2,8 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cloudinary = require("cloudinary");
-// const fileUpload = require("file-upload");
+const fileUpload = require("express-fileupload");
 const errorHandler = require("./middlewares/errors");
+const bodyParser = require("body-parser");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
@@ -23,10 +24,12 @@ const PORT = process.env.port || 3000;
 connectDB();
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+// app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
-// app.use(fileUpload())
+// app.use(express.urlencoded({ extended: false }));
+app.use(fileUpload());
 // app.use(bodyParser.urlencoded({extended: true}));
 
 // setting up cloudinary configuration

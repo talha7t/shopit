@@ -4,7 +4,7 @@
   "description": "fyp project",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "nodemon backend/server.js",
     "server": "nodemon backend/server.js",
     "seeder": "node backend/utilities/seeder.js"
   },

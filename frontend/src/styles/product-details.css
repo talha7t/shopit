@@ -154,6 +154,22 @@ ul {
 
 /* Ratings */
 
+
+.star {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  color: rgb(179, 170, 170);
+  cursor: pointer;
+}
+
+.orange {
+  color: orange !important;
+}
+
+.yellow {
+  color: yellow !important;
+}
+
 .rating-outer {
   display: inline-block;
   position: relative;
