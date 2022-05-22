@@ -3,10 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { MetaData } from "../commons/MetaData";
 // import SideBar from "./SideBar";
-import { createProduct, clearErrors } from "../../actions/productsAction";
-import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import {
+  updateProduct,
+  getProductDetails,
+  clearErrors,
+} from "../../actions/productsAction";
+import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 
-const NewProduct = ({ history }) => {
+const UpdateProduct = ({ match, history }) => {
   const [productModel, setModel] = useState("");
   const [productName, setName] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -16,9 +20,21 @@ const NewProduct = ({ history }) => {
   const [color, setColor] = useState("");
   const [gender, setGender] = useState("");
   const [productType, setProductType] = useState("Select a product type");
-  // const [inventory, setInventory] = useState([]);
+  const [inventory, setInventory] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
   const [images, setImages] = useState([]);
   const [ImagesPreview, setImagesPreview] = useState([]);
+
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const {
+    loading,
+    error: updateError,
+    isUpdated,
+  } = useSelector((state) => state.manage);
+  const { error, product } = useSelector((state) => state.productDetails);
+
+  const productId = match.params.id;
 
   const genders = ["Select a gender", "men", "women", "kids"];
 
@@ -58,22 +74,48 @@ const NewProduct = ({ history }) => {
     "Slippers",
   ];
 
-  const alert = useAlert();
-  const dispatch = useDispatch();
-  const { loading, error, success } = useSelector((state) => state.newProduct);
-
   useEffect(() => {
+    if (product && product._id !== productId) {
+      dispatch(getProductDetails(productId));
+    } else {
+      setModel(product.productModel);
+      setName(product.productName);
+      setMaxPrice(product.productPriceMax);
+      setMinPrice(product.productPriceMin);
+      setDescription(product.productDescription);
+      setColor(product.productColor);
+      setGender(product.productGender);
+      setProductType(product.productType);
+      setCategory(product.productCategory);
+      setInventory(product.inventory);
+      setOldImages(product.productImages);
+    }
+
     if (error) {
       alert.error(error);
       dispatch(clearErrors);
     }
 
-    if (success) {
-      history.push("/admin/products");
-      alert.success("Product created successfully");
-      dispatch({ type: NEW_PRODUCT_RESET });
+    if (updateError) {
+      alert.error(updateError);
+      dispatch(clearErrors);
     }
-  }, [alert, error, history, success, dispatch]);
+
+    if (isUpdated) {
+      history.push("/admin/products");
+      alert.success("Product updated successfully");
+      dispatch({ type: UPDATE_PRODUCT_RESET });
+    }
+  }, [
+    alert,
+    error,
+    history,
+    isUpdated,
+    updateError,
+    productId,
+    product,
+    dispatch,
+  ]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -88,8 +130,6 @@ const NewProduct = ({ history }) => {
       };
       newInventory.push(inventoryData);
     });
-
-    console.log(newInventory);
 
     const formData = new FormData();
     formData.set("productModel", productModel);
@@ -109,20 +149,21 @@ const NewProduct = ({ history }) => {
       formData.append("productImages", image);
     });
 
-    dispatch(createProduct(formData));
+    dispatch(updateProduct(product._id, formData));
   };
 
   const onChange = (e) => {
     const files = Array.from(e.target.files);
     setImagesPreview([]);
     setImages([]);
+    setOldImages([]);
 
     files.forEach((file) => {
       const reader = new FileReader();
 
       reader.onload = () => {
         if (reader.readyState === 2) {
-          // setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
           setImages((oldArray) => [...oldArray, reader.result]);
         }
       };
@@ -133,14 +174,14 @@ const NewProduct = ({ history }) => {
 
   return (
     <>
-      <MetaData title="Create Product" />
+      <MetaData title="Update Product" />
       <div className="wrapper container my-5">
         <form
           onSubmit={submitHandler}
           className="shadow-lg p-5"
           encType="application/x-www-form-urlencoded"
         >
-          <h1 className="mb-4">New Product</h1>
+          <h1 className="mb-4">Update Product</h1>
 
           <div className="form-group">
             <label htmlFor="model_field">Model</label>
@@ -330,6 +371,19 @@ const NewProduct = ({ history }) => {
                 Choose Images
               </label>
             </div>
+
+            {oldImages &&
+              oldImages.map((img) => (
+                <img
+                  key={img.url}
+                  src={img.url}
+                  alt={img.url}
+                  className="mt-3 me-2"
+                  width="55"
+                  height="52"
+                />
+              ))}
+
             {ImagesPreview.map((img) => (
               <img
                 src={img}
@@ -348,7 +402,7 @@ const NewProduct = ({ history }) => {
             className="btn btn-block py-3 w-100"
             disabled={loading ? true : false}
           >
-            CREATE
+            Update
           </button>
         </form>
       </div>
@@ -356,4 +410,4 @@ const NewProduct = ({ history }) => {
   );
 };
 
-export default NewProduct;
+export default UpdateProduct;

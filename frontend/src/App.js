@@ -28,6 +28,7 @@ import OrderDetails from "./components/order/OrderDetails";
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
 import NewProduct from "./components/admin/NewProduct";
+import UpdateProduct from "./components/admin/UpdateProduct";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -62,23 +63,32 @@ function App() {
             <ProtectedRoute path="/payment" component={Payment} />
           </Elements>
         )}
-        <ProtectedRoute path="/orders/me" component={ListOrders} />
-        <ProtectedRoute path="/order/:id" component={OrderDetails} />
+        <ProtectedRoute path="/orders/me" component={ListOrders} exact />
+        <ProtectedRoute path="/order/:id" component={OrderDetails} exact />
 
         <ProtectedRoute
           path="/dashboard"
           isAdmin={true}
           component={Dashboard}
+          exact
         />
         <ProtectedRoute
           path="/admin/products"
           isAdmin={true}
           component={ProductsList}
+          exact
         />
         <ProtectedRoute
           path="/admin/product"
           isAdmin={true}
           component={NewProduct}
+          exact
+        />
+        <ProtectedRoute
+          path="/admin/product/:id"
+          isAdmin={true}
+          component={UpdateProduct}
+          exact
         />
 
         <ProtectedRoute path="/me" component={Profile} exact />

@@ -34,7 +34,7 @@ router.post(
 );
 
 router.put(
-  "/products/:id",
+  "/admin/products/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   productController.updateProduct

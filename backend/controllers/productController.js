@@ -103,6 +103,43 @@ const updateProduct = catchAsyncErrors(async (req, res, next) => {
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
+
+  //  handle imaegs and inventory
+  let images = [];
+  req.body.inventory = JSON.parse(req.body.inventory);
+
+  if (typeof req.body.productImages === "string") {
+    // if only one image is uploaded then just push the image into array
+    images.push(req.body.productImages);
+  } else {
+    // else replace the array with array of images
+    images = req.body.productImages;
+  }
+
+  if (images !== undefined) {
+    // deleting old images associated with the product
+    for (let i = 0; i < product.productImages.length; i++) {
+      const result = await cloudinary.v2.uploader.destroy(
+        product.productImages[i].public_id
+      );
+    }
+
+    // setting new images for product
+    let imagesLinks = [];
+    for (let i = 0; i < images.length; i++) {
+      const result = await cloudinary.v2.uploader.upload(images[i], {
+        folder: "products",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+
+    req.body.productImages = imagesLinks;
+  }
+
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });

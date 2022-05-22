@@ -12,6 +12,7 @@ import {
   adminGetProducts,
   clearErrors,
   deleteProduct,
+  updateProduct,
 } from "../../actions/productsAction";
 import { MetaData } from "../commons/MetaData";
 import Loader from "../commons/Loader";
@@ -75,14 +76,14 @@ const ProductsList = ({ history }) => {
         ></i>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li>
-            <a className="dropdown-item" href="#">
-              View Details
-            </a>
-          </li>
-          <li>
-            <a className="dropdown-item" href="#">
-              Edit
-            </a>
+            <Link
+              to={`/admin/product/${data}`}
+              style={{ cursor: "pointer" }}
+              className="dropdown-item"
+              onClick={() => updateProductHandler(data)}
+            >
+              Update
+            </Link>
           </li>
           <li>
             <span
@@ -212,6 +213,10 @@ const ProductsList = ({ history }) => {
     return data;
   };
 
+  const updateProductHandler = (id) => {
+    // console.log(id);
+    dispatch(updateProduct(id));
+  };
   const deleteProductHandler = (id) => {
     // console.log(id);
     dispatch(deleteProduct(id));
