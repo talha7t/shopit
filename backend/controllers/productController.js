@@ -63,9 +63,8 @@ const adminGetProducts = catchAsyncErrors(async (req, res, next) => {
 // @route       POST /api/products
 // @access      Private
 const createProduct = catchAsyncErrors(async (req, res, next) => {
-
   let images = [];
-  req.body.inventory = JSON.parse(req.body.inventory)
+  req.body.inventory = JSON.parse(req.body.inventory);
 
   if (typeof req.body.productImages === "string") {
     // if only one image is uploaded then just push the image into array
@@ -75,13 +74,12 @@ const createProduct = catchAsyncErrors(async (req, res, next) => {
     images = req.body.productImages;
   }
 
-
   let imagesLinks = [];
   for (let i = 0; i < images.length; i++) {
     const result = await cloudinary.v2.uploader.upload(images[i], {
-        folder: "products",
-      });
-      
+      folder: "products",
+    });
+
     imagesLinks.push({
       public_id: result.public_id,
       url: result.secure_url,
@@ -90,7 +88,7 @@ const createProduct = catchAsyncErrors(async (req, res, next) => {
 
   req.body.productImages = imagesLinks;
   req.body.user = req.user.id;
-  
+
   const product = await Product.create(req.body);
 
   res.status(200).json({ success: true, product });
@@ -122,7 +120,15 @@ const deleteProduct = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Product not found", 404));
   }
 
-  await Product.findByIdAndDelete(req.params.id);
+  // deleting images associated with the product
+  for (let i = 0; i < product.productImages.length; i++) {
+    const result = await cloudinary.v2.uploader.destroy(
+      product.productImages[i].public_id
+    );
+  }
+
+  // await Product.findByIdAndDelete(req.params.id);
+  await product.remove();
 
   res.status(200).json({ success: true, message: `Deleted Product` });
 });

@@ -4,8 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { useAlert } from "react-alert";
-import ToolkitProvider, {Search } from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min';
-import { adminGetProducts, clearErrors } from "../../actions/productsAction";
+import ToolkitProvider, {
+  Search,
+} from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
+import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
+import {
+  adminGetProducts,
+  clearErrors,
+  deleteProduct,
+} from "../../actions/productsAction";
 import { MetaData } from "../commons/MetaData";
 import Loader from "../commons/Loader";
 import SideBar from "./SideBar";
@@ -17,6 +24,9 @@ const ProductsList = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, error, products } = useSelector((state) => state.products);
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.manage
+  );
 
   useEffect(() => {
     dispatch(adminGetProducts());
@@ -25,7 +35,16 @@ const ProductsList = ({ history }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, alert]);
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
+    if (isDeleted) {
+      alert.success("Product deleted successfully");
+      history.push("/admin/products");
+      dispatch({ type: DELETE_PRODUCT_RESET });
+    }
+  }, [dispatch, error, alert, deleteError, isDeleted, history]);
 
   // table related stuff
   const headerClasses = "customize-header";
@@ -66,9 +85,13 @@ const ProductsList = ({ history }) => {
             </a>
           </li>
           <li>
-            <a className="dropdown-item text-danger" href="#">
+            <span
+              style={{ cursor: "pointer" }}
+              className="dropdown-item text-danger"
+              onClick={() => deleteProductHandler(data)}
+            >
               Delete
-            </a>
+            </span>
           </li>
         </ul>
       </div>
@@ -128,9 +151,6 @@ const ProductsList = ({ history }) => {
     sizePerPageRenderer,
   };
 
-  // function nameFilter(value){};
-  let nameFilter;
-
   const columns = [
     {
       dataField: "productModel",
@@ -167,13 +187,11 @@ const ProductsList = ({ history }) => {
       sort: true,
       classes: "no-border-right no-border-left text table-data-customize",
       headerFormatter: headerFormatter,
-      // filter: textFilter(),
     },
     {
       dataField: "action",
       text: "Actions",
       classes: "no-border-left text table-data-customize",
-      // headerFormatter: headerFormatter,
       formatter: actionFormatter,
     },
   ];
@@ -188,11 +206,17 @@ const ProductsList = ({ history }) => {
         maxPrice: product.productPriceMax,
         minPrice: product.productPriceMin,
         productGender: product.productGender,
-        action: <i className="fa fa-eye"></i>,
+        action: product._id,
       });
     });
     return data;
   };
+
+  const deleteProductHandler = (id) => {
+    // console.log(id);
+    dispatch(deleteProduct(id));
+  };
+
   return (
     <>
       <MetaData title="All Products" />
@@ -220,7 +244,10 @@ const ProductsList = ({ history }) => {
             >
               {(props) => (
                 <div>
-                  <SearchBar {...props.searchProps} className="custom-search-field" />
+                  <SearchBar
+                    {...props.searchProps}
+                    className="custom-search-field"
+                  />
                   <hr />
                   <BootstrapTable
                     classes="row-border-spacing"

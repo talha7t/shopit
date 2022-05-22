@@ -1,13 +1,23 @@
 import { combineReducers } from "redux";
 
-import { productsReducer, productDetailsReducer,newProductReducer, newReviewReducer } from "./productsReducers";
+import {
+  productsReducer,
+  productDetailsReducer,
+  newProductReducer,
+  manageProductsReducer,
+  newReviewReducer,
+} from "./productsReducers";
 import {
   authReducer,
   userReducer,
   forgotPasswordReducer,
 } from "./userReducers";
 import { cartReducer } from "./cartReducers";
-import { newOrderReducer, myOrdersReducer, orderDetailsReducer } from "./orderReducers";
+import {
+  newOrderReducer,
+  myOrdersReducer,
+  orderDetailsReducer,
+} from "./orderReducers";
 
 export default combineReducers({
   products: productsReducer,
@@ -20,5 +30,6 @@ export default combineReducers({
   newOrder: newOrderReducer,
   myOrders: myOrdersReducer,
   orderDetails: orderDetailsReducer,
+  manage: manageProductsReducer,
   newReview: newReviewReducer,
 });

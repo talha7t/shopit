@@ -17,7 +17,12 @@ router.delete(
   productController.deleteReview
 );
 
-router.get("/admin/products/", isAuthenticatedUser, authorizeRoles("admin"), productController.adminGetProducts);
+router.get(
+  "/admin/products/",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  productController.adminGetProducts
+);
 router.get("/products/", productController.getProducts);
 router.get("/products/:id", productController.getProduct);
 
@@ -36,7 +41,7 @@ router.put(
 );
 
 router.delete(
-  "/products/:id",
+  "/admin/products/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   productController.deleteProduct

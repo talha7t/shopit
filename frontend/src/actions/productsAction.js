@@ -15,8 +15,12 @@ import {
   // NEW_REVIEW_RESET,
   NEW_PRODUCT_REQUEST,
   NEW_PRODUCT_SUCCESS,
-  NEW_PRODUCT_RESET,
+  // NEW_PRODUCT_RESET,
   NEW_PRODUCT_FAIL,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  // DELETE_PRODUCT_RESET,
+  DELETE_PRODUCT_FAIL,
   NEW_REVIEW_FAIL,
   CLEAR_ERRORS,
 } from "../constants/productConstants";
@@ -123,17 +127,39 @@ export const adminCreateProduct = (productData) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    console.log(...productData);
 
-    const { data } = await axios.post(`/api/admin/product/new`, productData, config);
+    const { data } = await axios.post(
+      `/api/admin/product/new`,
+      productData,
+      config
+    );
 
     dispatch({
       type: NEW_PRODUCT_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    console.log(error.response)
+    console.log(error.response);
     dispatch({ type: NEW_PRODUCT_FAIL, payload: error.response.data.message });
+  }
+};
+
+// delete product
+export const deleteProduct = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_PRODUCT_REQUEST });
+
+    const { data } = await axios.delete(`/api/admin/products/${id}`);
+
+    dispatch({
+      type: DELETE_PRODUCT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
   }
 };
 
