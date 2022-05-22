@@ -60,14 +60,14 @@ const OrdersList = ({ history }) => {
         ></i>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li>
-            <span
-              //   to={`/admin/orders/${data}`}
+            <Link
+              to={`/admin/order/${data}`}
               style={{ cursor: "pointer" }}
               className="dropdown-item"
               // onClick={() => updateProductHandler(data)}
             >
-              View Details
-            </span>
+              Update Order
+            </Link>
           </li>
           <li>
             <span
@@ -75,7 +75,7 @@ const OrdersList = ({ history }) => {
               className="dropdown-item text-danger"
               // onClick={() => deleteProductHandler(data)}
             >
-              Delete
+              Delete Order
             </span>
           </li>
         </ul>

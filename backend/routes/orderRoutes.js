@@ -14,7 +14,7 @@ router.get(
 );
 router.get("/orders/me", isAuthenticatedUser, orderController.myOrders);
 router.put(
-  "/order/:id",
+  "/admin/order/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   orderController.updateOrder

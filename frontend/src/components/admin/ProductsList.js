@@ -26,7 +26,7 @@ const ProductsList = ({ history }) => {
 
   const { loading, error, products } = useSelector((state) => state.products);
   const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.manage
+    (state) => state.manageProducts
   );
 
   useEffect(() => {

@@ -57,7 +57,6 @@ const ListOrders = () => {
 
   const setData = () => {
     let data = [];
-    console.log(orders.orders);
     orders.forEach((order) => {
       data.push({
         id: order._id,

@@ -8,6 +8,9 @@
 8. implement confirm password
 9. fix the double click for size selection
 
+
+  const { loading, order = {} } = useSelector((state) => state.getOrderDetails); in process order component for allowing only puchased user to review
+
 provide enum for orderStatus
 
 https://stackoverflow.com/questions/62712681/if-user-is-not-logged-in-dont-try-to-attempt-to-get-the-user-react
