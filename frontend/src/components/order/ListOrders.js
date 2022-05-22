@@ -1,8 +1,8 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator"
+import paginationFactory from "react-bootstrap-table2-paginator";
 import { useAlert } from "react-alert";
 import { myOrders, clearErrors } from "../../actions/orderActions";
 import { MetaData } from "../commons/MetaData";
@@ -13,15 +13,22 @@ const ListOrders = () => {
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
-  const linkFormatter = (data) =>{
-    return <Link style={{color: "#000", textDecoration: "underline"}} to={`/order/${data}`}>{data}</Link>
-  }
+  const linkFormatter = (data) => {
+    return (
+      <Link
+        style={{ color: "#000", textDecoration: "underline" }}
+        to={`/order/${data}`}
+      >
+        {data}
+      </Link>
+    );
+  };
   const columns = [
     {
       dataField: "id",
       text: "Order ID",
       sort: true,
-      formatter: linkFormatter
+      formatter: linkFormatter,
     },
     {
       dataField: "numOfItems",
@@ -30,7 +37,7 @@ const ListOrders = () => {
     {
       dataField: "amount",
       text: "Amount",
-      sort: true
+      sort: true,
     },
     {
       dataField: "status",
@@ -46,25 +53,21 @@ const ListOrders = () => {
       alert.error(error);
       dispatch(clearErrors());
     }
-
-   
   }, [dispatch, error, alert]);
 
-
-
-  const setData = () =>{
+  const setData = () => {
     let data = [];
-
-    orders.forEach(order => {
+    console.log(orders.orders);
+    orders.forEach((order) => {
       data.push({
         id: order._id,
         numOfItems: order.orderItems.length,
         amount: order.totalPrice,
-        status: order.orderStatus
-      })
+        status: order.orderStatus,
+      });
     });
-    return data
-  }
+    return data;
+  };
 
   return (
     <>

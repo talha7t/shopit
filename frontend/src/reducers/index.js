@@ -17,6 +17,7 @@ import {
   newOrderReducer,
   myOrdersReducer,
   orderDetailsReducer,
+  allOrdersReducer,
 } from "./orderReducers";
 
 export default combineReducers({
@@ -29,6 +30,7 @@ export default combineReducers({
   cart: cartReducer,
   newOrder: newOrderReducer,
   myOrders: myOrdersReducer,
+  allOrders: allOrdersReducer,
   orderDetails: orderDetailsReducer,
   manage: manageProductsReducer,
   newReview: newReviewReducer,
