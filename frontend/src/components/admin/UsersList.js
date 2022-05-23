@@ -7,10 +7,16 @@ import { useAlert } from "react-alert";
 import ToolkitProvider, {
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
-import { getAllUsers, clearErrors } from "../../actions/userActions";
+import {
+  getAllUsers,
+  clearErrors,
+  deleteUser,
+} from "../../actions/userActions";
 import { MetaData } from "../commons/MetaData";
 import Loader from "../commons/Loader";
 import SideBar from "./SideBar";
+
+import { DELETE_USER_RESET } from "../../constants/userConstants";
 
 import "../../styles/productslist.css";
 
@@ -18,7 +24,7 @@ const UsersList = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const { loading, error, users } = useSelector((state) => state.allUsers);
-  //   const { isDeleted } = useSelector((state) => state.manageUser);
+  const { isDeleted } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -28,12 +34,12 @@ const UsersList = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    // if (isDeleted) {
-    //   alert.success("Order deleted successfully");
-    //   history.push("/admin/orders");
-    //   dispatch({ type: DELETE_ORDER_RESET });
-    // }
-  }, [dispatch, error, alert]);
+    if (isDeleted) {
+      alert.success("User deleted successfully");
+      history.push("/admin/users");
+      dispatch({ type: DELETE_USER_RESET });
+    }
+  }, [dispatch, error, alert, isDeleted, history]);
 
   // table related stuff
   const headerClasses = "customize-header";
@@ -73,7 +79,7 @@ const UsersList = ({ history }) => {
             <span
               style={{ cursor: "pointer" }}
               className="dropdown-item text-danger"
-              // onClick={() => deleteOrderHandler(data)}
+              onClick={() => deleteUserHandler(data)}
             >
               Delete User
             </span>
@@ -201,9 +207,9 @@ const UsersList = ({ history }) => {
     return data;
   };
 
-  // const deleteOrderHandler = (id) => {
-  //   dispatch(deleteOrder(id));
-  // };
+  const deleteUserHandler = (id) => {
+    dispatch(deleteUser(id));
+  };
 
   return (
     <>

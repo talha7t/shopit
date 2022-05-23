@@ -36,7 +36,7 @@ router.put(
   authController.adminUpdateProfile
 );
 router.delete(
-  "/user/:id",
+  "/admin/user/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   authController.adminDeleteProfile
