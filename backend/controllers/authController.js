@@ -259,6 +259,7 @@ const adminUpdateProfile = catchAsyncErrors(async (req, res, next) => {
     userName: req.body.userName,
     userEmail: req.body.userEmail,
     userRole: req.body.userRole,
+    userStatus: req.body.userStatus,
   };
 
   const user = await User.findByIdAndUpdate(req.params.id, newUserData, {

@@ -24,13 +24,13 @@ router.get(
 );
 
 router.get(
-  "/user/:id",
+  "/admin/user/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   authController.getUser
 );
 router.put(
-  "/user/:id",
+  "/admin/user/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   authController.adminUpdateProfile

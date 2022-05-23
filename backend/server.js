@@ -50,6 +50,8 @@ const server = app.listen(PORT, () =>
   console.log(`server started on port ${PORT}`)
 );
 
+// process.on("warning", (e) => console.warn(e.stack));
+
 // Handlig unhandled promise rejections
 process.on("unhandledRejection", (err) => {
   console.log(`ERROR: ${err.message}`);

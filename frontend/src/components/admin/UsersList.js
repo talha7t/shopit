@@ -61,7 +61,7 @@ const UsersList = ({ history }) => {
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li>
             <Link
-              to={`/admin/order/${data}`}
+              to={`/admin/user/${data}`}
               style={{ cursor: "pointer" }}
               className="dropdown-item"
               // onClick={() => updateProductHandler(data)}

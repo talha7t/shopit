@@ -12,6 +12,7 @@ import {
   userReducer,
   forgotPasswordReducer,
   allUsersReducer,
+  userDetailsReducer,
 } from "./userReducers";
 import { cartReducer } from "./cartReducers";
 import {
@@ -28,6 +29,7 @@ export default combineReducers({
   newProduct: newProductReducer,
   auth: authReducer,
   allUsers: allUsersReducer,
+  userDetails: userDetailsReducer,
   user: userReducer,
   forgotPassword: forgotPasswordReducer,
   cart: cartReducer,

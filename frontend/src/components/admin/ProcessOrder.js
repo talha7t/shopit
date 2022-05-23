@@ -120,11 +120,6 @@ const ProcessOrder = ({ history, match }) => {
                   <b>{orderStatus}</b>
                 </p>
 
-                {/* <h4 className="my-4">Order Status:</h4>
-                <p className="greenColor">
-                  <b>Delivered</b>
-                </p> */}
-
                 <h4 className="my-4">Order Items:</h4>
 
                 <hr />
