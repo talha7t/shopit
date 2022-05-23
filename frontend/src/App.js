@@ -31,6 +31,7 @@ import NewProduct from "./components/admin/NewProduct";
 import UpdateProduct from "./components/admin/UpdateProduct";
 import OrdersList from "./components/admin/OrdersList";
 import ProcessOrder from "./components/admin/ProcessOrder";
+import UsersList from "./components/admin/UsersList";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -116,6 +117,13 @@ function App() {
         />
         <Route path="/password/forgot" component={ForgotPassword} exact />
         <Route path="/password/reset/:token" component={NewPassword} exact />
+
+        <ProtectedRoute
+          path="/admin/users"
+          isAdmin={true}
+          component={UsersList}
+          exact
+        />
       </div>
     </Router>
   );

@@ -21,7 +21,7 @@ router.put(
 );
 
 router.delete(
-  "/order/:id",
+  "/admin/order/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   orderController.deleteOrder

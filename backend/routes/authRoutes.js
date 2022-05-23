@@ -17,7 +17,7 @@ router.put(
   authController.updatePassword
 );
 router.get(
-  "/users",
+  "/admin/users",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   authController.getAllUsers

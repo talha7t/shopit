@@ -7,38 +7,33 @@ import { useAlert } from "react-alert";
 import ToolkitProvider, {
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
-import {
-  allOrders,
-  deleteOrder,
-  clearErrors,
-} from "../../actions/orderActions";
+import { getAllUsers, clearErrors } from "../../actions/userActions";
 import { MetaData } from "../commons/MetaData";
 import Loader from "../commons/Loader";
 import SideBar from "./SideBar";
-import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 
 import "../../styles/productslist.css";
 
-const OrdersList = ({ history }) => {
+const UsersList = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { loading, error, orders } = useSelector((state) => state.allOrders);
-  const { isDeleted } = useSelector((state) => state.manageOrder);
+  const { loading, error, users } = useSelector((state) => state.allUsers);
+  //   const { isDeleted } = useSelector((state) => state.manageUser);
 
   useEffect(() => {
-    dispatch(allOrders());
+    dispatch(getAllUsers());
 
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
 
-    if (isDeleted) {
-      alert.success("Order deleted successfully");
-      history.push("/admin/orders");
-      dispatch({ type: DELETE_ORDER_RESET });
-    }
-  }, [dispatch, error, alert, history, isDeleted]);
+    // if (isDeleted) {
+    //   alert.success("Order deleted successfully");
+    //   history.push("/admin/orders");
+    //   dispatch({ type: DELETE_ORDER_RESET });
+    // }
+  }, [dispatch, error, alert]);
 
   // table related stuff
   const headerClasses = "customize-header";
@@ -71,16 +66,16 @@ const OrdersList = ({ history }) => {
               className="dropdown-item"
               // onClick={() => updateProductHandler(data)}
             >
-              Update Order
+              Update User
             </Link>
           </li>
           <li>
             <span
               style={{ cursor: "pointer" }}
               className="dropdown-item text-danger"
-              onClick={() => deleteOrderHandler(data)}
+              // onClick={() => deleteOrderHandler(data)}
             >
-              Delete Order
+              Delete User
             </span>
           </li>
         </ul>
@@ -108,7 +103,7 @@ const OrdersList = ({ history }) => {
       },
       {
         text: "All",
-        page: orders.length,
+        page: users.length,
       },
     ],
     currSizePerPage,
@@ -148,22 +143,36 @@ const OrdersList = ({ history }) => {
   const columns = [
     {
       dataField: "id",
-      text: "Order Id",
+      text: "User Id",
       sort: true,
       classes: "no-border-right text table-data-customize",
       headerFormatter: headerFormatter,
     },
     {
-      dataField: "amount",
-      text: "Amount",
+      dataField: "name",
+      text: "Name",
       sort: true,
       classes: "no-border-right no-border-left text table-data-customize",
       formatter: priceFormatter,
       headerFormatter: headerFormatter,
     },
     {
+      dataField: "email",
+      text: "Email",
+      sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+      headerFormatter: headerFormatter,
+    },
+    {
       dataField: "status",
       text: "Status",
+      sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+      headerFormatter: headerFormatter,
+    },
+    {
+      dataField: "role",
+      text: "Role",
       sort: true,
       classes: "no-border-right no-border-left text table-data-customize",
       headerFormatter: headerFormatter,
@@ -179,29 +188,31 @@ const OrdersList = ({ history }) => {
   const setData = () => {
     let data = [];
 
-    orders.forEach((order) => {
+    users.forEach((user) => {
       data.push({
-        id: order._id,
-        amount: order.totalPrice,
-        status: order.orderStatus,
-        action: order._id,
+        id: user._id,
+        name: user.userName,
+        email: user.userEmail,
+        status: user.userStatus,
+        role: user.userRole,
+        action: user._id,
       });
     });
     return data;
   };
 
-  const deleteOrderHandler = (id) => {
-    dispatch(deleteOrder(id));
-  };
+  // const deleteOrderHandler = (id) => {
+  //   dispatch(deleteOrder(id));
+  // };
 
   return (
     <>
-      <MetaData title="All Orders" />
+      <MetaData title="All Users" />
 
       <SideBar />
       <section className="admin-main-section py-3">
         <div className="text d-flex p-0">
-          <h1 className="text admin-main-heading">All Orders</h1>
+          <h1 className="text admin-main-heading">All Users</h1>
         </div>
 
         {loading ? (
@@ -239,4 +250,4 @@ const OrdersList = ({ history }) => {
   );
 };
 
-export default OrdersList;
+export default UsersList;

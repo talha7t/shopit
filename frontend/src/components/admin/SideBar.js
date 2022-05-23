@@ -1,5 +1,8 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
+import { logoutUser } from "../../actions/userActions";
+import { useDispatch } from "react-redux";
+import { useAlert } from "react-alert";
 
 import "../../styles/sidebar.css";
 
@@ -18,6 +21,14 @@ const handleModeSwitch = () => {
 
 const SideBar = () => {
   const sidebar = useRef(null);
+  const dispatch = useDispatch();
+  const alert = useAlert();
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+
+    alert.success("Logged out successfully");
+  };
   return (
     <>
       <nav ref={sidebar} className="sidebar close">
@@ -75,7 +86,7 @@ const SideBar = () => {
 
           <div className="bottom-content">
             <li className="">
-              <Link to="/">
+              <Link onClick={logoutHandler} to="/">
                 <i className="bx bx-log-out icon"></i>
                 <span className="text nav-text">Logout</span>
               </Link>
