@@ -98,13 +98,13 @@ export const newReview = (productId, rating, comment) => async (dispatch) => {
   }
 };
 
-// admini get all products
+// admin get all products
 export const adminGetProducts = () => async (dispatch) => {
   try {
     dispatch({
       type: ADMIN_PRODUCTS_REQUEST,
     });
-    const { data } = await axios.get(`/api/admin/products`);
+    const { data } = await axios.get(`/api/admin/products/`);
     dispatch({
       type: ADMIN_PRODUCTS_SUCCESS,
       payload: data.products,
