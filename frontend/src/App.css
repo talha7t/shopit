@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.megamenu {
+  position: static;
+}
+
+.megamenu .dropdown-menu {
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.text-uppercase {
+  letter-spacing: 0.08em;
+}
+
+.megaimaga {
+  background: center center
+    url("https://therichpost.com/wp-content/uploads/2021/11/mega.png") no-repeat;
+  background-size: cover;
+}
+
+/* ========================LOADER======================== */
+
+.loader {
+  display: block;
+  margin: 20% auto 0;
+  height: 80px;
+  width: 80px;
+  padding-left: 0;
+}
+
+.loader::after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid rgb(110, 103, 103);
+  border-color: rgb(110, 103, 103) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .nav-item {
+    margin: 0 10px;
+  }
+}
+
+/* ============== new product =============== */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+
+  font-weight: 700;
+}
+
+.wrapper form {
+  padding: 2.5rem 3rem;
+}
+
+.wrapper form .btn {
+  background-color: #fa9c23;
+  border-color: #fa9c23;
+  color: white;
+  margin-top: 2.5rem;
+}
+
+.form-group {
+  margin-top: 1rem !important;
+}
+
+/* dashboard */
+
+.card-font-size {
+  font-size: 1.5rem;
+}
+
+.dashboard-card {
+  height: 11rem !important;
+}
