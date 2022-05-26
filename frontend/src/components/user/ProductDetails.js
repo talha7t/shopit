@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetails, clearErrors, newReview } from "../../actions/productsAction";
-// import { myOrders } from "../../actions/orderActions";
+import {
+  getProductDetails,
+  clearErrors,
+  newReview,
+} from "../../actions/productsAction";
+import { myOrders } from "../../actions/orderActions";
 import { addItemToCart } from "../../actions/cartActions";
 import Loader from "../commons/Loader";
 import { MetaData } from "../commons/MetaData";
@@ -14,21 +18,23 @@ import "../../styles/product-details.css";
 export const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
-  
+
   const [imageUrl, setUrl] = useState("");
   // const [isOrdered, setIsOrdered] = useState(false);
   const [selectedSize, setSize] = useState("");
   const [stock, setStock] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState(""); 
+  const [comment, setComment] = useState("");
 
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
   const { user } = useSelector((state) => state.auth);
-  // const { orders } = useSelector((state) => state.myOrders);
-const {error: reviewError, success} = useSelector(state => state.newReview)
+  const { orders } = useSelector((state) => state.myOrders);
+  const { error: reviewError, success } = useSelector(
+    (state) => state.newReview
+  );
 
   const quantityRef = useRef();
 
@@ -40,34 +46,80 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
       alert.error(error);
       dispatch(clearErrors());
     }
+    dispatch(myOrders());
     if (reviewError) {
       alert.error(reviewError);
       dispatch(clearErrors());
     }
 
-    if(success) {
+    if (success) {
       alert.success("Review posted successfully");
-      dispatch({type: NEW_REVIEW_RESET})
+      dispatch({ type: NEW_REVIEW_RESET });
     }
 
     dispatch(getProductDetails(match.params.id));
   }, [dispatch, error, match.params.id, success, reviewError, alert]);
 
-  // if (!user) {
-  //   return;
-  // }
-
   const setImageUrl = (e) => {
     setUrl(e.target.src);
   };
 
-  const getStock = () => {
-    if (selectedSize) {
-      product.inventory.map((item) => {
-        return selectedSize === item.size
-          ? setStock(item.productStock)
-          : "Please Select a size";
+  const getStock = (e) => {
+    setSize(e.target.value);
+    product.inventory.forEach((item) => {
+      if (e.target.value === item.size) {
+        if (item.productStock)
+          document.getElementById("stock_status").textContent =
+            item.productStock;
+        setStock(item.productStock);
+      } else {
+        return "PLease select a size";
+      }
+      // return e.target.value === item.size
+      //   ? (document.getElementById("stock_status").textContent =
+      //       item.productStock)
+      //   : "Please Select a size";
+    });
+    // }
+  };
+
+  const shouldReview = () => {
+    if (orders !== undefined && orders.length > 0) {
+      let isOrdered = false;
+      let results = orders
+        .map((x) => x.orderItems)
+        .flat()
+        .map((y) => y.product);
+
+      results.forEach((result) => {
+        if (result === match.params.id) {
+          isOrdered = true;
+        }
       });
+
+      return isOrdered ? (
+        <button
+          id="review_btn"
+          type="button"
+          className="btn btn-primary mt-4"
+          data-bs-toggle="modal"
+          data-bs-target="#ratingModal"
+          onClick={setUserRatings}
+        >
+          Submit Your Review
+        </button>
+      ) : (
+        <button
+          id="review_btn"
+          type="button"
+          className="btn btn-primary mt-4"
+          data-bs-toggle="modal"
+          data-bs-target="#ratingModal"
+          disabled={true}
+        >
+          Purchase the product to Review
+        </button>
+      );
     }
   };
 
@@ -93,50 +145,47 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
     alert.success("item added to cart");
   };
 
-  function setUserRatings(){
+  function setUserRatings() {
     const stars = document.querySelectorAll(".star");
 
-    stars.forEach((star, index)=>{
+    stars.forEach((star, index) => {
       star.starValue = index + 1;
 
-      ["click", "mouseover", "mouseout"].forEach(function(e){
+      ["click", "mouseover", "mouseout"].forEach(function (e) {
         star.addEventListener(e, showRatings);
-      })
-    })
+      });
+    });
 
     function showRatings(e) {
-      stars.forEach((star, index) =>{
-        if(e.type === "click"){
-          if(index < this.starValue){
-            star.classList.add("orange")
-            setRating(this.starValue)
-          }
-          else {
-            star.classList.remove("orange")
+      stars.forEach((star, index) => {
+        if (e.type === "click") {
+          if (index < this.starValue) {
+            star.classList.add("orange");
+            setRating(this.starValue);
+          } else {
+            star.classList.remove("orange");
           }
         }
 
-        if(e.type === "mouseover"){
-          if(index < this.starValue){
-            star.classList.add("yellow")
-          }
-          else {
-            star.classList.remove("yellow")
+        if (e.type === "mouseover") {
+          if (index < this.starValue) {
+            star.classList.add("yellow");
+          } else {
+            star.classList.remove("yellow");
           }
         }
-        
-        if(e.type === "mouseout"){
-            star.classList.remove("yellow")
+
+        if (e.type === "mouseout") {
+          star.classList.remove("yellow");
         }
-      })
-      
+      });
     }
   }
 
-  const reviewHandler = (e) =>{
-    dispatch(newReview(match.params.id, rating, comment))
-  }
-  
+  const reviewHandler = (e) => {
+    dispatch(newReview(match.params.id, rating, comment));
+  };
+
   return (
     <>
       {loading ? (
@@ -216,10 +265,10 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
                             type="radio"
                             name="size-radio"
                             value={item.size}
-                            onClick={() => {
-                              setSize(item.size);
+                            onClick={(e) => {
+                              // setSize(item.size);
                               setQuantity(1);
-                              getStock();
+                              getStock(e);
                             }}
                           />
                         </li>
@@ -254,16 +303,14 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
                   type="button"
                   id="cart_btn"
                   onClick={addToCart}
-                  disabled={stock > 0 && selectedSize !== "" ? false : true}
+                  disabled={selectedSize ? false : true}
                   className="btn btn-primary add-to-cart_btn d-inline-block ms-4"
                 >
                   Add to Cart
                 </button>
                 <p className="mt-3">
                   Availability:
-                  <span id="stock_status">
-                    {stock ? stock : "Please select a size"}
-                  </span>
+                  <span id="stock_status">Please Select a Size</span>
                 </p>
 
                 <hr />
@@ -283,16 +330,7 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
                   })} */}
                 {
                   user ? (
-                    <button
-                      id="review_btn"
-                      type="button"
-                      className="btn btn-primary mt-4"
-                      data-bs-toggle="modal"
-                      data-bs-target="#ratingModal"
-                      onClick={setUserRatings}
-                    >
-                      Submit Your Review
-                    </button>
+                    shouldReview()
                   ) : (
                     <div className="text-danger alert alert-danger mt-5">
                       Login to submit review
@@ -360,7 +398,7 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
                                 name="review"
                                 id="review"
                                 value={comment}
-                                onChange={(e)=> setComment(e.target.value)}
+                                onChange={(e) => setComment(e.target.value)}
                                 className="form-control mt-3"
                               ></textarea>
                             </div>
@@ -382,7 +420,7 @@ const {error: reviewError, success} = useSelector(state => state.newReview)
               </div>
             </div>
           </div>
-          
+
           {product.productReviews && product.productReviews.length > 0 && (
             <ListReviews reviews={product.productReviews} />
           )}

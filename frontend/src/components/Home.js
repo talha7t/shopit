@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import Card from "./commons/Card";
@@ -7,18 +7,41 @@ import { getProducts } from "../actions/productsAction";
 import Loader from "./commons/Loader";
 import { useAlert } from "react-alert";
 import "../styles/Home.css";
-// import { AlertTemplate } from "react-alert-template-basic";
+import debounce from "lodash.debounce";
 import { SearchBar } from "./commons/SearchBar";
 import { Route } from "react-router-dom";
+import useDebounce from "../utilities.js/useDebounce";
 
-const Home = ({ match }) => {
+const Home = ({ history, match }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const alert = useAlert();
   const dispatch = useDispatch();
   const { loading, products, error, productCount, resultsPerPage } =
     useSelector((state) => state.products);
-  const keyword = match.params.keyword;
+  let keyword = match.params.keyword;
+
+  const [search, setSearch] = useState(null);
+  const debouncedSearch = useDebounce(search, 500);
+  // const [searchTerm, setSearchTerm] = useState("");
+
+  // const debouncedResults = useMemo(() => {
+  //   const handleChange = (e) => {
+  //     setSearchTerm(e.target.value);
+
+  //     if (e.target.value === "") {
+  //       history.push("/");
+  //       // document.getElementById("search-field").value = e.target.value;
+  //     } else {
+  //       history.push(`/search/${searchTerm}`);
+  //       document.getElementById("search-field").value = e.target.value;
+  //     }
+  //     // keyword = e.target.value;
+  //     // dispatch(getProducts(e.target.value, currentPage));
+  //   };
+
+  //   return debounce(handleChange, 300);
+  // }, [history, searchTerm]);
 
   useEffect(() => {
     if (error) {
@@ -26,6 +49,10 @@ const Home = ({ match }) => {
     }
 
     dispatch(getProducts(keyword, currentPage));
+
+    // return () => {
+    //   debouncedResults.cancel();
+    // };
   }, [dispatch, alert, error, keyword, currentPage]);
 
   function setCurrentPageNumber(pageNumber) {
@@ -42,9 +69,43 @@ const Home = ({ match }) => {
           <div className="container">
             <div className="row justify-content-center text-center">
               <div className="col-12 my-3">
-                <Route
+                {/* <Route
                   render={({ history }) => <SearchBar history={history} />}
-                />
+                /> */}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      id="search-field"
+                      className="form-control"
+                      placeholder="Product Name"
+                    />
+                    {/* <input
+                      type="text"
+                      id="search-field"
+                      className="form-control"
+                      placeholder="Product Name"
+                      onChange={handleChange}
+                    /> 
+                     <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={debouncedResults}
+                      id="search-field"
+                      className="form-control"
+                      placeholder="Product Name"
+                    /> */}
+                    <div className="input-group-append">
+                      <button className="btn" id="search-btn">
+                        <i className="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
               <div className="col-md-8 col-lg-6 justify-self-center">
                 <div className="header">
