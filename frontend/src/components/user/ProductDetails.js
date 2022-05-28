@@ -20,7 +20,6 @@ export const ProductDetails = ({ match }) => {
   const alert = useAlert();
 
   const [imageUrl, setUrl] = useState("");
-  // const [isOrdered, setIsOrdered] = useState(false);
   const [selectedSize, setSize] = useState("");
   const [stock, setStock] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -39,14 +38,13 @@ export const ProductDetails = ({ match }) => {
   const quantityRef = useRef();
 
   useEffect(() => {
-    // if(orders){
-    //   dispatch(myOrders());
-    // }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
+
     dispatch(myOrders());
+
     if (reviewError) {
       alert.error(reviewError);
       dispatch(clearErrors());
@@ -109,16 +107,9 @@ export const ProductDetails = ({ match }) => {
           Submit Your Review
         </button>
       ) : (
-        <button
-          id="review_btn"
-          type="button"
-          className="btn btn-primary mt-4"
-          data-bs-toggle="modal"
-          data-bs-target="#ratingModal"
-          disabled={true}
-        >
-          Purchase the product to Review
-        </button>
+        <div className="text-danger alert alert-danger mt-5">
+          Purchase the product to review
+        </div>
       );
     }
   };
@@ -183,7 +174,17 @@ export const ProductDetails = ({ match }) => {
   }
 
   const reviewHandler = (e) => {
-    dispatch(newReview(match.params.id, rating, comment));
+
+    // pattern for recognizing urls
+    const pattern = /(?:((?:https?|ftp):\/\/)|ww)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?/ig;
+    const url = pattern.test(comment);
+  
+    if(!url) {
+      dispatch(newReview(match.params.id, rating, comment));
+    }else {
+      alert.error("urls can not be used in comments")
+    }
+
   };
 
   return (
@@ -318,33 +319,14 @@ export const ProductDetails = ({ match }) => {
                 <h4 className="mt-2">Description:</h4>
                 <p>{product.productDescription}</p>
                 <hr />
-                {/* {user &&
-                  orders &&
-                  orders.map((order) => {
-                    order.orderItems.find((item) => {
-                      if (item.product === product._id) {
-                        setIsOrdered(true);
-                        return;
-                      }
-                    });
-                  })} */}
-                {
-                  user ? (
-                    shouldReview()
-                  ) : (
-                    <div className="text-danger alert alert-danger mt-5">
-                      Login to submit review
-                    </div>
-                  )
-                  // <button
-                  //   id="review_btn"
-                  //   type="button"
-                  //   className="btn btn-primary mt-4"
-                  //   disabled={true}
-                  // >
-                  //   Login to Submit Review
-                  // </button>
-                }
+                
+                {user ? (
+                  shouldReview()
+                ) : (
+                  <div className="text-danger alert alert-danger mt-5">
+                    Login to submit review
+                  </div>
+                )}
 
                 <div className="row mt-2 mb-5">
                   <div className="rating w-50">

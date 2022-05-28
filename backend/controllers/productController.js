@@ -208,7 +208,6 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
 
   product.ratings = ratingSum / product.productReviews.length;
 
-  console.log(`Product rating: ${product.ratings}`);
   await product.save({ validateBeforeSave: false });
   res.status(201).json({ success: true });
 });
