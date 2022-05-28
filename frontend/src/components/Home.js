@@ -69,43 +69,10 @@ const Home = ({ history, match }) => {
           <div className="container">
             <div className="row justify-content-center text-center">
               <div className="col-12 my-3">
-                {/* <Route
+                <Route
                   render={({ history }) => <SearchBar history={history} />}
-                /> */}
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      id="search-field"
-                      className="form-control"
-                      placeholder="Product Name"
-                    />
-                    {/* <input
-                      type="text"
-                      id="search-field"
-                      className="form-control"
-                      placeholder="Product Name"
-                      onChange={handleChange}
-                    /> 
-                     <input
-                      type="text"
-                      value={searchTerm}
-                      onChange={debouncedResults}
-                      id="search-field"
-                      className="form-control"
-                      placeholder="Product Name"
-                    /> */}
-                    <div className="input-group-append">
-                      <button className="btn" id="search-btn">
-                        <i className="fa fa-search" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                />
+                
               </div>
               <div className="col-md-8 col-lg-6 justify-self-center">
                 <div className="header">

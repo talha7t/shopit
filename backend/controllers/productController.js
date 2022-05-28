@@ -36,6 +36,8 @@ const getProducts = catchAsyncErrors(async (req, res, next) => {
 const getProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
+  console.log(req.clientIp);
+
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
@@ -47,7 +49,7 @@ const getProduct = catchAsyncErrors(async (req, res, next) => {
 // @route       GET /api/admin/products
 // @access      Public
 const adminGetProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await Product.find().sort({createdAt: -1, updatedAt: -1});
+  const products = await Product.find().sort({ createdAt: -1, updatedAt: -1 });
 
   if (!products) {
     return next(new ErrorHandler("Products not found", 404));

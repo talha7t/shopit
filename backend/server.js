@@ -10,6 +10,8 @@ const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
+	
+var requestIp = require('request-ip');
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -26,11 +28,8 @@ const app = express();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-// app.use(express.json());
 app.use(cookieParser());
-// app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload());
-// app.use(bodyParser.urlencoded({extended: true}));
 
 // setting up cloudinary configuration
 cloudinary.config({
@@ -38,6 +37,9 @@ cloudinary.config({
   api_key: process.env.COUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// ip address to get middleware
+app.use(requestIp.mw())
 
 app.use("/api", productRoutes);
 app.use("/api", authRoutes);
@@ -49,8 +51,6 @@ app.use(errorHandler);
 const server = app.listen(PORT, () =>
   console.log(`server started on port ${PORT}`)
 );
-
-// process.on("warning", (e) => console.warn(e.stack));
 
 // Handlig unhandled promise rejections
 process.on("unhandledRejection", (err) => {
