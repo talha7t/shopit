@@ -1,4 +1,50 @@
-.details-row {
+.details-container {
+  background-color: rgba(216, 205, 205, 0.3);
+}
+
+.info-separate {
+  text-transform: uppercase;
+}
+
+.info-separate h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+.info-separate p {
+  margin: 3px;
+  font-family: Roboto, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.info-separate .email-text {
+  text-transform: lowercase;
+}
+
+.account-forgot-btn,
+.account-manage-btn {
+  outline: none;
+  font-weight: 500;
+  border-radius: 3px;
+  transition: color 0.3s ease;
+}
+
+.account-forgot-btn:hover,
+.account-manage-btn:hover {
+  color: #555;
+}
+
+.account-manage-btn {
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 576px) {
+  .account-forgot-btn,
+  .account-manage-btn {
+    width: 90% !important;
+  }
+}
+
+/* .details-row {
   border-bottom: 1px solid grey;
 }
 
@@ -63,4 +109,4 @@
   .user-info {
     font-size: 1.2rem;
   }
-}
+} */

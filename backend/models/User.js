@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema(
       minlength: [6, "Password should have atleast 6 characters"],
       select: false,
     },
+    userGender: {
+      type: String,
+      required: [true, "Please enter your password"],
+      enum: {
+        values: ["male", "female"],
+        required: [true, "Please select a correct gender for the user"],
+      },
+    },
+    userDateOfBirth: {
+      type: Date,
+      required: [true, "Please Provide your date of birth"],
+    },
     userStatus: {
       type: String,
       required: [true, "Please provide a status for the user"],
@@ -45,6 +57,21 @@ const userSchema = new mongoose.Schema(
       type: String,
       maxLength: [100, "User address cannot exceed 100 characters"],
       required: [true, "Please provide your address"],
+    },
+    userCity: {
+      type: String,
+      maxLength: [30, "User city cannot exceed 30 characters"],
+      required: [true, "Please provide your city"],
+    },
+    userZipCode: {
+      type: String,
+      maxLength: [9, "Zip code cannot exceed 9 characters"],
+      required: [true, "Please provide your zip code"],
+    },
+    userCountry: {
+      type: String,
+      maxLength: [30, "User country cannot exceed 30 characters"],
+      required: [true, "Please provide your country"],
     },
     userContact: {
       type: String,

@@ -12,31 +12,27 @@ const sendEmail = require("../utilities/sendEmail");
 // @access      Public
 
 const registerUser = catchAsyncErrors(async (req, res, next) => {
-  const {
+  const userData = ({
     userName,
     userEmail,
+    userDateOfBirth,
     userPassword,
+    userAddress,
+    userCity,
+    userZipCode,
+    userCountry,
+    userContact,
     userStatus,
     userRole,
-    userAddress,
-    userContact,
-  } = req.body;
+  } = req.body);
 
-  const user = await User.create({
-    userName,
-    userEmail,
-    userPassword,
-    userStatus,
-    userRole,
-    userAddress,
-    userContact,
-  });
+  const user = await User.create(userData);
 
-  // if (!user) {
-  //   return next(
-  //     new ErrorHandler("Something went wrong. Please try again", 401)
-  //   );
-  // }
+  if (!user) {
+    return next(
+      new ErrorHandler("Something went wrong. Please try again", 401)
+    );
+  }
 
   sendToken(user, 200, res);
 });
@@ -183,14 +179,19 @@ const getUserProfile = catchAsyncErrors(async (req, res, next) => {
 // @access      Public
 
 const updateProfile = catchAsyncErrors(async (req, res, next) => {
-  const newUserData = {
-    userName: req.body.userName,
-    userEmail: req.body.userEmail,
-    userAddress: req.body.userAddress,
-    userContact: req.body.userContact,
-  };
+  const userData = ({
+    userName,
+    userDateOfBirth,
+    userAddress,
+    userCity,
+    userZipCode,
+    userCountry,
+    userContact,
+    userStatus,
+    userRole,
+  } = req.body);
 
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+  const user = await User.findByIdAndUpdate(req.user.id, userData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -227,7 +228,7 @@ const updatePassword = catchAsyncErrors(async (req, res, next) => {
 // @access      Private
 
 const getAllUsers = catchAsyncErrors(async (req, res, next) => {
-  const users = await User.find().sort({createdAt: -1, updatedAt: -1});
+  const users = await User.find().sort({ createdAt: -1, updatedAt: -1 });
 
   if (!users) {
     return next(new ErrorHandler("No users Found"), 400);

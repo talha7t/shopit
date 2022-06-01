@@ -29,7 +29,7 @@ export const ShippingInfo = ({ history }) => {
       {/* checkout steps */}
       <CheckoutSteps shipping />
       {/* shipping content */}
-      <div className="row wrapper justify-content-center align-content-center">
+      <div className="row mx-0 wrapper justify-content-center align-content-center">
         <div className="col-10 col-lg-5 align-self-center">
           <form onSubmit={submitHandler} className="shadow-lg">
             <h1 className="mb-4">Shipping Info</h1>
@@ -59,7 +59,6 @@ export const ShippingInfo = ({ history }) => {
                     {country.name}
                   </option>
                 ))}
-                {/* <option>Pakistan</option> */}
               </select>
             </div>
 
@@ -81,7 +80,8 @@ export const ShippingInfo = ({ history }) => {
                 type="phone"
                 id="phone_field"
                 className="form-control"
-                value={phoneNo === "" ? phoneNo : parseInt(phoneNo)}
+                value={phoneNo}
+                // value={phoneNo === "" ? phoneNo : parseInt(phoneNo)}
                 onChange={(e) => setPhoneNo(e.target.value)}
                 required
               />

@@ -16,8 +16,12 @@ import "../../styles/profile-password.css";
 export const UpdateProfile = ({ history }) => {
   const [userName, setName] = useState("");
   const [userEmail, setEmail] = useState("");
-  //   const [userPassword, setPassword] = useState("");
   const [userAddress, setAddress] = useState("");
+  const [userCountry, setCountry] = useState("");
+  const [userCity, setCity] = useState("");
+  const [userDateOfBirth, setDOB] = useState("");
+  const [userGender, setGender] = useState();
+  const [userZipCode, setZipCode] = useState("");
   const [userContact, setContact] = useState("");
 
   const alert = useAlert();
@@ -28,8 +32,12 @@ export const UpdateProfile = ({ history }) => {
   useEffect(() => {
     if (user) {
       setName(user.userName);
-      setEmail(user.userEmail);
+      setGender(user.userGender);
+      setDOB(user.userDateOfBirth);
       setAddress(user.userAddress);
+      setCity(user.userCity);
+      setZipCode(user.userZipCode);
+      setCountry(user.userCountry);
       setContact(user.userContact);
     }
     if (error) {
@@ -50,7 +58,18 @@ export const UpdateProfile = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(updateProfile(userName, userEmail, userAddress, userContact));
+    const userData = {
+      userName,
+      userGender,
+      userDateOfBirth,
+      userAddress,
+      userCity,
+      userZipCode,
+      userCountry,
+      userContact,
+    };
+
+    dispatch(updateProfile(userData));
   };
 
   return (
@@ -79,21 +98,40 @@ export const UpdateProfile = ({ history }) => {
               required
             />
           </div>
+
           <div className="form-group mb-3">
-            <label className="label" htmlFor="userEmail">
-              Email
+            <label className="label" htmlFor="userGender">
+              Gender
+            </label>
+            <select
+              name="userGender"
+              class="form-select form-control mb-3"
+              aria-label=".form-select-lg example"
+              value={userGender}
+              onChange={(e) => setGender(e.target.value)}
+              id="userGender"
+            >
+              <option value="female">female</option>
+              <option value="male">male</option>
+            </select>
+          </div>
+
+          <div className="form-group mb-3">
+            <label className="label" htmlFor="userDateOfBirth">
+              Date of Birth
             </label>
             <input
-              type="email"
+              type="date"
+              name="userDateOfBirth"
+              value={userDateOfBirth.substr(0, 10)}
               className="form-control"
-              name="userEmail"
-              id="email"
-              placeholder="Email"
-              value={userEmail}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="City"
+              onChange={(e) => setDOB(e.target.value)}
+              id="userDateOfBirth"
               required
             />
           </div>
+
           <div className="form-group mb-3">
             <label className="label" htmlFor="userAddress">
               Address
@@ -109,6 +147,55 @@ export const UpdateProfile = ({ history }) => {
               required
             />
           </div>
+
+          <div className="form-group mb-3">
+            <label className="label" htmlFor="userCity">
+              City
+            </label>
+            <input
+              type="text"
+              name="userCity"
+              className="form-control"
+              placeholder="City"
+              onChange={(e) => setCity(e.target.value)}
+              value={userCity}
+              id="userCity"
+              required
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label className="label" htmlFor="userZipCode">
+              Zip Code
+            </label>
+            <input
+              type="text"
+              name="userZipCode"
+              className="form-control"
+              placeholder="Zip code"
+              onChange={(e) => setZipCode(e.target.value)}
+              value={userZipCode}
+              id="userZipCode"
+              required
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label className="label" htmlFor="userCountry">
+              Country
+            </label>
+            <input
+              type="text"
+              name="userCountry"
+              className="form-control"
+              placeholder="Country"
+              onChange={(e) => setCountry(e.target.value)}
+              value={userCountry}
+              id="userCountry"
+              required
+            />
+          </div>
+
           <div className="form-group mb-3">
             <label className="label" htmlFor="userContact">
               Contact Number
@@ -124,6 +211,7 @@ export const UpdateProfile = ({ history }) => {
               required
             />
           </div>
+
           <div className="form-group">
             <button
               type="submit"

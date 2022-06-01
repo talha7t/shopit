@@ -47,7 +47,7 @@ export const UpdatePassword = ({ history }) => {
           onSubmit={submitHandler}
           className="profile-card w-50 p-3"
         >
-          <h3 className="profile-heading mb-4">Update Profile</h3>
+          <h3 className="profile-heading mb-4">Update Password</h3>
           <div className="form-group mb-3">
             <label className="label" htmlFor="oldPassword">
               Old Password

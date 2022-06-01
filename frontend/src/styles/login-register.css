@@ -3,13 +3,14 @@ a {
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
   text-decoration: none;
-  color: #e3b04b;
+  color: #695cfe;
 }
 a:hover,
 a:focus {
-  text-decoration: none !important;
+  /* text-decoration: none !important; */
+  text-decoration: underline !important;
   outline: none !important;
-  color: #e3b04b;
+  color: #695cfe;
 }
 
 h2 {
@@ -121,7 +122,8 @@ h2 {
   outline: none !important;
   -webkit-box-shadow: none;
   box-shadow: none;
-  border: 1px solid #e3b04b;
+  border: 1px solid #695cfe;
+  /* border: 1px solid #e3b04b; */
 }
 
 .checkbox-wrap {
@@ -184,10 +186,10 @@ h2 {
 
 /* Style the checkmark/indicator */
 .checkbox-primary {
-  color: #e3b04b;
+  color: #695cfe;
 }
 .checkbox-primary input:checked ~ .checkmark:after {
-  color: #e3b04b;
+  color: #695cfe;
 }
 
 .btn {
@@ -203,22 +205,22 @@ h2 {
   outline: none;
 }
 .btn.btn-primary {
-  background: #e3b04b !important;
-  border: 1px solid #e3b04b !important;
+  background: #695cfe !important;
+  border: 1px solid #695cfe !important;
+  font-family: inherit;
+  font-weight: 700;
   color: #fff !important;
 }
 .btn.btn-primary:hover {
-  border: 1px solid #e3b04b;
-  background: transparent;
-  color: #e3b04b;
+  border: 1px solid #695cfe !important;
 }
 .btn.btn-primary.btn-outline-primary {
-  border: 1px solid #e3b04b;
+  border: 1px solid #695cfe;
   background: transparent;
-  color: #e3b04b;
+  color: #695cfe !important;
 }
 .btn.btn-primary.btn-outline-primary:hover {
   border: 1px solid transparent;
-  background: #e3b04b;
+  background: #695cfe !important;
   color: #fff;
 }

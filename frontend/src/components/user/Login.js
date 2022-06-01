@@ -22,8 +22,6 @@ export const Login = ({ history, location }) => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
-   
-
     if (isAuthenticated) {
       // history.push("/");
       history.push(redirect);
@@ -78,6 +76,7 @@ export const Login = ({ history, location }) => {
                             Email
                           </label>
                           <input
+                            autoFocus
                             type="email"
                             className="form-control"
                             id="email"

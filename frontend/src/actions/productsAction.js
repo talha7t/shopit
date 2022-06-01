@@ -27,16 +27,24 @@ import {
 
 // get products action creator
 export const getProducts =
-  (keyword = "", currentPage = 1) =>
+  (keyword = "", currentPage = 1, category) =>
   async (dispatch) => {
     try {
       dispatch({
         type: ALL_PRODUCTS_REQUEST,
       });
 
+      let link = `/api/products?keyword=${keyword}&page=${currentPage}`;
+
+      if(category) {
+        link = `/api/products?keyword=${keyword}&page=${currentPage}&category=${category}`;
+      }
+
       const { data } = await axios.get(
-        `/api/products?keyword=${keyword}&page=${currentPage}`
+        link
       );
+
+
       dispatch({
         type: ALL_PRODUCTS_SUCCESS,
         payload: data,

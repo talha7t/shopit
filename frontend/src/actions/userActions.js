@@ -67,32 +67,26 @@ export const login = (userEmail, userPassword) => async (dispatch) => {
 };
 
 // Register User
-export const register =
-  (userName, userEmail, userPassword, userAddress, userContact) =>
-  async (dispatch) => {
-    try {
-      dispatch({
-        type: REGISTER_USER_REQUEST,
-      });
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const { data } = await axios.post(
-        "/api/register",
-        { userName, userEmail, userPassword, userAddress, userContact },
-        config
-      );
+export const register = (userData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: REGISTER_USER_REQUEST,
+    });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.post("/api/register", userData, config);
 
-      dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
-    } catch (error) {
-      dispatch({
-        type: REGISTER_USER_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+    dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+  } catch (error) {
+    dispatch({
+      type: REGISTER_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -128,30 +122,25 @@ export const logoutUser = () => async (dispatch) => {
 };
 
 // Update Profile
-export const updateProfile =
-  (userName, userEmail, userAddress, userContact) => async (dispatch) => {
-    try {
-      dispatch({
-        type: UPDATE_PROFILE_REQUEST,
-      });
-      const config = {
-        headers: { "Content-Type": "application/json" },
-      };
+export const updateProfile = (userData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: UPDATE_PROFILE_REQUEST,
+    });
+    const config = {
+      headers: { "Content-Type": "application/json" },
+    };
 
-      const { data } = await axios.put(
-        "/api/me/update",
-        { userName, userEmail, userAddress, userContact },
-        config
-      );
+    const { data } = await axios.put("/api/me/update", userData, config);
 
-      dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
-    } catch (error) {
-      dispatch({
-        type: UPDATE_PROFILE_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+    dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // Update Password
 export const updatePassword =

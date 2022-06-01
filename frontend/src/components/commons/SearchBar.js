@@ -47,11 +47,11 @@ export const SearchBar = ({ history }) => {
     <form onSubmit={searchHandler}>
       <div className="input-group">
         <select className="category-select" aria-label=".form-select-lg example">
-          <option value="">
+          <option value="" onClick={e => setCategory(e.target.value)}>
             All Categories
           </option>
           {categories.map((category) => (
-            <option value={category} key={category}>
+            <option value={category} key={category} onClick={e => setCategory(e.target.value)}>
               {category}
             </option>
           ))}

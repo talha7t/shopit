@@ -31,7 +31,7 @@ const UpdateProduct = ({ match, history }) => {
     loading,
     error: updateError,
     isUpdated,
-  } = useSelector((state) => state.manage);
+  } = useSelector((state) => state.manageProducts);
   const { error, product } = useSelector((state) => state.productDetails);
 
   const productId = match.params.id;
