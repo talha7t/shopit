@@ -97,7 +97,6 @@
   justify-content: center;
   align-items: center;
   margin-top: 5rem;
-
   font-weight: 700;
 }
 
@@ -106,8 +105,8 @@
 }
 
 .wrapper form .btn {
-  background-color: #695cfe;
-  border-color: #695cfe;
+  background-color: #7047eb;
+  border-color: #7047eb;
   color: white;
   margin-top: 2.5rem;
 }

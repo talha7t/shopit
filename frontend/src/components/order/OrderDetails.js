@@ -11,7 +11,7 @@ const OrderDetails = ({ match }) => {
   const dispatch = useDispatch();
 
   const { loading, error, order } = useSelector((state) => state.orderDetails);
-  const {user} = useSelector(state => state.auth)
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getOrderDetails(match.params.id));
@@ -26,21 +26,20 @@ const OrderDetails = ({ match }) => {
     return;
   }
 
-  const {
-    orderItems,
-    shippingInfo,
-    paymentInfo,
-    totalPrice,
-    orderStatus,
-  } = order;
+  const { orderItems, shippingInfo, paymentInfo, totalPrice, orderStatus } =
+    order;
 
   const shippingDetails =
     shippingInfo &&
     `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
 
-  const isPaid =
-    paymentInfo && paymentInfo.status === "succeeded" ? true : false;
+  let isPaid = paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
+  paymentInfo &&
+  paymentInfo.paymentMethod === "byHand" &&
+  order.orderStatus === "delivered"
+    ? (isPaid = true)
+    : (isPaid = false);
   return (
     <>
       <MetaData title="Order Details" />
@@ -51,7 +50,9 @@ const OrderDetails = ({ match }) => {
         <div className="container container-fluid">
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8 mt-5 order-details">
-              <h1 style={{fontSize: "2.25rem"}} className="my-5">Order # {order._id}</h1>
+              <h1 style={{ fontSize: "2.25rem" }} className="my-5">
+                Order # {order._id}
+              </h1>
 
               <h4 className="mb-4">Shipping Info</h4>
               <p>
@@ -93,30 +94,35 @@ const OrderDetails = ({ match }) => {
               <div className="cart-item my-1">
                 {orderItems &&
                   orderItems.map((item) => {
-                    return <div key={item.product} className="row my-5">
-                      <div className="col-4 col-lg-2">
-                        <img
-                          src={item.image}
-                          alt={item.productName}
-                          height="45"
-                          width="65"
-                        />
-                      </div>
+                    return (
+                      <div key={item.product} className="row my-5">
+                        <div className="col-4 col-lg-2">
+                          <img
+                            src={item.image}
+                            alt={item.productName}
+                            height="45"
+                            width="65"
+                          />
+                        </div>
 
-                      <div className="col-5 col-lg-5">
-                        <Link style={{textDecoration: "underline"}} to={`/products/${item.product}`}>
-                          {item.productName}
-                        </Link>
-                      </div>
+                        <div className="col-5 col-lg-5">
+                          <Link
+                            style={{ textDecoration: "underline" }}
+                            to={`/products/${item.product}`}
+                          >
+                            {item.productName}
+                          </Link>
+                        </div>
 
-                      <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                        <p>Rs. {item.price}</p>
-                      </div>
+                        <div className="col-4 col-lg-2 mt-4 mt-lg-0">
+                          <p>Rs. {item.price}</p>
+                        </div>
 
-                      <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                        <p>{item.quantity} Piece(s)</p>
+                        <div className="col-4 col-lg-3 mt-4 mt-lg-0">
+                          <p>{item.quantity} Piece(s)</p>
+                        </div>
                       </div>
-                    </div>;
+                    );
                   })}
               </div>
               <hr />

@@ -22,10 +22,11 @@ const ProcessOrder = ({ history, match }) => {
     shippingInfo,
     orderItems,
     paymentInfo,
-    user,
+    // user,
     totalPrice,
     orderStatus,
   } = order;
+  const { user } = useSelector((state) => state.auth);
   const { error, isUpdated } = useSelector((state) => state.manageOrder);
 
   const orderId = match.params.id;
@@ -44,24 +45,39 @@ const ProcessOrder = ({ history, match }) => {
     }
   }, [alert, error, isUpdated, orderId, dispatch]);
 
-  const updateOrderHandler = (id) => {
-    // e.preventDefault();
-
-    const formData = new FormData();
-    formData.set("orderStatus", status);
-
-    // images.forEach((image) => {
-    //   formData.append("productImages", image);
-    // });
-
-    dispatch(updateOrder(id, formData));
-  };
-
   const shippingDetails =
     shippingInfo &&
     `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
-  const isPaid =
-    paymentInfo && paymentInfo.status === "succeeded" ? true : false;
+
+  let isPaid = paymentInfo && paymentInfo.status === "succeeded" ? true : false;
+
+  paymentInfo &&
+  paymentInfo.paymentMethod === "byHand" &&
+  order.orderStatus === "delivered"
+    ? (isPaid = true)
+    : (isPaid = false);
+
+  // if (paymentInfo) {
+  //   paymentInfo.paymentMethod === "byHand" && status === "delivered"
+  //     ? (isPaid = true)
+  //     : (isPaid = false);
+  // }
+  const updateOrderHandler = (id) => {
+    // e.preventDefault();
+
+    if (paymentInfo) {
+      paymentInfo.paymentMethod === "byHand" && status === "delivered"
+        ? (paymentInfo.status = true)
+        : (paymentInfo.status = false);
+    }
+
+    const formData = new FormData();
+
+    formData.set("orderStatus", status);
+    formData.set("paymentInfo", paymentInfo);
+
+    dispatch(updateOrder(id, formData));
+  };
 
   return (
     <>
@@ -83,7 +99,7 @@ const ProcessOrder = ({ history, match }) => {
 
                 <h4 className="mb-4">Shipping Info</h4>
                 <p>
-                  <b>Name:</b> {user && user.nameuserName}
+                  <b>Name:</b> {user && user.userName}
                 </p>
                 <p>
                   <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
@@ -103,10 +119,23 @@ const ProcessOrder = ({ history, match }) => {
                   <b>{isPaid ? "Paid" : "Not Paid"}</b>
                 </p>
 
-                <h4 className="my-4">Stripe ID</h4>
-                <p className="greenColor">
-                  <b>{paymentInfo && paymentInfo.id}</b>
-                </p>
+                {paymentInfo && paymentInfo.paymentMethod === "byCard" ? (
+                  <>
+                    {" "}
+                    <h4 className="my-4">Stripe ID</h4>
+                    <p className="greenColor">
+                      <b>{paymentInfo && paymentInfo.id}</b>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <h4 className="my-4">User ID</h4>
+                    <p className="greenColor">
+                      <b>{user && user._id}</b>
+                    </p>
+                  </>
+                )}
 
                 <h4 className="my-4">Order Status:</h4>
                 <p
@@ -171,9 +200,9 @@ const ProcessOrder = ({ history, match }) => {
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                   >
-                    <option value="Processing">Processing</option>
+                    <option value="processing">Processing</option>
                     <option value="dispatched">Dispatched</option>
-                    <option value="Delivered">Delivered</option>
+                    <option value="delivered">Delivered</option>
                   </select>
                 </div>
 

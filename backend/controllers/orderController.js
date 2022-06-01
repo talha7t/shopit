@@ -64,7 +64,10 @@ const getSingleOrder = catchAsyncErrors(async (req, res, next) => {
 // @route       GET /api/orders/me
 
 const myOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user.id }).sort({createdAt: -1, updatedAt: -1});
+  const orders = await Order.find({ user: req.user.id }).sort({
+    createdAt: -1,
+    updatedAt: -1,
+  });
 
   if (!orders) {
     return next(new ErrorHandler("No orders Found", 404));
@@ -78,7 +81,7 @@ const myOrders = catchAsyncErrors(async (req, res, next) => {
 // @route       GET /api/orders
 
 const getAllOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await Order.find().sort({createdAt: -1, updatedAt: -1});
+  const orders = await Order.find().sort({ createdAt: -1, updatedAt: -1 });
 
   if (!orders) {
     return next(new ErrorHandler("No orders Found", 404));
@@ -105,13 +108,11 @@ const updateOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("No order Found", 404));
   }
 
-  if (order.orderStatus === "delivered") {
-    return next(new ErrorHandler("Order has already been delivered", 400));
-  }
-
   order.orderStatus = req.body.orderStatus;
   if (order.orderStatus === "delivered") {
     order.deliveredAt = Date.now();
+  } else {
+    order.deliveredAt = "";
   }
   await order.save();
   res.status(200).json({ success: true });

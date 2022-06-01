@@ -51,6 +51,7 @@ const orderSchema = mongoose.Schema(
     paymentInfo: {
       id: { type: String }, // stripe id
       status: { type: String },
+      paymentMethod: { type: String },
     },
     paidAt: { type: Date },
     itemsPrice: { type: Number, required: true, default: 0.0 },

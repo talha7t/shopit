@@ -32,7 +32,7 @@
 }
 
 .active-step {
-  background: #695cfe;
+  background: #7047eb;
   color: #fff;
 }
 
@@ -40,7 +40,7 @@
   float: left;
   width: 0;
   border-top: 20px solid transparent;
-  border-left: 15px solid #695cfe;
+  border-left: 15px solid #7047eb;
   border-bottom: 20px solid transparent;
   margin-left: -1px;
 }
@@ -48,9 +48,9 @@
 .triangle2-active {
   width: 0;
   float: left;
-  border-top: 20px solid #695cfe;
+  border-top: 20px solid #7047eb;
   border-left: 15px solid #fff;
-  border-bottom: 20px solid #695cfe;
+  border-bottom: 20px solid #7047eb;
   margin-right: -1px;
 }
 
