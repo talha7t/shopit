@@ -18,14 +18,8 @@ const ProcessOrder = ({ history, match }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const { loading, order = {} } = useSelector((state) => state.orderDetails);
-  const {
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    // user,
-    totalPrice,
-    orderStatus,
-  } = order;
+  const { shippingInfo, orderItems, paymentInfo, totalPrice, orderStatus } =
+    order;
   const { user } = useSelector((state) => state.auth);
   const { error, isUpdated } = useSelector((state) => state.manageOrder);
 

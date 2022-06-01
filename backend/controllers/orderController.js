@@ -129,7 +129,7 @@ const deleteOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Order not found", 404));
   }
 
-  if (order.orderStatus === "incomplete") {
+  if (order.orderStatus === "processing") {
     order.orderItems.forEach(async (item) => {
       await updateStock(
         item.product,

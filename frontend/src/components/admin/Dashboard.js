@@ -59,7 +59,7 @@ const Dashboard = () => {
                     className="card-footer text-white clearfix small z-1"
                     to="/admin/products"
                   >
-                    <span className="float-left">View Details</span>
+                    <span className="float-left">View Details </span>
                     <span className="float-right">
                       <i className="fa fa-angle-right"></i>
                     </span>
@@ -79,7 +79,7 @@ const Dashboard = () => {
                     className="card-footer text-white clearfix small z-1"
                     to="/admin/orders"
                   >
-                    <span className="float-left">View Details</span>
+                    <span className="float-left">View Details </span>
                     <span className="float-right">
                       <i className="fa fa-angle-right"></i>
                     </span>
@@ -99,7 +99,7 @@ const Dashboard = () => {
                     className="card-footer text-white clearfix small z-1"
                     to="/admin/users"
                   >
-                    <span className="float-left">View Details</span>
+                    <span className="float-left">View Details </span>
                     <span className="float-right">
                       <i className="fa fa-angle-right"></i>
                     </span>
