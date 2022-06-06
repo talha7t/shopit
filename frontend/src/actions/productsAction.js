@@ -27,23 +27,20 @@ import {
 
 // get products action creator
 export const getProducts =
-  (keyword = "", currentPage = 1, category) =>
+  (keyword = "", currentPage = 1, price, category) =>
   async (dispatch) => {
     try {
       dispatch({
         type: ALL_PRODUCTS_REQUEST,
       });
 
-      let link = `/api/products?keyword=${keyword}&page=${currentPage}`;
+      let link = `/api/products?keyword=${keyword}&page=${currentPage}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}`;
 
-      if(category) {
+      if (category) {
         link = `/api/products?keyword=${keyword}&page=${currentPage}&category=${category}`;
       }
 
-      const { data } = await axios.get(
-        link
-      );
-
+      const { data } = await axios.get(link);
 
       dispatch({
         type: ALL_PRODUCTS_SUCCESS,

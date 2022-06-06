@@ -2,18 +2,23 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import Card from "./commons/Card";
+import Slider from "rc-slider";
 import { MetaData } from "./commons/MetaData";
 import { getProducts } from "../actions/productsAction";
 import Loader from "./commons/Loader";
 import { useAlert } from "react-alert";
-import "../styles/Home.css";
-import debounce from "lodash.debounce";
 import { SearchBar } from "./commons/SearchBar";
 import { Route } from "react-router-dom";
-import useDebounce from "../utilities.js/useDebounce";
+
+import "../styles/Home.css";
+import "rc-slider/assets/index.css";
+
+const { createSliderWithTooltip } = Slider;
+const Range = createSliderWithTooltip(Slider.Range);
 
 const Home = ({ history, match }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [price, setPrice] = useState([100, 100000]);
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -21,39 +26,16 @@ const Home = ({ history, match }) => {
     useSelector((state) => state.products);
   let keyword = match.params.keyword;
 
-  const [search, setSearch] = useState(null);
-  const debouncedSearch = useDebounce(search, 500);
+  // const [search, setSearch] = useState(null);
   // const [searchTerm, setSearchTerm] = useState("");
-
-  // const debouncedResults = useMemo(() => {
-  //   const handleChange = (e) => {
-  //     setSearchTerm(e.target.value);
-
-  //     if (e.target.value === "") {
-  //       history.push("/");
-  //       // document.getElementById("search-field").value = e.target.value;
-  //     } else {
-  //       history.push(`/search/${searchTerm}`);
-  //       document.getElementById("search-field").value = e.target.value;
-  //     }
-  //     // keyword = e.target.value;
-  //     // dispatch(getProducts(e.target.value, currentPage));
-  //   };
-
-  //   return debounce(handleChange, 300);
-  // }, [history, searchTerm]);
 
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
 
-    dispatch(getProducts(keyword, currentPage));
-
-    // return () => {
-    //   debouncedResults.cancel();
-    // };
-  }, [dispatch, alert, error, keyword, currentPage]);
+    dispatch(getProducts(keyword, currentPage, price));
+  }, [dispatch, alert, error, keyword, currentPage, price]);
 
   function setCurrentPageNumber(pageNumber) {
     setCurrentPage(pageNumber);
@@ -72,7 +54,6 @@ const Home = ({ history, match }) => {
                 <Route
                   render={({ history }) => <SearchBar history={history} />}
                 />
-                
               </div>
               <div className="col-md-8 col-lg-6 justify-self-center">
                 <div className="header">
@@ -82,10 +63,44 @@ const Home = ({ history, match }) => {
               </div>
             </div>
             <div className="row">
-              {products &&
+              {/* if keyword exists display the filters */}
+              {keyword ? (
+                <>
+                  <div className="col-6 col-md-3 mt-5 mb-5">
+                    <div className="px-5">
+                      <Range
+                        marks={{
+                          100: `Rs100`,
+                          50000: `Rs50000`,
+                        }}
+                        min={100}
+                        max={50000}
+                        defaultValue={[100, 50000]}
+                        tipFormatter={(value) => `Rs${value}`}
+                        tipProps={{ placement: "top", visible: true }}
+                        value={price}
+                        onChange={(price) => setPrice(price)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-6 col-md-9">
+                    <div className="row">
+                      {products &&
+                        products.map((product) => {
+                          return (
+                            <Card key={product._id} product={product} col={4} />
+                          );
+                        })}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                products &&
                 products.map((product) => {
-                  return <Card key={product._id} product={product} />;
-                })}
+                  return <Card key={product._id} product={product} col={3} />;
+                })
+              )}
             </div>
           </div>
 

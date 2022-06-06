@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 import "../../styles/card.css";
 
-function Card({ product }) {
+const Card = ({ product, col }) => {
   return (
-    <div className="col-12 col-md-6 col-lg-4 my-3 mb-4">
+    <div className={`col-12 col-md-6 col-lg-${col} my-3 mb-4`}>
       <div className="card-container">
         <div className="card-part-1">
           <Link to={`/products/${product._id}`}>
@@ -19,7 +19,10 @@ function Card({ product }) {
             <a className="icon" href={`/`}>
               <i className="fas fa-shopping-cart"></i>
             </a>
-            <a className="icon" href="/">
+            {/* <button className="icon">
+              <i className="fas fa-heart"></i>
+            </button> */}
+            <a className="icon">
               <i className="fas fa-heart"></i>
             </a>
             <Link className="icon" to={`/products/${product._id}`}>
@@ -36,6 +39,6 @@ function Card({ product }) {
       </div>
     </div>
   );
-}
+};
 
 export default Card;
