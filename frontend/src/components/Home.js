@@ -18,12 +18,47 @@ const Range = createSliderWithTooltip(Slider.Range);
 
 const Home = ({ history, match }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [price, setPrice] = useState([100, 100000]);
+  const [price, setPrice] = useState([0, 20000]);
+  const [category, setCategory] = useState("");
+  const [rating, setRating] = useState(0);
+
+  const categories = [
+    "Kurta",
+    "Kurta Shalwar",
+    "Prince Coats",
+    "Waistcoats",
+    "Sherwani",
+    "Bottoms",
+    "Denim",
+    "Night suit",
+    "T-Shirt",
+    "Shirt",
+    "Gowns",
+    "1 Piece",
+    "2 Piece",
+    "3 Piece",
+    "Sweat Shirts",
+    "Hoodies",
+    "Pyjamas",
+    "Shoulder Bags",
+    "Mini Bags",
+    "Backpacks",
+    "Sneakers",
+    "Heals",
+    "Flat",
+    "Slippers",
+  ];
 
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { loading, products, error, productCount, resultsPerPage } =
-    useSelector((state) => state.products);
+  const {
+    loading,
+    products,
+    error,
+    productCount,
+    resultsPerPage,
+    filteredProductsCount,
+  } = useSelector((state) => state.products);
   let keyword = match.params.keyword;
 
   // const [search, setSearch] = useState(null);
@@ -34,11 +69,17 @@ const Home = ({ history, match }) => {
       return alert.error(error);
     }
 
-    dispatch(getProducts(keyword, currentPage, price));
-  }, [dispatch, alert, error, keyword, currentPage, price]);
+    dispatch(getProducts(keyword, currentPage, price, category, rating));
+  }, [dispatch, alert, error, keyword, currentPage, price, category, rating]);
 
   function setCurrentPageNumber(pageNumber) {
     setCurrentPage(pageNumber);
+  }
+
+  let count = productCount;
+
+  if (keyword) {
+    count = filteredProductsCount;
   }
 
   return (
@@ -70,17 +111,64 @@ const Home = ({ history, match }) => {
                     <div className="px-5">
                       <Range
                         marks={{
-                          100: `Rs100`,
-                          50000: `Rs50000`,
+                          0: `Rs0`,
+                          20000: `Rs20000`,
                         }}
-                        min={100}
-                        max={50000}
-                        defaultValue={[100, 50000]}
+                        min={0}
+                        max={20000}
+                        defaultValue={[0, 20000]}
                         tipFormatter={(value) => `Rs${value}`}
                         tipProps={{ placement: "top", visible: true }}
                         value={price}
+                        step={2000}
+                        included={true}
+                        dots={true}
                         onChange={(price) => setPrice(price)}
                       />
+
+                      <hr className="my-5" />
+                      <div className="mt-5">
+                        <h4 className="mb-3">Categories</h4>
+                        <ul className="ps-0">
+                          {categories.map((category) => (
+                            <li
+                              key={category}
+                              // onClick={() => console.log(category)}
+                              onClick={() => setCategory(category)}
+                              style={{
+                                cursor: "pointer",
+                                listStyleType: "none",
+                              }}
+                            >
+                              {category}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <hr className="my-3" />
+                      <div className="mt-5">
+                        <h4 className="mb-3">Ratings</h4>
+                        <ul className="ps-0">
+                          {[5, 4, 3, 2, 1].map((star) => (
+                            <li
+                              key={star}
+                              onClick={() => setRating(star)}
+                              style={{
+                                cursor: "pointer",
+                                listStyleType: "none",
+                              }}
+                            >
+                              <div className="rating-outer">
+                                <div
+                                  className="rating-inner"
+                                  style={{ width: `${star * 20}%` }}
+                                ></div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
 
@@ -105,7 +193,7 @@ const Home = ({ history, match }) => {
           </div>
 
           {/* display pagination only if total products are less than or equal to products per page */}
-          {resultsPerPage <= productCount && (
+          {resultsPerPage <= count && (
             <div class="d-flex justify-content-center mt-5">
               <Pagination
                 activePage={currentPage}
