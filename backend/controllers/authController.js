@@ -146,12 +146,6 @@ const confirmEmail = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// @desc        Resend verification link to user email
-// @route       POST /resend
-// @access      Private
-
-const resendLink = catchAsyncErrors(async (req, res, next) => {});
-
 // @desc        Login a user
 // @route       POST /api/login
 // @access      Public

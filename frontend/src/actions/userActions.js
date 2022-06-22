@@ -92,6 +92,7 @@ export const register = (userData) => async (dispatch) => {
   }
 };
 
+// confirm user email
 export const confirmEmail = (email, token) => async (dispatch) => {
   try {
     dispatch({
@@ -99,7 +100,7 @@ export const confirmEmail = (email, token) => async (dispatch) => {
     });
 
     const { data } = await axios.get(`/api/confirmation/${email}/${token}`);
-    console.log(data);
+
     dispatch({ type: CONFIRM_EMAIL_SUCCESS, payload: data.message });
   } catch (error) {
     dispatch({

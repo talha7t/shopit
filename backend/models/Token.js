@@ -7,7 +7,7 @@ const tokenSchema = mongoose.Schema({
     ref: "User",
   },
   token: { type: String, required: true },
-  expireAt: { type: Date, default: Date.now, index: { expires: 86400000 } },
+  // expireAt: { type: Date, default: Date.now, index: { expires: 86400000 } },
 });
 
 module.exports = mongoose.model("Token", tokenSchema);
