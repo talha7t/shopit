@@ -1,7 +1,9 @@
-const crypto = require("crypto");
-
 const User = require("../models/User");
+const Token = require("../models/Token");
 const ErrorHandler = require("../utilities/ErrorHandler");
+
+const crypto = require("crypto");
+// const nodemailer = require("nodemailer");
 
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const sendToken = require("../utilities/jwtToken");
@@ -12,6 +14,19 @@ const sendEmail = require("../utilities/sendEmail");
 // @access      Public
 
 const registerUser = catchAsyncErrors(async (req, res, next) => {
+  const existingUser = await User.findOne({ userEmail: req.body.userEmail });
+
+  // if email is exist into database i.e. email is associated with another user.
+  if (existingUser) {
+    return next(
+      new ErrorHandler(
+        "This email is already associated wih another account",
+        400
+      )
+    );
+  }
+
+  // if user is not exist into database then save the user into database for register account
   const userData = ({
     userName,
     userEmail,
@@ -27,15 +42,115 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   } = req.body);
 
   const user = await User.create(userData);
-
   if (!user) {
     return next(
       new ErrorHandler("Something went wrong. Please try again", 401)
     );
   }
 
-  sendToken(user, 200, res);
+  // generate token and save
+  const token = await new Token({
+    _userId: user._id,
+    token: crypto.randomBytes(16).toString("hex"),
+  });
+  token.save();
+
+  // ---------------Send email---------- //
+  //for local host
+  // const confirmationURL = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+
+  // for production
+  // const confirmationURL = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/password/reset/${resetToken}`;
+
+  const message =
+    "Hello " +
+    user.userName +
+    ",\n\n" +
+    "Please verify your account by clicking the link: \n" +
+    // req.headers.host +
+    process.env.FRONTEND_URL +
+    "/confirmation/" +
+    user.userEmail +
+    "/" +
+    token.token +
+    "\n\nThank You!\n";
+
+  try {
+    await sendEmail({
+      email: user.userEmail,
+      subject: "Account verification email for Shop IT",
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Confirmation email sent to ${user.userEmail}. Please check your email.`,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+
+  // sendToken(user, 200, res);
 });
+
+// @desc        verfiy user email
+// @route       GET /api/confirmation/:email/:token
+// @access      Private
+
+const confirmEmail = catchAsyncErrors(async (req, res, next) => {
+  const token = await Token.findOne({ token: req.params.token });
+  // token is not found into database i.e. token may have expired
+  if (!token) {
+    return next(
+      new ErrorHandler(
+        "Your verification link may have expired. Please click on resend for verify your Email."
+      ),
+      400
+    );
+    // return res.status(400).send({
+    //   msg: "Your verification link may have expired. Please click on resend for verify your Email.",
+    // });
+  }
+
+  const user = await User.findOne({
+    _id: token._userId,
+    email: req.params.email,
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler(
+        "We were unable to find a user for this verification. Please SignUp!"
+      ),
+      401
+    );
+    // return res.status(401).send({
+    //   msg: "We were unable to find a user for this verification. Please SignUp!",
+    // });
+  }
+  // user is already verified
+  else if (user.isVerified) {
+    return res
+      .status(200)
+      .json({ message: "User has been already verified. Please Login" });
+  }
+  // verify user
+  else {
+    // change isVerified to true
+    user.isVerified = true;
+    user.save();
+
+    // res.redirect("/login");
+    res.status(200).json({ message: "You account has been verified" });
+  }
+});
+
+// @desc        Resend verification link to user email
+// @route       POST /resend
+// @access      Private
+
+const resendLink = catchAsyncErrors(async (req, res, next) => {});
 
 // @desc        Login a user
 // @route       POST /api/login
@@ -55,6 +170,16 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
   // check if user exists
   if (!user) {
     return next(new ErrorHandler("Invalid Email or Password", 401));
+  }
+
+  // check user is verified or not
+  if (!user.isVerified) {
+    return next(
+      new ErrorHandler(
+        `Your Email has not been verified. Please click on resend`,
+        401
+      )
+    );
   }
 
   // check if password is correct or not
@@ -295,6 +420,8 @@ const adminDeleteProfile = catchAsyncErrors(async (req, res, next) => {
 module.exports = {
   registerUser,
   loginUser,
+  confirmEmail,
+  resendLink,
   forgotPassword,
   resetPassword,
   logoutUser,

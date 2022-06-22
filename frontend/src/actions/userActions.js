@@ -7,6 +7,9 @@ import {
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
+  CONFIRM_EMAIL_REQUEST,
+  CONFIRM_EMAIL_SUCCESS,
+  CONFIRM_EMAIL_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
@@ -56,7 +59,6 @@ export const login = (userEmail, userPassword) => async (dispatch) => {
       { userEmail, userPassword },
       config
     );
-
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({
@@ -78,11 +80,30 @@ export const register = (userData) => async (dispatch) => {
       },
     };
     const { data } = await axios.post("/api/register", userData, config);
+    console.log(data);
 
-    dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+    dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
+    // dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const confirmEmail = (email, token) => async (dispatch) => {
+  try {
+    dispatch({
+      type: CONFIRM_EMAIL_REQUEST,
+    });
+
+    const { data } = await axios.get(`/api/confirmation/${email}/${token}`);
+    console.log(data);
+    dispatch({ type: CONFIRM_EMAIL_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: CONFIRM_EMAIL_FAIL,
       payload: error.response.data.message,
     });
   }

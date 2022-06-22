@@ -24,19 +24,24 @@ export const Register = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { isAuthenticated, error, loading } = useSelector(
+  const { isAuthenticated, error, loading, success, message } = useSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push("/");
-    }
+    // if (isAuthenticated) {
+    //   history.push("/");
+    // }
+    // if (error !== "You must be logged in to use this feature") {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [isAuthenticated, error, alert, dispatch, history]);
+
+    if (success === true) {
+      alert.success(message);
+    }
+  }, [isAuthenticated, error, alert, dispatch, success, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -55,6 +60,8 @@ export const Register = ({ history }) => {
     };
 
     dispatch(register(userData));
+
+    // history.push("/login");
   };
   return (
     // if the page is aoding then display the loader

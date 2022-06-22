@@ -5,6 +5,9 @@ import {
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
+  CONFIRM_EMAIL_REQUEST,
+  CONFIRM_EMAIL_SUCCESS,
+  CONFIRM_EMAIL_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
@@ -51,13 +54,21 @@ export const authReducer = (state = { user: {} }, action) => {
         isAuthenticated: false,
       };
     case LOGIN_SUCCESS:
-    case REGISTER_USER_SUCCESS:
+    // case REGISTER_USER_SUCCESS:
     case LOAD_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         isAuthenticated: true,
         user: action.payload,
+      };
+    case REGISTER_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload.success,
+        message: action.payload.message,
+        // user: action.payload,
       };
     case LOAD_USER_FAIL:
       return {
@@ -103,6 +114,7 @@ export const userReducer = (state = {}, action) => {
     case UPDATE_PASSWORD_REQUEST:
     case UPDATE_USER_REQUEST:
     case DELETE_USER_REQUEST:
+    case CONFIRM_EMAIL_REQUEST:
       return {
         ...state,
         loading: true,
@@ -121,6 +133,12 @@ export const userReducer = (state = {}, action) => {
         loading: false,
         isDeleted: action.payload,
       };
+    case CONFIRM_EMAIL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
     case UPDATE_PROFILE_RESET:
     case UPDATE_PASSWORD_RESET:
     case UPDATE_USER_RESET:
@@ -137,6 +155,7 @@ export const userReducer = (state = {}, action) => {
     case UPDATE_PASSWORD_FAIL:
     case UPDATE_USER_FAIL:
     case DELETE_USER_FAIL:
+    case CONFIRM_EMAIL_FAIL:
       return {
         ...state,
         loading: false,

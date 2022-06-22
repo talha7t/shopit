@@ -35,6 +35,7 @@ import OrdersList from "./components/admin/OrdersList";
 import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
+import ConfirmEmail from "./components/user/ConfirmEmail";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -59,6 +60,7 @@ function App() {
 
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route path="/confirmation/:email/:token" component={ConfirmEmail} />
 
         <Route path="/cart" component={Cart} exact />
         <ProtectedRoute path="/shipping" component={ShippingInfo} />

@@ -6,6 +6,9 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
 router.post("/register", authController.registerUser);
 router.post("/login", authController.loginUser);
+router.get("/confirmation/:email/:token", authController.confirmEmail);
+router.post("/resend", authController.resendLink);
+
 router.post("/password/forgot", authController.forgotPassword);
 router.put("/password/reset/:token", authController.resetPassword);
 router.get("/logout", authController.logoutUser);
