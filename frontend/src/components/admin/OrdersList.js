@@ -95,16 +95,16 @@ const OrdersList = ({ history }) => {
   const sizePerPageRenderer = ({
     values = [
       {
-        text: "1",
-        page: 1,
+        text: "5",
+        page: 5,
       },
       {
-        text: "2",
-        page: 2,
+        text: "10",
+        page: 10,
       },
       {
-        text: "3",
-        page: 3,
+        text: "50",
+        page: 50,
       },
       {
         text: "All",

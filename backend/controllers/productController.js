@@ -1,5 +1,6 @@
 // const asyncHandler = require("express-async-handler");
 const Product = require("../models/Product");
+const User = require("../models/User");
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ApiFeatures = require("../utilities/ApiFeautres");
@@ -204,7 +205,11 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
       }
     });
   } else {
+    const user = await User.findById(req.user._id);
+
+    // push revuew to product and user
     product.productReviews.push(review);
+    user.userReview.push(comment);
 
     product.numOfReviews = product.productReviews.length;
   }

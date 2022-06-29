@@ -415,7 +415,6 @@ module.exports = {
   registerUser,
   loginUser,
   confirmEmail,
-  resendLink,
   forgotPassword,
   resetPassword,
   logoutUser,

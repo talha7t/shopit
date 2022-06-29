@@ -73,12 +73,7 @@ export const ProductDetails = ({ match }) => {
       } else {
         return "PLease select a size";
       }
-      // return e.target.value === item.size
-      //   ? (document.getElementById("stock_status").textContent =
-      //       item.productStock)
-      //   : "Please Select a size";
     });
-    // }
   };
 
   const shouldReview = () => {
@@ -174,17 +169,16 @@ export const ProductDetails = ({ match }) => {
   }
 
   const reviewHandler = (e) => {
-
     // pattern for recognizing urls
-    const pattern = /(?:((?:https?|ftp):\/\/)|ww)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?/ig;
+    const pattern =
+      /(?:((?:https?|ftp):\/\/)|ww)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?/gi;
     const url = pattern.test(comment);
-  
-    if(!url) {
-      dispatch(newReview(match.params.id, rating, comment));
-    }else {
-      alert.error("urls can not be used in comments")
-    }
 
+    if (!url) {
+      dispatch(newReview(match.params.id, rating, comment));
+    } else {
+      alert.error("urls can not be used in comments");
+    }
   };
 
   return (
@@ -198,7 +192,7 @@ export const ProductDetails = ({ match }) => {
           <div className="container container-fluid">
             <div className="row f-flex justify-content-around">
               <div
-                className="col-12 col-lg-5 img-fluid align-self-start"
+                className="col-12 col-lg-5 img-fluid align-self-start mb-5"
                 id="product_image"
               >
                 {product.productImages && (
@@ -319,7 +313,7 @@ export const ProductDetails = ({ match }) => {
                 <h4 className="mt-2">Description:</h4>
                 <p>{product.productDescription}</p>
                 <hr />
-                
+
                 {user ? (
                   shouldReview()
                 ) : (

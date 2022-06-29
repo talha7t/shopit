@@ -79,6 +79,7 @@ const userSchema = new mongoose.Schema(
       maxLength: [15, "User contact cannot exceed 12 characters"],
       required: [true, "Please provide your Phone Number"],
     },
+    userReviews: [{ type: String, reviewdAt: Date.now }],
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

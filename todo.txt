@@ -1,16 +1,7 @@
-1. add filter and search feature to users
 2. when creating order check stock availability as well.
 3. allow only authorized users to delete reviews
 4: add favourites to user schema
-5. use phone numbers from: https://www.npmjs.com/package/react-phone-number-input?activeTab=readme
-6. do something about alert when wrong credentials are provided for login
 7. close navbar when a link is clicked: https://stackoverflow.com/questions/16877429/twitter-bootstrap-mobile-nav-hide-menu-after-clicking-menu-link
-8. implement confirm password
-9. fix the double click for size selection
 
-
-  const { loading, order = {} } = useSelector((state) => state.getOrderDetails); in process order component for allowing only puchased user to review
-
-provide enum for orderStatus
 
 https://stackoverflow.com/questions/62712681/if-user-is-not-logged-in-dont-try-to-attempt-to-get-the-user-react

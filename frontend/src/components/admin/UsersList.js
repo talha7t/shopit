@@ -89,23 +89,23 @@ const UsersList = ({ history }) => {
     );
   };
 
-  const priceFormatter = (data) => {
-    return `Rs. ${data}`;
+  const nameFormatter = (data) => {
+    return data;
   };
 
   const sizePerPageRenderer = ({
     values = [
       {
-        text: "1",
-        page: 1,
+        text: "5",
+        page: 5,
       },
       {
-        text: "2",
-        page: 2,
+        text: "10",
+        page: 10,
       },
       {
-        text: "3",
-        page: 3,
+        text: "50",
+        page: 50,
       },
       {
         text: "All",
@@ -159,7 +159,7 @@ const UsersList = ({ history }) => {
       text: "Name",
       sort: true,
       classes: "no-border-right no-border-left text table-data-customize",
-      formatter: priceFormatter,
+      formatter: nameFormatter,
       headerFormatter: headerFormatter,
     },
     {
