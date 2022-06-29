@@ -79,7 +79,16 @@ export const ProductDetails = ({ match }) => {
   const shouldReview = () => {
     if (orders !== undefined && orders.length > 0) {
       let isOrdered = false;
+
+      // console.log(orders);
+
+      let completedOrders = orders.filter(
+        (order) => order.orderStatus === "delivered"
+      );
+
+      // get the product id of completed orders
       let results = orders
+        .filter((order) => order.orderStatus === "delivered")
         .map((x) => x.orderItems)
         .flat()
         .map((y) => y.product);
