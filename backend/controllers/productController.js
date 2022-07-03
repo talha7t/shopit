@@ -193,6 +193,7 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
     comment,
   };
   const product = await Product.findById(productId);
+  const user = await User.findById(req.user._id);
 
   const isReviewed = product.productReviews.find(
     (review) => review.user.toString() === req.user._id.toString()
@@ -205,14 +206,14 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
       }
     });
   } else {
-    const user = await User.findById(req.user._id);
-
-    // push revuew to product and user
+    // push review to product and user
     product.productReviews.push(review);
-    user.userReview.push(comment);
+    user.userReviews.push({ comment });
 
     product.numOfReviews = product.productReviews.length;
   }
+
+  // calculating ratings
   let ratingSum = 0;
 
   product.productReviews.map((item) => {
@@ -222,9 +223,23 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
 
   product.ratings = ratingSum / product.productReviews.length;
 
+  // saving changes to product and user
   await product.save({ validateBeforeSave: false });
+  await user.save({ validateBeforeSave: false });
+
+  // getting reviews within 24 hours
+  reviewObserver(1, user);
+
   res.status(201).json({ success: true });
 });
+
+// function to find similar comments
+function reviewObserver(days, user) {
+  const todayReviews = user.userReviews.filter(
+    (item) => new Date(item.reviewdAt) > Date.now() - days * 24 * 60 * 60 * 1000
+  );
+  console.log(todayReviews);
+}
 
 // @desc        get all reviews
 // @route       GET /api/products/reviews/

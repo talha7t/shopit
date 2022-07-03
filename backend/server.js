@@ -10,8 +10,8 @@ const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
-	
-var requestIp = require('request-ip');
+
+var requestIp = require("request-ip");
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -39,7 +39,7 @@ cloudinary.config({
 });
 
 // ip address to get middleware
-app.use(requestIp.mw())
+// app.use(requestIp.mw())
 
 app.use("/api", productRoutes);
 app.use("/api", authRoutes);
