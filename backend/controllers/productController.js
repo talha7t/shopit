@@ -44,8 +44,6 @@ const getProducts = catchAsyncErrors(async (req, res, next) => {
 const getProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
-  console.log(req.clientIp);
-
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
@@ -223,22 +221,41 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
 
   product.ratings = ratingSum / product.productReviews.length;
 
+  // getting reviews within 1 day
+  reviewObserver(1, user, 90, 5);
+
   // saving changes to product and user
   await product.save({ validateBeforeSave: false });
   await user.save({ validateBeforeSave: false });
-
-  // getting reviews within 24 hours
-  reviewObserver(1, user);
 
   res.status(201).json({ success: true });
 });
 
 // function to find similar comments
-function reviewObserver(days, user) {
-  const todayReviews = user.userReviews.filter(
+function reviewObserver(days, user, percentageLimit, minReviews) {
+  const reviews = user.userReviews.filter(
     (item) => new Date(item.reviewdAt) > Date.now() - days * 24 * 60 * 60 * 1000
   );
-  console.log(todayReviews);
+
+  if (reviews.length >= minReviews) {
+    const counts = {};
+
+    reviews.forEach((review) => {
+      counts[review.comment] = (counts[review.comment] || 0) + 1;
+    });
+
+    const percentages = [];
+    for (const key in counts) {
+      percentages.push((counts[key] / reviews.length) * 100);
+    }
+
+    percentages.forEach((percentage) => {
+      if (percentage >= percentageLimit) {
+        user.userStatus = "warned";
+        return;
+      }
+    });
+  }
 }
 
 // @desc        get all reviews
