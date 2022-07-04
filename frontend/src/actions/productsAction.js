@@ -27,7 +27,7 @@ import {
 
 // get products action creator
 export const getProducts =
-  (keyword = "", currentPage = 1, price, category, ratings = 0) =>
+  (keyword = "", currentPage = 1, price, category, gender, ratings = 0) =>
   async (dispatch) => {
     try {
       dispatch({
@@ -39,6 +39,9 @@ export const getProducts =
       if (category) {
         link = `/api/products?keyword=${keyword}&page=${currentPage}&productCategory=${category}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
       }
+      //  else if (gender) {
+      //   link = `/api/products?keyword=${keyword}&page=${currentPage}&productGender=${gender}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
+      // }
 
       const { data } = await axios.get(link);
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import Card from "./commons/Card";
@@ -105,90 +105,90 @@ const Home = ({ history, match }) => {
             </div>
             <div className="row">
               {/* if keyword exists display the filters */}
-              {keyword ? (
-                <>
-                  <div className="col-6 col-md-3 mt-5 mb-5">
-                    <div className="px-5">
-                      <Range
-                        marks={{
-                          0: `Rs0`,
-                          20000: `Rs20000`,
-                        }}
-                        min={0}
-                        max={20000}
-                        defaultValue={[0, 20000]}
-                        tipFormatter={(value) => `Rs${value}`}
-                        tipProps={{ placement: "top", visible: true }}
-                        value={price}
-                        step={2000}
-                        included={true}
-                        dots={true}
-                        onChange={(price) => setPrice(price)}
-                      />
+              {/* {keyword ? ( */}
+              <>
+                <div className="col-6 col-md-3 mt-5 mb-5">
+                  <div className="px-5">
+                    <Range
+                      marks={{
+                        0: `Rs0`,
+                        20000: `Rs20000`,
+                      }}
+                      min={0}
+                      max={20000}
+                      defaultValue={[0, 20000]}
+                      tipFormatter={(value) => `Rs${value}`}
+                      tipProps={{ placement: "top", visible: true }}
+                      value={price}
+                      step={2000}
+                      included={true}
+                      dots={true}
+                      onChange={(price) => setPrice(price)}
+                    />
 
-                      <hr className="my-5" />
-                      <div className="mt-5">
-                        <h4 className="mb-3">Categories</h4>
-                        <ul className="ps-0">
-                          {categories.map((category) => (
-                            <li
-                              key={category}
-                              // onClick={() => console.log(category)}
-                              onClick={() => setCategory(category)}
-                              style={{
-                                cursor: "pointer",
-                                listStyleType: "none",
-                              }}
-                            >
-                              {category}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    <hr className="my-5" />
+                    <div className="mt-5">
+                      <h4 className="mb-3">Categories</h4>
+                      <ul className="ps-0">
+                        {categories.map((category) => (
+                          <li
+                            key={category}
+                            // onClick={() => console.log(category)}
+                            onClick={() => setCategory(category)}
+                            style={{
+                              cursor: "pointer",
+                              listStyleType: "none",
+                            }}
+                          >
+                            {category}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                      <hr className="my-3" />
-                      <div className="mt-5">
-                        <h4 className="mb-3">Ratings</h4>
-                        <ul className="ps-0">
-                          {[5, 4, 3, 2, 1].map((star) => (
-                            <li
-                              key={star}
-                              onClick={() => setRating(star)}
-                              style={{
-                                cursor: "pointer",
-                                listStyleType: "none",
-                              }}
-                            >
-                              <div className="rating-outer">
-                                <div
-                                  className="rating-inner"
-                                  style={{ width: `${star * 20}%` }}
-                                ></div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    <hr className="my-3" />
+                    <div className="mt-5">
+                      <h4 className="mb-3">Ratings</h4>
+                      <ul className="ps-0">
+                        {[5, 4, 3, 2, 1].map((star) => (
+                          <li
+                            key={star}
+                            onClick={() => setRating(star)}
+                            style={{
+                              cursor: "pointer",
+                              listStyleType: "none",
+                            }}
+                          >
+                            <div className="rating-outer">
+                              <div
+                                className="rating-inner"
+                                style={{ width: `${star * 20}%` }}
+                              ></div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
+                </div>
 
-                  <div className="col-6 col-md-9">
-                    <div className="row">
-                      {products &&
-                        products.map((product) => {
-                          return (
-                            <Card key={product._id} product={product} col={4} />
-                          );
-                        })}
-                    </div>
+                <div className="col-6 col-md-9">
+                  <div className="row">
+                    {products &&
+                      products.map((product) => {
+                        return (
+                          <Card key={product._id} product={product} col={4} />
+                        );
+                      })}
                   </div>
-                </>
-              ) : (
+                </div>
+              </>
+              {/* ) : (
                 products &&
                 products.map((product) => {
                   return <Card key={product._id} product={product} col={3} />;
                 })
-              )}
+              )} */}
             </div>
           </div>
 

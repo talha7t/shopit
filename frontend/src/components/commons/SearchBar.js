@@ -13,8 +13,6 @@ export const SearchBar = ({ history }) => {
     }
   };
 
-  // const handleChange = (e) => {};
-
   return (
     <form onSubmit={searchHandler}>
       <div className="input-group">
