@@ -6,25 +6,21 @@ import { useAlert } from "react-alert";
 
 import "../../styles/newNav.css";
 
-// let navbar = document.querySelector(".navbar");
-
 const Navbar = () => {
   // sidebar open close js code
-  // let navLinks = document.querySelector(".nav-links");
-  // let menuOpenBtn = document.querySelector(".navbar .bx-menu");
-  // let menuCloseBtn = document.querySelector(".nav-links .bx-x");
-  // menuOpenBtn.onclick = function () {
-  //   navLinks.style.left = "0";
-  // };
+  let navLinks = document.querySelector(".nav-links");
 
-  // menuCloseBtn.onclick = function () {
-  //   navLinks.style.left = "-100%";
-  // };
+  const menuOpen = () => {
+    console.log(navLinks);
+    navLinks.style.left = "0";
+  };
+  const menuClose = () => {
+    navLinks.style.left = "-100%";
+  };
 
-  // let jsArrow = document.querySelector(".js-arrow");
-  // jsArrow.onclick = function () {
-  //   navLinks.classList.toggle("show3");
-  // };
+  const handleArrow = () => {
+    navLinks.classList.toggle("show3");
+  };
 
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -40,21 +36,21 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div class="navbar">
-        <i class="bx bx-menu"></i>
-        <div class="logo">
+      <div className="navbar">
+        <i onClick={menuOpen} className="bx bx-menu"></i>
+        <div className="logo">
           <Link className="text-link" style={{ textDecoration: "none" }} to="/">
             SHOP IT
           </Link>
         </div>
-        <div class="nav-links">
-          <div class="sidebar-logo">
-            <Link to="/" class="logo-name text-link">
+        <div className="nav-links">
+          <div className="sidebar-logo">
+            <Link to="/" className="logo-name text-link">
               SHOP IT
             </Link>
-            <i class="bx bx-x"></i>
+            <i onClick={menuClose} className="bx bx-x"></i>
           </div>
-          <ul class="links">
+          <ul className="links">
             <li>
               <Link to="/">HOME</Link>
             </li>
@@ -72,9 +68,11 @@ const Navbar = () => {
             <li>
               {user ? (
                 <>
-                  <a href="#">{user && user.userName}</a>
-                  <i class="bx bxs-chevron-down js-arrow arrow"></i>
-                  <ul class="js-sub-menu sub-menu">
+                  <div onClick={handleArrow}>
+                    <span href="#">{user && user.userName}</span>
+                    <i className="bx bxs-chevron-down js-arrow arrow"></i>
+                  </div>
+                  <ul className="js-sub-menu sub-menu">
                     <li>
                       {user && user.userRole !== "admin" ? (
                         <Link to="/orders/me">Orders</Link>
@@ -108,7 +106,7 @@ const Navbar = () => {
         </div>
 
         {/* remove the line below to move links to right  */}
-        <div class="search-box"></div>
+        <div className="search-box"></div>
       </div>
     </nav>
   );

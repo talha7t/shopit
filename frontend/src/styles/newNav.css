@@ -6,9 +6,9 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-body {
+/* body {
   min-height: 100vh;
-}
+} */
 
 .text-link,
 .text-link:hover,
@@ -245,7 +245,9 @@ nav .navbar .links li:hover .js-sub-menu {
   nav .navbar .links {
     display: block;
     margin-top: 20px;
+    padding-left: 0;
   }
+
   nav .navbar .links li .arrow {
     line-height: 40px;
   }
