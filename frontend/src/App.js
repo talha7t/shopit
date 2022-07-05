@@ -36,6 +36,7 @@ import ProcessOrder from "./components/admin/ProcessOrder";
 import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ConfirmEmail from "./components/user/ConfirmEmail";
+import Navbar from "./components/commons/Navbar";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -53,7 +54,8 @@ function App() {
   return (
     <Router>
       <div className="APP">
-        <Header />
+        {/* <Header /> */}
+        <Navbar />
         <Route path="/" component={Home} exact />
         <Route path="/search/:keyword" component={Home} />
         <Route path="/products/:id" component={ProductDetails} exact />
