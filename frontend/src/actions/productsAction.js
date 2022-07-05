@@ -33,12 +33,20 @@ export const getProducts =
       dispatch({
         type: ALL_PRODUCTS_REQUEST,
       });
-
-      let link = `/api/products?keyword=${keyword}&page=${currentPage}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
-
-      if (category) {
+      let link;
+      if (category && gender) {
+        console.log(gender, category);
+        link = `/api/products?keyword=${keyword}&page=${currentPage}&productGender=${gender}&productCategory=${category}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
+      } else if (category) {
+        console.log(gender, category);
         link = `/api/products?keyword=${keyword}&page=${currentPage}&productCategory=${category}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
+      } else if (gender) {
+        console.log(gender, category);
+        link = `/api/products?keyword=${keyword}&page=${currentPage}&productGender=${gender}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
+      } else {
+        link = `/api/products?keyword=${keyword}&page=${currentPage}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
       }
+      console.log(link);
       //  else if (gender) {
       //   link = `/api/products?keyword=${keyword}&page=${currentPage}&productGender=${gender}&productPriceMax[lte]=${price[1]}&productPriceMax[gte]=${price[0]}&ratings[gte]=${ratings}`;
       // }

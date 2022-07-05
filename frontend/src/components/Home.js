@@ -19,8 +19,11 @@ const Range = createSliderWithTooltip(Slider.Range);
 const Home = ({ history, match }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 20000]);
+  const [gender, setGender] = useState("");
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
+
+  const genders = ["men", "women", "kids"];
 
   const categories = [
     "Kurta",
@@ -61,16 +64,25 @@ const Home = ({ history, match }) => {
   } = useSelector((state) => state.products);
   let keyword = match.params.keyword;
 
-  // const [search, setSearch] = useState(null);
-  // const [searchTerm, setSearchTerm] = useState("");
-
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
 
-    dispatch(getProducts(keyword, currentPage, price, category, rating));
-  }, [dispatch, alert, error, keyword, currentPage, price, category, rating]);
+    dispatch(
+      getProducts(keyword, currentPage, price, category, gender, rating)
+    );
+  }, [
+    dispatch,
+    alert,
+    error,
+    keyword,
+    currentPage,
+    price,
+    gender,
+    category,
+    rating,
+  ]);
 
   function setCurrentPageNumber(pageNumber) {
     setCurrentPage(pageNumber);
@@ -96,14 +108,14 @@ const Home = ({ history, match }) => {
                   render={({ history }) => <SearchBar history={history} />}
                 />
               </div>
-              <div className="col-md-8 col-lg-6 justify-self-center">
+              {/* <div className="col-md-8 col-lg-6 justify-self-center">
                 <div className="header">
                   <h3>Featured Product</h3>
                   <h2>Popular Products</h2>
                 </div>
-              </div>
+              </div> */}
             </div>
-            <div className="row">
+            <div className="row mt-5">
               {/* if keyword exists display the filters */}
               {/* {keyword ? ( */}
               <>
@@ -128,12 +140,31 @@ const Home = ({ history, match }) => {
 
                     <hr className="my-5" />
                     <div className="mt-5">
+                      <h4 className="mb-3">For</h4>
+                      <ul className="ps-0">
+                        {genders.map((gender) => (
+                          <li
+                            key={gender}
+                            onClick={() => setGender(gender)}
+                            style={{
+                              cursor: "pointer",
+                              listStyleType: "none",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            {gender}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <hr className="my-5" />
+                    <div className="mt-5">
                       <h4 className="mb-3">Categories</h4>
                       <ul className="ps-0">
                         {categories.map((category) => (
                           <li
                             key={category}
-                            // onClick={() => console.log(category)}
                             onClick={() => setCategory(category)}
                             style={{
                               cursor: "pointer",
