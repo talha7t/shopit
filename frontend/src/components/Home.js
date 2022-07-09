@@ -96,107 +96,108 @@ const Home = ({ history, match }) => {
 
   return (
     <section className="section-products">
-      {loading ? (
-        <Loader />
-      ) : products.lengtth > 0 ? (
-        <>
-          <MetaData title={"Home"} />
-          <div className="container">
-            <div className="row justify-content-center text-center">
-              <div className="col-12 my-3">
-                <Route
-                  render={({ history }) => <SearchBar history={history} />}
+      <div className="container">
+        {/* -------Search Bar -------- */}
+        <div className="row justify-content-center text-center">
+          <div className="col-12 my-3">
+            <Route render={({ history }) => <SearchBar history={history} />} />
+          </div>
+        </div>
+
+        <MetaData title={"Home"} />
+
+        <div className="row mt-5">
+          {/* if keyword exists display the filters */}
+          {/* {keyword ? ( */}
+          <>
+            <div className="col-6 col-md-3 mt-5 mb-5">
+              <div className="px-5">
+                <Range
+                  marks={{
+                    0: `Rs0`,
+                    20000: `Rs20000`,
+                  }}
+                  min={0}
+                  max={20000}
+                  defaultValue={[0, 20000]}
+                  tipFormatter={(value) => `Rs${value}`}
+                  tipProps={{ placement: "top", visible: true }}
+                  value={price}
+                  step={2000}
+                  included={true}
+                  dots={true}
+                  onChange={(price) => setPrice(price)}
                 />
-              </div>
-            </div>
-            <div className="row mt-5">
-              {/* if keyword exists display the filters */}
-              {/* {keyword ? ( */}
-              <>
-                <div className="col-6 col-md-3 mt-5 mb-5">
-                  <div className="px-5">
-                    <Range
-                      marks={{
-                        0: `Rs0`,
-                        20000: `Rs20000`,
-                      }}
-                      min={0}
-                      max={20000}
-                      defaultValue={[0, 20000]}
-                      tipFormatter={(value) => `Rs${value}`}
-                      tipProps={{ placement: "top", visible: true }}
-                      value={price}
-                      step={2000}
-                      included={true}
-                      dots={true}
-                      onChange={(price) => setPrice(price)}
-                    />
 
-                    <hr className="my-5" />
-                    <div className="mt-5">
-                      <h4 className="mb-3">For</h4>
-                      <ul className="ps-0">
-                        {genders.map((gender) => (
-                          <li
-                            key={gender}
-                            onClick={() => setGender(gender)}
-                            style={{
-                              cursor: "pointer",
-                              listStyleType: "none",
-                              textTransform: "capitalize",
-                            }}
-                          >
-                            {gender}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <hr className="my-5" />
-                    <div className="mt-5">
-                      <h4 className="mb-3">Categories</h4>
-                      <ul className="ps-0">
-                        {categories.map((category) => (
-                          <li
-                            key={category}
-                            onClick={() => setCategory(category)}
-                            style={{
-                              cursor: "pointer",
-                              listStyleType: "none",
-                            }}
-                          >
-                            {category}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <hr className="my-3" />
-                    <div className="mt-5">
-                      <h4 className="mb-3">Ratings</h4>
-                      <ul className="ps-0">
-                        {[5, 4, 3, 2, 1].map((star) => (
-                          <li
-                            key={star}
-                            onClick={() => setRating(star)}
-                            style={{
-                              cursor: "pointer",
-                              listStyleType: "none",
-                            }}
-                          >
-                            <div className="rating-outer">
-                              <div
-                                className="rating-inner"
-                                style={{ width: `${star * 20}%` }}
-                              ></div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+                <hr className="my-5" />
+                <div className="mt-5">
+                  <h4 className="mb-3">For</h4>
+                  <ul className="ps-0">
+                    {genders.map((gender) => (
+                      <li
+                        key={gender}
+                        onClick={() => setGender(gender)}
+                        style={{
+                          cursor: "pointer",
+                          listStyleType: "none",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {gender}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
+                <hr className="my-5" />
+                <div className="mt-5">
+                  <h4 className="mb-3">Categories</h4>
+                  <ul className="ps-0">
+                    {categories.map((category) => (
+                      <li
+                        key={category}
+                        onClick={() => setCategory(category)}
+                        style={{
+                          cursor: "pointer",
+                          listStyleType: "none",
+                        }}
+                      >
+                        {category}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <hr className="my-3" />
+                <div className="mt-5">
+                  <h4 className="mb-3">Ratings</h4>
+                  <ul className="ps-0">
+                    {[5, 4, 3, 2, 1].map((star) => (
+                      <li
+                        key={star}
+                        onClick={() => setRating(star)}
+                        style={{
+                          cursor: "pointer",
+                          listStyleType: "none",
+                        }}
+                      >
+                        <div className="rating-outer">
+                          <div
+                            className="rating-inner"
+                            style={{ width: `${star * 20}%` }}
+                          ></div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {loading ? (
+              <Loader />
+            ) : productCount > 0 ? (
+              <>
                 <div className="col-6 col-md-9">
                   <div className="row">
                     {products &&
@@ -207,40 +208,32 @@ const Home = ({ history, match }) => {
                       })}
                   </div>
                 </div>
-              </>
-              {/* ) : (
-                products &&
-                products.map((product) => {
-                  return <Card key={product._id} product={product} col={3} />;
-                })
-              )} */}
-            </div>
-          </div>
 
-          {/* display pagination only if total products are less than or equal to products per page */}
-          {resultsPerPage <= count && (
-            <div class="d-flex justify-content-center mt-5">
-              <Pagination
-                activePage={currentPage}
-                itemsCountPerPage={resultsPerPage}
-                totalItemsCount={productCount}
-                onChange={setCurrentPageNumber}
-                pageRangeDisplayed={5}
-                nextPageText={"Next"}
-                prevPageText={"Prev"}
-                firstPageText={"First"}
-                lastPageText={"Last"}
-                itemClass="page-item"
-                linkClass="page-link"
-              />
-            </div>
-          )}
-        </>
-      ) : (
-        <h2 className="ms-5">
-          No products Found with selected Filters or search term
-        </h2>
-      )}
+                {/* display pagination only if total products are less than or equal to products per page */}
+                {resultsPerPage <= count && (
+                  <div class="d-flex justify-content-center mt-5">
+                    <Pagination
+                      activePage={currentPage}
+                      itemsCountPerPage={resultsPerPage}
+                      totalItemsCount={productCount}
+                      onChange={setCurrentPageNumber}
+                      pageRangeDisplayed={5}
+                      nextPageText={"Next"}
+                      prevPageText={"Prev"}
+                      firstPageText={"First"}
+                      lastPageText={"Last"}
+                      itemClass="page-item"
+                      linkClass="page-link"
+                    />
+                  </div>
+                )}
+              </>
+            ) : (
+              <h2>No products Found with selected Filters or search term</h2>
+            )}
+          </>
+        </div>
+      </div>
     </section>
   );
 };
