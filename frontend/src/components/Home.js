@@ -96,6 +96,8 @@ const Home = ({ history, match }) => {
 
   return (
     <section className="section-products">
+      <MetaData title={"Home"} />
+
       <div className="container">
         {/* -------Search Bar -------- */}
         <div className="row justify-content-center text-center">
@@ -103,8 +105,6 @@ const Home = ({ history, match }) => {
             <Route render={({ history }) => <SearchBar history={history} />} />
           </div>
         </div>
-
-        <MetaData title={"Home"} />
 
         <div className="row mt-5">
           {/* if keyword exists display the filters */}

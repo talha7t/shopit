@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../actions/userActions";
 import { useAlert } from "react-alert";
 
-import "../../styles/newNav.css";
+import "../../styles/navbar.css";
 
 const Navbar = () => {
   // sidebar open close js code
