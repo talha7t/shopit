@@ -16,6 +16,13 @@
   color: #333 !important;
 }
 
+.text-link,
+.text-link:hover,
+.text-link:active,
+.text-link:focus {
+  text-decoration: none !important;
+}
+
 /* ========================LOADER======================== */
 
 .loader {

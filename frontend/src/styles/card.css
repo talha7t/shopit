@@ -27,8 +27,10 @@
   bottom: 10px;
   position: absolute;
   display: flex;
+  justify-content: center;
   transform: translateY(50px);
   transition: all 0.3s ease;
+  width: 100%;
 }
 
 .icons a {
@@ -40,6 +42,7 @@
   border-radius: 2px;
   display: flex;
   justify-content: center;
+  width: 90%;
   align-items: center;
 }
 
@@ -52,15 +55,6 @@
 .icons a span {
   font-family: "roboto", sans-serif;
   font-weight: 400;
-}
-
-.icons a:hover {
-  border: 1px solid #ff6363;
-}
-
-.icons a:hover i,
-.icons a:hover span {
-  color: #ff6363;
 }
 
 .card-part-2 {

@@ -10,13 +10,6 @@
   min-height: 100vh;
 } */
 
-.text-link,
-.text-link:hover,
-.text-link:active,
-.text-link:focus {
-  text-decoration: none !important;
-}
-
 nav {
   /* position: fixed; */
   /* top: 0; */

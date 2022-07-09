@@ -196,7 +196,13 @@ const Home = ({ history, match }) => {
 
             {loading ? (
               <Loader />
-            ) : productCount > 0 ? (
+            ) : filteredProductsCount <= 0 ? (
+              <div className="col mt-5 mb-5">
+                <h3 style={{ color: "#333" }}>
+                  No Products Found with selected Filters or Search Term
+                </h3>
+              </div>
+            ) : (
               <>
                 <div className="col-6 col-md-9">
                   <div className="row">
@@ -228,8 +234,6 @@ const Home = ({ history, match }) => {
                   </div>
                 )}
               </>
-            ) : (
-              <h2>No products Found with selected Filters or search term</h2>
             )}
           </>
         </div>

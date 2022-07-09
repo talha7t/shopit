@@ -16,16 +16,11 @@ const Card = ({ product, col }) => {
             />
           </Link>
           <div className="icons">
-            <a className="icon" href={`/`}>
-              <i className="fas fa-shopping-cart"></i>
-            </a>
-            {/* <button className="icon">
-              <i className="fas fa-heart"></i>
-            </button> */}
-            <a className="icon">
-              <i className="fas fa-heart"></i>
-            </a>
-            <Link className="icon" to={`/products/${product._id}`}>
+            <Link
+              className="icon text-link"
+              style={{ textDecoration: "none" }}
+              to={`/products/${product._id}`}
+            >
               <span>Details</span>
             </Link>
           </div>
@@ -33,7 +28,7 @@ const Card = ({ product, col }) => {
         <div className="card-part-2">
           <h2 className="product-name">{product.productName}</h2>
           <h3 className="product-price">
-            Price: {product.productPriceMax} (Pkr)
+            Price: Rs. {product.productPriceMax}
           </h3>
         </div>
       </div>
