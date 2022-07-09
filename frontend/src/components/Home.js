@@ -98,7 +98,7 @@ const Home = ({ history, match }) => {
     <section className="section-products">
       {loading ? (
         <Loader />
-      ) : (
+      ) : products.lengtth > 0 ? (
         <>
           <MetaData title={"Home"} />
           <div className="container">
@@ -108,12 +108,6 @@ const Home = ({ history, match }) => {
                   render={({ history }) => <SearchBar history={history} />}
                 />
               </div>
-              {/* <div className="col-md-8 col-lg-6 justify-self-center">
-                <div className="header">
-                  <h3>Featured Product</h3>
-                  <h2>Popular Products</h2>
-                </div>
-              </div> */}
             </div>
             <div className="row mt-5">
               {/* if keyword exists display the filters */}
@@ -242,6 +236,10 @@ const Home = ({ history, match }) => {
             </div>
           )}
         </>
+      ) : (
+        <h2 className="ms-5">
+          No products Found with selected Filters or search term
+        </h2>
       )}
     </section>
   );

@@ -5,6 +5,7 @@ const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 const ApiFeatures = require("../utilities/ApiFeautres");
 const cloudinary = require("cloudinary");
+const sendEmail = require("../utilities/sendEmail");
 
 // @desc        User Get all products
 // @route       GET /api/products?keyword=yourKeyword
@@ -250,11 +251,34 @@ function reviewObserver(days, user, percentageLimit, minReviews) {
     }
 
     percentages.forEach((percentage) => {
-      if (percentage >= percentageLimit) {
+      if (percentage >= percentageLimit && user.status === "unblocked") {
         user.userStatus = "warned";
+        sendStatusMail("warned");
+        return;
+      }
+      if (percentage >= percentageLimit && user.status === "warned") {
+        user.userStatus = "blocked";
+        sendStatusMail("blocked");
         return;
       }
     });
+  }
+}
+
+async function sendStatusMail(status) {
+  const message =
+    "Hello " + user.userName + ",\n\n" + status === "warned"
+      ? "We have observed unsusual activity from your account. If we observe any further unsual activity we will block your account. Unsual activity might be using bots to review products or repeating the same review"
+      : "Your account has been bleckoed due to unsual activity";
+
+  try {
+    await sendEmail({
+      email: user.userEmail,
+      subject: `Account ${status} notification from Shop IT`,
+      message,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
   }
 }
 

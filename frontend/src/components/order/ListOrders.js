@@ -76,7 +76,7 @@ const ListOrders = () => {
 
       {loading ? (
         <Loader />
-      ) : (
+      ) : orders.length > 0 ? (
         <div className="container">
           <BootstrapTable
             data={setData()}
@@ -88,6 +88,8 @@ const ListOrders = () => {
             condensed
           />
         </div>
+      ) : (
+        <p className="ms-5">You have no orders</p>
       )}
     </>
   );
