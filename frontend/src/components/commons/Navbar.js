@@ -1,17 +1,20 @@
-import React, { useRef } from "react";
+// import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../actions/userActions";
 import { useAlert } from "react-alert";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/js/bootstrap.min.js";
+
 import "../../styles/navbar.css";
+import "../../App.css";
 
 const Navbar = () => {
   // sidebar open close js code
   let navLinks = document.querySelector(".nav-links");
 
   const menuOpen = () => {
-    console.log(navLinks);
     navLinks.style.left = "0";
   };
   const menuClose = () => {

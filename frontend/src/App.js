@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from "axios";
-import Header from "./components/commons/Header";
+// import Header from "./components/commons/Header";
 import Home from "./components/Home";
 import store from "./store";
 import { ProductDetails } from "./components/user/ProductDetails";
 import { Login } from "./components/user/Login";
 import { Register } from "./components/user/Register";
 import { loadUser } from "./actions/userActions";
-import Profile from "./components/user/Account.js";
+import Profile from "./components/user/Profile.js";
 // import { Profile } from "./components/user/Profile";
 import { ProtectedRoute } from "./components/route/ProtectedRoute";
 import { UpdateProfile } from "./components/user/UpdateProfile";

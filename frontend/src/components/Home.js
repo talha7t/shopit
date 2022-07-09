@@ -133,6 +133,18 @@ const Home = ({ history, match }) => {
                 <div className="mt-5">
                   <h4 className="mb-3">For</h4>
                   <ul className="ps-0">
+                    <li
+                      key="all-genders"
+                      onClick={(e) => setGender(e.target.value)}
+                      value=""
+                      style={{
+                        cursor: "pointer",
+                        listStyleType: "none",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      All Genders
+                    </li>
                     {genders.map((gender) => (
                       <li
                         key={gender}
@@ -153,6 +165,17 @@ const Home = ({ history, match }) => {
                 <div className="mt-5">
                   <h4 className="mb-3">Categories</h4>
                   <ul className="ps-0">
+                    <li
+                      key="all-categories"
+                      value=""
+                      onClick={(e) => setCategory(e.target.value)}
+                      style={{
+                        cursor: "pointer",
+                        listStyleType: "none",
+                      }}
+                    >
+                      All Categories
+                    </li>
                     {categories.map((category) => (
                       <li
                         key={category}

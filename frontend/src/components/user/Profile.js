@@ -1,18 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { MetaData } from "./../commons/MetaData";
-import Loader from "./../commons/Loader";
+import { MetaData } from "../commons/MetaData";
+import Loader from "../commons/Loader";
 
 import "../../styles/profile.css";
 
-export const Profile = () => {
+const Profile = () => {
   const { user, loading } = useSelector((state) => state.auth);
-
-  const rowClasses = "row details-row mb-5";
-  const fixedContentClasses = "col-5 col-md-4 col-lg-3 d-flex align-items-end ";
-  const userInfomrationClasses =
-    "col-5 col-md-8 col-lg-9 d-flex align-items-end justify-content-start";
 
   return (
     <div className="container my-5">
@@ -21,64 +16,46 @@ export const Profile = () => {
       ) : (
         <>
           <MetaData title="Profile" />
-          <div className="d-flex justify-content-center mb-5">
-            <h2 className="main-heading">Profile Details</h2>
-          </div>
+          <div class="container mt-5 details-container">
+            <div class="info-separate my-4 pt-4">
+              <h2 class="heading mb-3">Personal Details</h2>
+              <p class="info">{user.userName}</p>
+              <p class="info">{user.userDateOfBirth.substr(0, 10)}</p>
+              <p class="info">{user.userGender}</p>
+            </div>
 
-          <div className={rowClasses}>
-            <div className={fixedContentClasses}>
-              <h2 className="user-heading">User Name</h2>
-            </div>
-            <div className={userInfomrationClasses}>
-              <p className="user-info">{user.userName}</p>
-            </div>
-          </div>
+            <div class="info-separate my-4 pt-4">
+              <h2 class="heading mb-3">Login Details</h2>
+              <p class="info email-text">{user.userEmail}</p>
 
-          <div className={rowClasses}>
-            <div className={fixedContentClasses}>
-              <h2 className="user-heading">Email</h2>
-            </div>
-            <div className={userInfomrationClasses}>
-              <p className="user-info">{user.userEmail}</p>
-            </div>
-          </div>
-
-          <div className={rowClasses}>
-            <div className={fixedContentClasses}>
-              <h2 className="user-heading">Address</h2>
-            </div>
-            <div className={userInfomrationClasses}>
-              <p className="user-info">{user.userAddress}</p>
-            </div>
-          </div>
-
-          <div className={rowClasses}>
-            <div className={fixedContentClasses}>
-              <h2 className="user-heading">Contact</h2>
-            </div>
-            <div className={userInfomrationClasses}>
-              <p className="user-info">{user.userContact}</p>
-            </div>
-          </div>
-
-          <div className="row my-5 buttons-container">
-            <div className="col-5 col-md-4">
-              <Link
-                to="/password/update"
-                className="btn btn-primary text-success"
-                id="password-btn"
-              >
-                Change Password
+              <Link to="/password/update">
+                <button class="account-forgot-btn mt-3 p-2">
+                  Change Password
+                </button>
               </Link>
             </div>
-            <div className="col-5 col-md-4 d-flex justify-content-start">
-              <Link
-                to="/update/me"
-                className="btn btn-primary text-success"
-                id="edit-btn"
-              >
-                Edit Information
+
+            <div class="info-separate my-4 pt-4">
+              <h2 class="heading mb-3">Address Details</h2>
+              <p class="info">{user.userAddress}</p>
+              <p class="info">
+                {user.userCity}, {user.userZipCode}
+              </p>
+              <p class="info">{user.userCountry}</p>
+              <p class="info">{user.userContact}</p>
+            </div>
+
+            <div class="info-separate my-4 py-4">
+              <h2 class="heading mb-3">Manage Account</h2>
+              <Link to="/update/me">
+                <button class="w-25 account-manage-btn my-2 mb-3 py-2 px-4">
+                  Edit Details
+                </button>
               </Link>
+              <br />
+              <button class="w-25 account-manage-btn my-2 py-2 px-4">
+                Delete Account
+              </button>
             </div>
           </div>
         </>
@@ -86,3 +63,5 @@ export const Profile = () => {
     </div>
   );
 };
+
+export default Profile;
