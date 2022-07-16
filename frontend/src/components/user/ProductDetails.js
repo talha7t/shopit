@@ -13,6 +13,8 @@ import { useAlert } from "react-alert";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import ListReviews from "../review/ListReviews";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 import "../../styles/product-details.css";
 
 export const ProductDetails = ({ match }) => {
@@ -330,7 +332,6 @@ export const ProductDetails = ({ match }) => {
                     Login to submit review
                   </div>
                 )}
-
                 <div className="row mt-2 mb-5">
                   <div className="rating w-50">
                     <div
