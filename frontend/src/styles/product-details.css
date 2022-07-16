@@ -154,7 +154,6 @@ ul {
 
 /* Ratings */
 
-
 .star {
   font-size: 1.5rem;
   margin-right: 0.5rem;
@@ -186,8 +185,9 @@ ul {
   top: 0;
   left: 0;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: hidden !important;
   width: 0;
+  font-family: "Font Awesome 5 Free";
   font-weight: 900;
 }
 

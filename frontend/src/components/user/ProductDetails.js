@@ -13,8 +13,6 @@ import { useAlert } from "react-alert";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import ListReviews from "../review/ListReviews";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
 import "../../styles/product-details.css";
 
 export const ProductDetails = ({ match }) => {
