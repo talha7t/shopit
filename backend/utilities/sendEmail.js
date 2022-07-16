@@ -12,11 +12,17 @@ const sendEmail = async (options) => {
   });
 
   const message = {
-    from: `${process.env.SMTP_FROM_EMAIL} <${process.env.SMTP_FROM_EMAIL}>`,
-    to: options.email,
+    from: options.email
+      ? options.email
+      : `${process.env.SMTP_FROM_EMAIL} <${process.env.SMTP_FROM_EMAIL}>`,
+    to:
+      options.to === "jtalha620@gmail.com"
+        ? "jtalha620@gmail.com"
+        : options.email,
     subject: options.subject,
     text: options.message,
   };
+  console.log(message);
 
   await transporter.sendMail(message);
 };

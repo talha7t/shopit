@@ -61,7 +61,7 @@ const Navbar = () => {
               <a href="#">PRODUCTS</a>
             </li>
             <li>
-              <a href="#">CONTACT</a>
+              <Link to="/contact">CONTACT</Link>
             </li>
             <li>
               <Link to="/cart" className="">

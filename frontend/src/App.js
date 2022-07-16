@@ -26,6 +26,8 @@ import OrderSuccess from "./components/order/OrderSuccess";
 import ListOrders from "./components/order/ListOrders";
 import OrderDetails from "./components/order/OrderDetails";
 
+import Contact from "./components/Contact";
+
 // Admin Imports
 import Dashboard from "./components/admin/Dashboard";
 import ProductsList from "./components/admin/ProductsList";
@@ -59,6 +61,7 @@ function App() {
         <Route path="/" component={Home} exact />
         <Route path="/search/:keyword" component={Home} />
         <Route path="/products/:id" component={ProductDetails} exact />
+        <Route path="/contact" component={Contact} />
 
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />

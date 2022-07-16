@@ -13,6 +13,7 @@ import {
   forgotPasswordReducer,
   allUsersReducer,
   userDetailsReducer,
+  contactReducer,
 } from "./userReducers";
 import { cartReducer } from "./cartReducers";
 import {
@@ -39,5 +40,6 @@ export default combineReducers({
   orderDetails: orderDetailsReducer,
   manageProducts: manageProductsReducer,
   manageOrder: manageOrdersReducer,
+  contact: contactReducer,
   newReview: newReviewReducer,
 });

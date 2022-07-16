@@ -41,6 +41,9 @@ import {
   DELETE_USER_SUCCESS,
   DELETE_USER_RESET,
   DELETE_USER_FAIL,
+  CONTACT_US_REQUEST,
+  CONTACT_US_SUCCESS,
+  CONTACT_US_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -159,6 +162,38 @@ export const userReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const contactReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CONTACT_US_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case CONTACT_US_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload.success,
+        message: action.payload.message,
+      };
+    case CONTACT_US_FAIL:
+      return {
+        ...state,
+        loading: false,
+        success: false,
         error: action.payload,
       };
     case CLEAR_ERRORS:

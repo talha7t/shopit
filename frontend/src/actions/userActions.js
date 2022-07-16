@@ -39,6 +39,9 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
+  CONTACT_US_REQUEST,
+  CONTACT_US_SUCCESS,
+  CONTACT_US_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -302,6 +305,29 @@ export const deleteUser = (id) => async (dispatch) => {
     });
   }
 };
+
+//  User Contact Email
+export const contactUs =
+  (name, email, subject, message) => async (dispatch) => {
+    try {
+      dispatch({ type: CONTACT_US_REQUEST });
+
+      const config = { headers: { "Content-Type": "application/json" } };
+
+      const { data } = await axios.post(
+        `/api/contact`,
+        { name, email, subject, message },
+        config
+      );
+
+      dispatch({ type: CONTACT_US_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: CONTACT_US_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
 
 // clear errors
 export const clearErrors = () => async (dispatch) => {

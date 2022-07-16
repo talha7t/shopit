@@ -411,6 +411,29 @@ const adminDeleteProfile = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
+// @desc        Admin delete a specific suer
+// @access      Private
+// @route       DELETE /api/user/:id
+
+const contactUs = catchAsyncErrors(async (req, res, next) => {
+  const { name, email, subject, message } = req.body;
+
+  try {
+    await sendEmail({
+      email,
+      subject,
+      message,
+      to: "jtalha620@gmail.com",
+    });
+    res.status(200).json({
+      success: true,
+      message: `Your email was sent successfully`,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -425,4 +448,5 @@ module.exports = {
   getUser,
   adminUpdateProfile,
   adminDeleteProfile,
+  contactUs,
 };
