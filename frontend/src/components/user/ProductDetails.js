@@ -15,7 +15,7 @@ import ListReviews from "../review/ListReviews";
 
 import "../../styles/product-details.css";
 
-export const ProductDetails = ({ match }) => {
+export const ProductDetails = ({ history, match }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 

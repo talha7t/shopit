@@ -222,18 +222,27 @@ const createProductReview = catchAsyncErrors(async (req, res, next) => {
 
   product.ratings = ratingSum / product.productReviews.length;
 
+  let prevUserStatus = user.userStatus;
   // getting reviews within 1 day
-  reviewObserver(1, user, 90, 5);
+  reviewObserver(1, user, 90, 5, next);
+
+  // getting reviews within 7 days
+  if (user.userStatus === prevUserStatus) {
+    reviewObserver(7, user, 80, 10, next);
+  }
 
   // saving changes to product and user
   await product.save({ validateBeforeSave: false });
   await user.save({ validateBeforeSave: false });
 
-  res.status(201).json({ success: true });
+  if (user.userStatus === prevUserStatus) {
+    res.status(201).json({ success: true });
+  }
 });
 
 // function to find similar comments
-function reviewObserver(days, user, percentageLimit, minReviews) {
+// percentage limit is the percentage of identical comments
+function reviewObserver(days, user, percentageLimit, minReviews, next) {
   const reviews = user.userReviews.filter(
     (item) => new Date(item.reviewdAt) > Date.now() - days * 24 * 60 * 60 * 1000
   );
@@ -251,25 +260,35 @@ function reviewObserver(days, user, percentageLimit, minReviews) {
     }
 
     percentages.forEach((percentage) => {
-      if (percentage >= percentageLimit && user.status === "unblocked") {
+      if (percentage >= percentageLimit && user.userStatus === "unblocked") {
         user.userStatus = "warned";
-        sendStatusMail("warned");
-        return;
+        sendStatusMail(user, "warned");
+        return next(
+          new ErrorHandler(
+            "We have Found suspicious activity from your account, any further activity will result in ban of your account",
+            404
+          )
+        );
       }
-      if (percentage >= percentageLimit && user.status === "warned") {
+      if (percentage >= percentageLimit && user.userStatus === "warned") {
         user.userStatus = "blocked";
-        sendStatusMail("blocked");
-        return;
+        sendStatusMail(user, "blocked");
+        return next(
+          new ErrorHandler(
+            "Your account has been blocked due to suspicious activity",
+            404
+          )
+        );
       }
     });
   }
 }
 
-async function sendStatusMail(status) {
+async function sendStatusMail(user, status) {
   const message =
     "Hello " + user.userName + ",\n\n" + status === "warned"
-      ? "We have observed unsusual activity from your account. If we observe any further unsual activity we will block your account. Unsual activity might be using bots to review products or repeating the same review"
-      : "Your account has been bleckoed due to unsual activity";
+      ? "We have observed unsusual activity from your account. If we observe any further unusual activity we will block your account. Unsual activity might be using bots to review products or repeating the same review"
+      : "Your account has been blocked due to unusual activity";
 
   try {
     await sendEmail({

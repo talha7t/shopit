@@ -7,7 +7,7 @@ import { useAlert } from "react-alert";
 
 import "../styles/contact.css";
 
-const Contact = () => {
+const Contact = ({ history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
@@ -27,6 +27,7 @@ const Contact = () => {
 
     if (success) {
       alert.success(message);
+      history.push("/");
     }
   }, [dispatch, error, alert, message, success]);
 
