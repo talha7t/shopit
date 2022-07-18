@@ -45,11 +45,13 @@ const ProcessOrder = ({ history, match }) => {
 
   let isPaid = paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
-  paymentInfo &&
-  paymentInfo.paymentMethod === "byHand" &&
-  order.orderStatus === "delivered"
-    ? (isPaid = true)
-    : (isPaid = false);
+  if (!isPaid) {
+    paymentInfo &&
+    paymentInfo.paymentMethod === "byHand" &&
+    order.orderStatus === "delivered"
+      ? (isPaid = true)
+      : (isPaid = false);
+  }
 
   // if (paymentInfo) {
   //   paymentInfo.paymentMethod === "byHand" && status === "delivered"

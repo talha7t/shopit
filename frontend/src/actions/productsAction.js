@@ -45,7 +45,6 @@ export const getProducts =
       }
       const { data } = await axios.get(link);
 
-      console.log(data);
       dispatch({
         type: ALL_PRODUCTS_SUCCESS,
         payload: data,

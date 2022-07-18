@@ -98,7 +98,6 @@ const Payment = ({ history }) => {
               status: result.paymentIntent.status,
               paymentMethod,
             };
-
             dispatch(createOrder(order));
             history.push("/success");
           } else {

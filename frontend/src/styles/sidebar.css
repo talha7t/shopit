@@ -204,7 +204,7 @@ body.dark .sidebar li a:hover .text {
 }
 
 .sidenav-link {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .menu-bar .mode .sun-moon {
@@ -289,6 +289,6 @@ body.dark .admin-main-section .text {
   color: var(--text-color);
 }
 
-.custom-search-field{
- width: 20rem; 
+.custom-search-field {
+  width: 20rem;
 }

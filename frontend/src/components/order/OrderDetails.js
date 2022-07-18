@@ -28,18 +28,19 @@ const OrderDetails = ({ match }) => {
 
   const { orderItems, shippingInfo, paymentInfo, totalPrice, orderStatus } =
     order;
-
   const shippingDetails =
     shippingInfo &&
     `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
 
   let isPaid = paymentInfo && paymentInfo.status === "succeeded" ? true : false;
 
-  paymentInfo &&
-  paymentInfo.paymentMethod === "byHand" &&
-  order.orderStatus === "delivered"
-    ? (isPaid = true)
-    : (isPaid = false);
+  if (!isPaid) {
+    paymentInfo &&
+    paymentInfo.paymentMethod === "byHand" &&
+    order.orderStatus === "delivered"
+      ? (isPaid = true)
+      : (isPaid = false);
+  }
   return (
     <>
       <MetaData title="Order Details" />
