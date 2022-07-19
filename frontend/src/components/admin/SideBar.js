@@ -6,12 +6,11 @@ import { useAlert } from "react-alert";
 
 import "../../styles/sidebar.css";
 
-const body = document.querySelector("body"),
-  modeText = body.querySelector(".mode-text");
+const body = document.querySelector("body");
 
 const handleModeSwitch = () => {
   body.classList.toggle("dark");
-
+  let modeText = document.querySelector(".mode-text");
   if (body.classList.contains("dark")) {
     modeText.innerText = "Light mode";
   } else {
@@ -37,7 +36,9 @@ const SideBar = () => {
             <span className="image">{/* <img src="logo.png" alt=""> */}</span>
 
             <div className="text logo-text">
-              <span className="name">SHOP IT</span>
+              <Link to="/" className="text-link name">
+                SHOP IT
+              </Link>
               {/* <span className="profession">Web developer</span>  */}
             </div>
           </div>

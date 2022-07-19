@@ -108,6 +108,7 @@ header .image-text .name {
   margin-top: 2px;
   font-size: 18px;
   font-weight: 600;
+  color: inherit !important;
 }
 
 header .image-text .profession {

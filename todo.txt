@@ -1,5 +1,3 @@
 2. when creating order check stock availability as well.
 3. allow only authorized users to delete reviews
 4: add favourites to user schema
-fix card payment
-fix inner text issue in side bar

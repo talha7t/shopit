@@ -421,9 +421,9 @@ const adminDeleteProfile = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
-// @desc        Admin delete a specific suer
-// @access      Private
-// @route       DELETE /api/user/:id
+// @desc        Customer contact Us
+// @access      Public
+// @route       POST /api/contact
 
 const contactUs = catchAsyncErrors(async (req, res, next) => {
   const { name, email, subject, message } = req.body;

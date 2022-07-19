@@ -23,6 +23,29 @@
   text-decoration: none !important;
 }
 
+/* ======================PAGINATION =================*/
+
+/* pagination */
+
+.btn-unselected {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--primary-color);
+}
+
+.btn-selected {
+  background-color: #fff;
+}
+
+.page-item a {
+  /* following styles affect bootstrap class for pagination button */
+  background-color: var(--primary-color) !important;
+  color: #fff;
+}
+.page-item.disabled a {
+  color: #fff !important;
+}
+
 /* ========================LOADER======================== */
 
 .loader {
