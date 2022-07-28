@@ -219,7 +219,7 @@ const Home = ({ history, match }) => {
 
             {loading ? (
               <Loader />
-            ) : filteredProductsCount <= 0 ? (
+            ) : filteredProductsCount <= 0 || productCount <= 0 ? (
               <div className="col mt-5 mb-5">
                 <h3 style={{ color: "#333" }}>
                   No Products Found with selected Filters or Search Term
@@ -239,8 +239,9 @@ const Home = ({ history, match }) => {
                 </div>
 
                 {/* display pagination only if total products are less than or equal to products per page */}
-                {resultsPerPage <= count && (
-                  <div class="d-flex justify-content-center mt-5">
+                {/*
+                resultsPerPage <= count && (
+                  <div className="d-flex justify-content-center mt-5">
                     <Pagination
                       activePage={currentPage}
                       itemsCountPerPage={resultsPerPage}
@@ -255,7 +256,8 @@ const Home = ({ history, match }) => {
                       linkClass="page-link"
                     />
                   </div>
-                )}
+                )
+                */}
               </>
             )}
           </>

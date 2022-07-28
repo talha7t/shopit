@@ -136,10 +136,10 @@ const confirmEmail = catchAsyncErrors(async (req, res, next) => {
     user.isVerified = true;
     user.save();
 
+    // remove token from database
     await token.remove();
 
     res.status(200).json({ message: "You account has been verified" });
-    // .redirect("/login");
   }
 });
 

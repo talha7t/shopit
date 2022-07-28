@@ -76,15 +76,34 @@ export const ProductDetails = ({ history, match }) => {
     });
   };
 
+  const displayWarning = (user) => {
+    if (user.userStatus === "warned") {
+      return (
+        <div className="text-danger alert alert-danger mt-5">
+          We have observed suspicious review activity from your account please
+          be careful when reviewing products
+        </div>
+      );
+    }
+    if (user.userStatus === "blocked") {
+      return (
+        <div className="text-danger alert alert-danger mt-5">
+          You account has been blocked from posting reviews due to suspicious
+          activity.
+        </div>
+      );
+    }
+  };
+
   const shouldReview = () => {
     if (orders !== undefined && orders.length > 0) {
       let isOrdered = false;
 
       // console.log(orders);
 
-      let completedOrders = orders.filter(
-        (order) => order.orderStatus === "delivered"
-      );
+      // let completedOrders = orders.filter(
+      //   (order) => order.orderStatus === "delivered"
+      // );
 
       // get the product id of completed orders
       let results = orders
@@ -323,6 +342,7 @@ export const ProductDetails = ({ history, match }) => {
                 <p>{product.productDescription}</p>
                 <hr />
 
+                {/* submit review or not */}
                 {user ? (
                   shouldReview()
                 ) : (
@@ -330,6 +350,9 @@ export const ProductDetails = ({ history, match }) => {
                     Login to submit review
                   </div>
                 )}
+
+                {/* display warning depending on user status */}
+                {user && displayWarning(user)}
                 <div className="row mt-2 mb-5">
                   <div className="rating w-50">
                     <div
