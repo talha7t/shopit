@@ -180,14 +180,14 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
   }
 
   // if user is blocked dont let them login
-  if (user.userStatus === "blocked") {
-    return next(
-      new ErrorHandler(
-        "Your account has been blocked due to suspicious activity please contact us if you think it was a mistake",
-        403
-      )
-    );
-  }
+  // if (user.userStatus === "blocked") {
+  //   return next(
+  //     new ErrorHandler(
+  //       "Your account has been blocked due to suspicious activity please contact us if you think it was a mistake",
+  //       403
+  //     )
+  //   );
+  // }
 
   sendToken(user, 200, res);
 });

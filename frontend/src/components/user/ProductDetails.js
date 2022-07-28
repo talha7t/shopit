@@ -342,9 +342,13 @@ export const ProductDetails = ({ history, match }) => {
                 <p>{product.productDescription}</p>
                 <hr />
 
-                {/* submit review or not */}
+                {/* user should submit review or not */}
                 {user ? (
-                  shouldReview()
+                  user.userStatus === "blocked" ? (
+                    <></>
+                  ) : (
+                    shouldReview()
+                  )
                 ) : (
                   <div className="text-danger alert alert-danger mt-5">
                     Login to submit review
@@ -353,6 +357,8 @@ export const ProductDetails = ({ history, match }) => {
 
                 {/* display warning depending on user status */}
                 {user && displayWarning(user)}
+
+                {/* modal for providing review */}
                 <div className="row mt-2 mb-5">
                   <div className="rating w-50">
                     <div

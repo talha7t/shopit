@@ -119,7 +119,7 @@ const UpdateUser = ({ history, match }) => {
                 >
                   <option value="unblocked">unblock</option>
                   <option value="warned">Warn</option>
-                  <option value="Blocked">Block</option>
+                  <option value="blocked">Block</option>
                 </select>
               </div>
 
