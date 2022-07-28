@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none !important;
+}
+
 .red {
   color: red;
 }
@@ -21,6 +25,10 @@
 .text-link:active,
 .text-link:focus {
   text-decoration: none !important;
+}
+
+.text-link:hover {
+  color: #fff;
 }
 
 /* ======================PAGINATION =================*/

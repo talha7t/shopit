@@ -231,7 +231,7 @@ const ProductsList = ({ history }) => {
         <div className="text d-flex justify-content-between p-0">
           <h1 className="text admin-main-heading">All products</h1>
           <button className="create-btn me-5 d-flex align-items-center">
-            <Link to="/admin/product" className="px-3 py-0">
+            <Link to="/admin/product" className="text-link px-3 py-0">
               Create Product
             </Link>
           </button>

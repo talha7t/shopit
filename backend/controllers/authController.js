@@ -100,17 +100,15 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
 
 const confirmEmail = catchAsyncErrors(async (req, res, next) => {
   const token = await Token.findOne({ token: req.params.token });
+  console.log(token);
   // token is not found into database i.e. token may have expired
   if (!token) {
     return next(
       new ErrorHandler(
-        "Your verification link may have expired. Please click on resend for verify your Email."
+        "Your account is not verified, please click on verification link in your mail inbox"
       ),
       400
     );
-    // return res.status(400).send({
-    //   msg: "Your verification link may have expired. Please click on resend for verify your Email.",
-    // });
   }
 
   const user = await User.findOne({
@@ -125,9 +123,6 @@ const confirmEmail = catchAsyncErrors(async (req, res, next) => {
       ),
       401
     );
-    // return res.status(401).send({
-    //   msg: "We were unable to find a user for this verification. Please SignUp!",
-    // });
   }
   // user is already verified
   else if (user.isVerified) {
@@ -141,8 +136,10 @@ const confirmEmail = catchAsyncErrors(async (req, res, next) => {
     user.isVerified = true;
     user.save();
 
-    // res.redirect("/login");
+    await token.remove();
+
     res.status(200).json({ message: "You account has been verified" });
+    // .redirect("/login");
   }
 });
 
