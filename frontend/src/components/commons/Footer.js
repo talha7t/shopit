@@ -4,7 +4,7 @@ import footerStyles from "../../styles/footer.module.css";
 
 const footer = () => {
   return (
-    <footer className={footerStyles.footer}>
+    <footer className={footerStyles.footer + " mt-5"}>
       <div className={footerStyles.container}>
         <div className={footerStyles.row}>
           <div className={footerStyles.footer_col}>

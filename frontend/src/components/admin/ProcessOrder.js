@@ -82,7 +82,9 @@ const ProcessOrder = ({ history, match }) => {
       <SideBar />
       <section className="admin-main-section py-3">
         <div className="text d-flex p-0">
-          <h1 className="text admin-main-heading">All Orders</h1>
+          <h1 className="text admin-main-heading">
+            Order # {order && order._id}
+          </h1>
         </div>
 
         {loading ? (
@@ -91,7 +93,7 @@ const ProcessOrder = ({ history, match }) => {
           <div className="mx-5 mt-3">
             <div className="row d-flex justify-content-around">
               <div className="col-12 col-lg-7 order-details">
-                <h1 className="my-5">Order # {order && order._id}</h1>
+                {/* <h1 className="my-5">Order # {order && order._id}</h1> */}
 
                 <h4 className="mb-4">Shipping Info</h4>
                 <p>
@@ -101,7 +103,7 @@ const ProcessOrder = ({ history, match }) => {
                   <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
                 </p>
                 <p className="mb-4">
-                  <b>Address:</b>
+                  <b>Address: </b>
                   {shippingDetails}
                 </p>
                 <p>

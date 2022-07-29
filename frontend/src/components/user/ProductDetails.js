@@ -99,12 +99,6 @@ export const ProductDetails = ({ history, match }) => {
     if (orders !== undefined && orders.length > 0) {
       let isOrdered = false;
 
-      // console.log(orders);
-
-      // let completedOrders = orders.filter(
-      //   (order) => order.orderStatus === "delivered"
-      // );
-
       // get the product id of completed orders
       let results = orders
         .filter((order) => order.orderStatus === "delivered")
@@ -131,7 +125,7 @@ export const ProductDetails = ({ history, match }) => {
         </button>
       ) : (
         <div className="text-danger alert alert-danger mt-5">
-          Purchase the product to review
+          You can review a product after it has been dellivered
         </div>
       );
     }

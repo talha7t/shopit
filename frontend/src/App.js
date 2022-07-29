@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from "axios";
-// import Header from "./components/commons/Header";
 import Home from "./components/Home";
 import store from "./store";
 import { ProductDetails } from "./components/user/ProductDetails";
@@ -65,8 +64,11 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/confirmation/:email/:token" component={ConfirmEmail} />
+        <Route path="/password/forgot" component={ForgotPassword} exact />
+        <Route path="/password/reset/:token" component={NewPassword} exact />
 
         <Route path="/cart" component={Cart} exact />
+
         <ProtectedRoute path="/shipping" component={ShippingInfo} />
         <ProtectedRoute path="/confirm" component={ConfirmOrder} />
         <ProtectedRoute path="/success" component={OrderSuccess} />
@@ -77,6 +79,15 @@ function App() {
         )}
         <ProtectedRoute path="/orders/me" component={ListOrders} exact />
         <ProtectedRoute path="/order/:id" component={OrderDetails} exact />
+        <ProtectedRoute path="/me" component={Profile} exact />
+        <ProtectedRoute path="/update/me" component={UpdateProfile} exact />
+        <ProtectedRoute
+          path="/password/update"
+          component={UpdatePassword}
+          exact
+        />
+
+        <Footer />
 
         <ProtectedRoute
           path="/dashboard"
@@ -117,16 +128,6 @@ function App() {
           exact
         />
 
-        <ProtectedRoute path="/me" component={Profile} exact />
-        <ProtectedRoute path="/update/me" component={UpdateProfile} exact />
-        <ProtectedRoute
-          path="/password/update"
-          component={UpdatePassword}
-          exact
-        />
-        <Route path="/password/forgot" component={ForgotPassword} exact />
-        <Route path="/password/reset/:token" component={NewPassword} exact />
-
         <ProtectedRoute
           path="/admin/users"
           isAdmin={true}
@@ -140,7 +141,6 @@ function App() {
           component={UpdateUser}
           exact
         />
-        <Footer />
       </div>
     </Router>
   );
