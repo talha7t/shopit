@@ -38,6 +38,7 @@ import UsersList from "./components/admin/UsersList";
 import UpdateUser from "./components/admin/UpdateUser";
 import ConfirmEmail from "./components/user/ConfirmEmail";
 import Navbar from "./components/commons/Navbar";
+import Footer from "./components/commons/Footer";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -55,7 +56,6 @@ function App() {
   return (
     <Router>
       <div className="APP">
-        {/* <Header /> */}
         <Navbar />
         <Route path="/" component={Home} exact />
         <Route path="/search/:keyword" component={Home} />
@@ -140,6 +140,7 @@ function App() {
           component={UpdateUser}
           exact
         />
+        <Footer />
       </div>
     </Router>
   );

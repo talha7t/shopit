@@ -144,6 +144,9 @@ ul {
 .XL-radio::before {
   content: "XL";
 }
+.XXL-radio::before {
+  content: "XXL";
+}
 .stock-radio:checked {
   background-color: rgb(201, 201, 201);
 }
