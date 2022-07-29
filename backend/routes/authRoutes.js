@@ -19,6 +19,13 @@ router.put(
   isAuthenticatedUser,
   authController.updatePassword
 );
+router.delete(
+  "/user",
+  isAuthenticatedUser,
+  authorizeRoles("customer"),
+  authController.deleteProfile
+);
+
 router.get(
   "/admin/users",
   isAuthenticatedUser,

@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MetaData } from "../commons/MetaData";
+import { deleteUser, logoutUser, clearErrors } from "../../actions/userActions";
+import { useAlert } from "react-alert";
 import Loader from "../commons/Loader";
 
 import "../../styles/profile.css";
 
-const Profile = () => {
+const Profile = ({ history }) => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+
   const { user, loading } = useSelector((state) => state.auth);
+  const { isDeleted, error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    if (isDeleted) {
+      alert.success("account deleted successfully");
+      dispatch(logoutUser());
+      history.push("/");
+    }
+  }, [dispatch, alert, isDeleted, error, history]);
+
+  const handleDelete = () => {
+    dispatch(deleteUser());
+  };
 
   return (
     <div className="container my-5">
@@ -53,7 +75,10 @@ const Profile = () => {
                 </button>
               </Link>
               <br />
-              <button class="w-25 account-manage-btn my-2 py-2 px-4">
+              <button
+                onClick={handleDelete}
+                class="w-25 account-manage-btn my-2 py-2 px-4"
+              >
                 Delete Account
               </button>
             </div>

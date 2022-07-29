@@ -76,7 +76,7 @@ export const UpdateProfile = ({ history }) => {
     <>
       <MetaData title="Update Profile" />
 
-      <div className="container d-flex justify-content-center align-items-center update-profile-container">
+      <div className="container my-5 d-flex justify-content-center align-items-center update-profile-container">
         <form
           action="/me/update"
           onSubmit={submitHandler}

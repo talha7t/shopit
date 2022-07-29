@@ -287,7 +287,7 @@ const logoutUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // @desc        Customer view account details
-// @route       GET /api/logout
+// @route       GET /api/me
 // @access      Public
 
 const getUserProfile = catchAsyncErrors(async (req, res, next) => {
@@ -418,6 +418,25 @@ const adminDeleteProfile = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true });
 });
 
+// @desc        User delete a specific suer
+// @access      Private
+// @route       DELETE /api/user
+
+const deleteProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  // const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorHandler("User not Found"), 404);
+  }
+
+  res.cookie("token", null, { expires: new Date(Date.now()), httpOnly: true });
+
+  await user.remove();
+
+  res.status(200).json({ success: true });
+});
+
 // @desc        Customer contact Us
 // @access      Public
 // @route       POST /api/contact
@@ -453,6 +472,7 @@ module.exports = {
   updatePassword,
   getAllUsers,
   getUser,
+  deleteProfile,
   adminUpdateProfile,
   adminDeleteProfile,
   contactUs,

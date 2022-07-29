@@ -83,7 +83,6 @@ export const register = (userData) => async (dispatch) => {
       },
     };
     const { data } = await axios.post("/api/register", userData, config);
-    console.log(data);
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
     // dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
@@ -290,12 +289,13 @@ export const getUserDetails = (id) => async (dispatch) => {
     });
   }
 };
-// Admin Delete User
+
+// User Delete Account
 export const deleteUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USER_REQUEST });
 
-    const { data } = await axios.delete(`/api/admin/user/${id}`);
+    const { data } = await axios.delete(`/api/user`);
 
     dispatch({ type: DELETE_USER_SUCCESS, payload: data.success });
   } catch (error) {
