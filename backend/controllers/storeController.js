@@ -31,7 +31,7 @@ const adminGetStores = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// @desc        Create a Store
+// @desc        Admin Create a Store
 // @route       POST /api/admin/store/new
 // @access      Private
 
@@ -62,9 +62,24 @@ const updateStore = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, store });
 });
 
+// @desc        Admin Delete a store
+// @route       DELETE /api/store/:id
+// @access      Private
+const deleteStore = catchAsyncErrors(async (req, res, next) => {
+  const store = await Store.findById(req.params.id);
+
+  if (!store) {
+    return next(new ErrorHandler("Store not found", 404));
+  }
+
+  await store.remove();
+  res.status(200).json({ success: true, message: `Deleted Store` });
+});
+
 module.exports = {
   getStore,
   adminGetStores,
   createStore,
   updateStore,
+  deleteStore,
 };

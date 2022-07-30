@@ -7,12 +7,11 @@ import { useAlert } from "react-alert";
 import ToolkitProvider, {
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
-import { DELETE_STORE_RESET } from "../../constants/productConstants";
+import { DELETE_STORE_RESET } from "../../constants/storeConstants";
 import {
   adminGetStores,
-  updateStore,
+  deleteStore,
   clearErrors,
-  // deleteProduct,
 } from "../../actions/storeActions";
 import { MetaData } from "../commons/MetaData";
 import Loader from "../commons/Loader";
@@ -25,9 +24,9 @@ const StoreList = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, error, stores } = useSelector((state) => state.stores);
-  // const { error: deleteError, isDeleted } = useSelector(
-  //   (state) => state.manageStores
-  // );
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.manageStore
+  );
 
   useEffect(() => {
     dispatch(adminGetStores());
@@ -36,17 +35,16 @@ const StoreList = ({ history }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-    // if (deleteError) {
-    //   alert.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
-    // if (isDeleted) {
-    //   alert.success("Product deleted successfully");
-    //   history.push("/admin/products");
-    //   dispatch({ type: DELETE_PRODUCT_RESET });
-    // }
-    // add isDeleted and deleteError to dependencies array
-  }, [dispatch, error, alert, history]);
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
+    if (isDeleted) {
+      alert.success("Product deleted successfully");
+      history.push("/admin/stores");
+      dispatch({ type: DELETE_STORE_RESET });
+    }
+  }, [dispatch, error, alert, history, deleteError, isDeleted]);
 
   // table related stuff
   const headerClasses = "customize-header";
@@ -178,9 +176,6 @@ const StoreList = ({ history }) => {
       data.push({
         storeId: store.storeId,
         storeName: store.storeName,
-        // maxPrice: product.productPriceMax,
-        // minPrice: product.productPriceMin,
-        // productGender: product.productGender,
         action: store._id,
       });
     });
@@ -189,7 +184,7 @@ const StoreList = ({ history }) => {
 
   const deleteProductHandler = (id) => {
     // console.log(id);
-    // dispatch(deleteProduct(id));
+    dispatch(deleteStore(id));
   };
 
   return (

@@ -33,4 +33,11 @@ router.put(
   storeController.updateStore
 );
 
+router.delete(
+  "/admin/store/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  storeController.deleteStore
+);
+
 module.exports = router;

@@ -120,6 +120,25 @@ export const updateStore = (id, storeData) => async (dispatch) => {
   }
 };
 
+// Admin delete store
+export const deleteStore = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_STORE_REQUEST });
+
+    const { data } = await axios.delete(`/api/admin/store/${id}`);
+
+    dispatch({
+      type: DELETE_STORE_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_STORE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // clear errors
 
 export const clearErrors = () => async (dispatch) => {
