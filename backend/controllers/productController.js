@@ -11,7 +11,7 @@ const sendEmail = require("../utilities/sendEmail");
 // @route       GET /api/products?keyword=yourKeyword
 // @access      Public
 const getProducts = catchAsyncErrors(async (req, res, next) => {
-  const resultsPerPage = 12;
+  // const resultsPerPage = 12;
 
   const productCount = await Product.countDocuments();
   const apiFeatures = new ApiFeatures(Product.find(), req.query)
@@ -21,7 +21,8 @@ const getProducts = catchAsyncErrors(async (req, res, next) => {
   let products = await apiFeatures;
   let filteredProductsCount = products.length;
 
-  apiFeatures.pagination(resultsPerPage);
+  apiFeatures.pagination();
+  // apiFeatures.pagination(resultsPerPage);
   products = await apiFeatures.query;
 
   if (!products) {
@@ -34,7 +35,7 @@ const getProducts = catchAsyncErrors(async (req, res, next) => {
     productCount: products.length,
     products,
     filteredProductsCount,
-    resultsPerPage,
+    // resultsPerPage,
   });
 });
 

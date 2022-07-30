@@ -4,10 +4,11 @@ const cookieParser = require("cookie-parser");
 const cloudinary = require("cloudinary");
 const fileUpload = require("express-fileupload");
 const errorHandler = require("./middlewares/errors");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const storeRoutes = require("./routes/storeRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
 
@@ -45,6 +46,7 @@ app.use("/api", productRoutes);
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", paymentRoutes);
+app.use("/api", storeRoutes);
 
 app.use(errorHandler);
 

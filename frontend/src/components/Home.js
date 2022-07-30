@@ -59,7 +59,7 @@ const Home = ({ history, match }) => {
     products,
     error,
     productCount,
-    resultsPerPage,
+    // resultsPerPage,
     filteredProductsCount,
   } = useSelector((state) => state.products);
   let keyword = match.params.keyword;

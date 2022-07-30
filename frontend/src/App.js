@@ -38,6 +38,10 @@ import UpdateUser from "./components/admin/UpdateUser";
 import ConfirmEmail from "./components/user/ConfirmEmail";
 import Navbar from "./components/commons/Navbar";
 import Footer from "./components/commons/Footer";
+import About from "./components/About";
+import StoreList from "./components/admin/StoreList";
+import NewStore from "./components/admin/NewStore";
+import UpdateStore from "./components/admin/UpdateStore";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -60,6 +64,7 @@ function App() {
         <Route path="/search/:keyword" component={Home} />
         <Route path="/products/:id" component={ProductDetails} exact />
         <Route path="/contact" component={Contact} />
+        <Route path="/about" component={About} />
 
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
@@ -139,6 +144,27 @@ function App() {
           path="/admin/user/:id"
           isAdmin={true}
           component={UpdateUser}
+          exact
+        />
+
+        <ProtectedRoute
+          path="/admin/stores"
+          isAdmin={true}
+          component={StoreList}
+          exact
+        />
+
+        <ProtectedRoute
+          path="/admin/store"
+          isAdmin={true}
+          component={NewStore}
+          exact
+        />
+
+        <ProtectedRoute
+          path="/admin/store/:id"
+          isAdmin={true}
+          component={UpdateStore}
           exact
         />
       </div>

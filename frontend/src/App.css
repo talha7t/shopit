@@ -146,3 +146,13 @@ a {
 .dashboard-card {
   height: 11rem !important;
 }
+
+/* orders */
+
+.order-note {
+  color: rgb(117, 115, 115);
+}
+
+.order-note span {
+  font-weight: 500;
+}

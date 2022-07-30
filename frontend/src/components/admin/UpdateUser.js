@@ -36,8 +36,6 @@ const UpdateUser = ({ history, match }) => {
       setEmail(user.userEmail);
       setRole(user.userRole);
       setStatus(user.userStatus);
-      // setAddress(user.userAddress);
-      // setContact(user.userContact);
     }
 
     if (error) {

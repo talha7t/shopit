@@ -78,6 +78,9 @@ const ListOrders = () => {
         <Loader />
       ) : orders.length > 0 ? (
         <div className="container">
+          <p className="order-note">
+            <span>Note:</span> Click on order ID to view details
+          </p>
           <BootstrapTable
             data={setData()}
             keyField="id"

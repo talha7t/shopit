@@ -79,6 +79,13 @@ const SideBar = () => {
                   <span className="text nav-text">Users</span>
                 </Link>
               </li>
+
+              <li className="nav-link sidenav-link">
+                <Link to="/admin/stores">
+                  <i className="bx bx-store-alt icon"></i>
+                  <span className="text nav-text">Stores</span>
+                </Link>
+              </li>
             </ul>
 
             {/* donot remove this  */}
