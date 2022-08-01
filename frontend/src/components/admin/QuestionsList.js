@@ -7,29 +7,29 @@ import { useAlert } from "react-alert";
 import ToolkitProvider, {
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
-import { DELETE_STORE_RESET } from "../../constants/storeConstants";
+import { DELETE_QUESTION_RESET } from "../../constants/questionConstants";
 import {
-  adminGetStores,
-  deleteStore,
+  adminGetQuestions,
+  deleteQuestion,
   clearErrors,
-} from "../../actions/storeActions";
+} from "../../actions/questionActions";
 import { MetaData } from "../commons/MetaData";
 import Loader from "../commons/Loader";
 import SideBar from "./SideBar";
 
 import "../../styles/productslist.css";
 
-const StoreList = ({ history }) => {
+const QuestionsList = ({ history }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, stores } = useSelector((state) => state.stores);
+  const { loading, error, questions } = useSelector((state) => state.questions);
   const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.manageStore
+    (state) => state.manageQuestions
   );
 
   useEffect(() => {
-    dispatch(adminGetStores());
+    dispatch(adminGetQuestions());
 
     if (error) {
       alert.error(error);
@@ -41,8 +41,8 @@ const StoreList = ({ history }) => {
     }
     if (isDeleted) {
       alert.success("Product deleted successfully");
-      history.push("/admin/stores");
-      dispatch({ type: DELETE_STORE_RESET });
+      history.push("/admin/questions");
+      dispatch({ type: DELETE_QUESTION_RESET });
     }
   }, [dispatch, error, alert, history, deleteError, isDeleted]);
 
@@ -83,7 +83,7 @@ const StoreList = ({ history }) => {
             <span
               style={{ cursor: "pointer" }}
               className="dropdown-item text-danger"
-              onClick={() => deleteStoreHandler(data)}
+              onClick={() => deleteQuestionHandler(data)}
             >
               Delete
             </span>
@@ -109,7 +109,7 @@ const StoreList = ({ history }) => {
       },
       {
         text: "All",
-        page: stores.length,
+        page: questions.length,
       },
     ],
     currSizePerPage,
@@ -148,19 +148,24 @@ const StoreList = ({ history }) => {
 
   const columns = [
     {
-      dataField: "storeId",
-      text: "Store Id",
+      dataField: "questionId",
+      text: "Question Id",
       sort: true,
       classes: "no-border-right text table-data-customize",
       headerFormatter: headerFormatter,
     },
     {
-      dataField: "storeName",
-      text: "Store Name",
+      dataField: "category",
+      text: "Category",
       // sort: true,
       classes: "no-border-right no-border-left text table-data-customize",
     },
-
+    {
+      dataField: "question",
+      text: "Question",
+      sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+    },
     {
       dataField: "action",
       text: "Actions",
@@ -172,31 +177,33 @@ const StoreList = ({ history }) => {
   const setData = () => {
     let data = [];
 
-    stores.forEach((store) => {
+    questions.forEach((question) => {
       data.push({
-        storeId: store.storeId,
-        storeName: store.storeName,
-        action: store._id,
+        questionId: question._id,
+        category: question.category,
+        question: question.question,
+        answer: question.answer,
+        action: question._id,
       });
     });
     return data;
   };
 
-  const deleteStoreHandler = (id) => {
-    dispatch(deleteStore(id));
+  const deleteQuestionHandler = (id) => {
+    dispatch(deleteQuestion(id));
   };
 
   return (
     <>
-      <MetaData title="All Stores" />
+      <MetaData title="All Questions" />
 
       <SideBar />
       <section className="admin-main-section py-3">
         <div className="text d-flex justify-content-between p-0">
-          <h1 className="text admin-main-heading">All Stores</h1>
+          <h1 className="text admin-main-heading">All Questions</h1>
           <button className="create-btn me-5 d-flex align-items-center">
-            <Link to="/admin/store" className="text-link px-3 py-0">
-              Add Store
+            <Link to="/admin/question/new" className="text-link px-3 py-0">
+              Add Question
             </Link>
           </button>
         </div>
@@ -207,7 +214,7 @@ const StoreList = ({ history }) => {
           <div className="mx-5 mt-3">
             <ToolkitProvider
               data={setData()}
-              keyField="storeId"
+              keyField="questionId"
               columns={columns}
               search
             >
@@ -236,4 +243,4 @@ const StoreList = ({ history }) => {
   );
 };
 
-export default StoreList;
+export default QuestionsList;

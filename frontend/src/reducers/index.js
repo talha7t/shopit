@@ -29,6 +29,12 @@ import {
   newStoreReducer,
   manageStoresReducer,
 } from "./storeReducers";
+import {
+  questionsReducer,
+  questionDetailsReducer,
+  newQuestionReducer,
+  manageQuestionsReducer,
+} from "./questionReducers";
 
 export default combineReducers({
   products: productsReducer,
@@ -52,4 +58,8 @@ export default combineReducers({
   storeDetails: storeDetailsReducer,
   newStore: newStoreReducer,
   manageStore: manageStoresReducer,
+  questions: questionsReducer,
+  newQuestion: newQuestionReducer,
+  questionDetails: questionDetailsReducer,
+  manageQuestions: manageQuestionsReducer,
 });

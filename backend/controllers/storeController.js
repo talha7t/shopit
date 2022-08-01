@@ -26,7 +26,7 @@ const getStore = catchAsyncErrors(async (req, res, next) => {
   const store = await Store.findById(req.params.id);
 
   if (!store) {
-    return next(new ErrorHandler("Product not found", 404));
+    return next(new ErrorHandler("Store not found", 404));
   }
 
   res.status(200).json({ success: true, store });

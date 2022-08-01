@@ -1,44 +1,44 @@
 const express = require("express");
 const router = express.Router();
 
-const storeController = require("../controllers/storeController");
+const faqController = require("../controllers/faqController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
-router.get("/stores", storeController.getStores);
+router.get("/questions", faqController.getQuestions);
 
 router.get(
-  "/admin/stores",
+  "/admin/questions",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  storeController.adminGetStores
+  faqController.adminGetQuestions
 );
 
 router.get(
-  "/admin/store/:id",
+  "/admin/question/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  storeController.getStore
+  faqController.AdminGetQuestion
 );
 
 router.post(
-  "/admin/store/new",
+  "/admin/question/new",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  storeController.createStore
+  faqController.createQuestion
 );
 
 router.put(
-  "/admin/store/:id",
+  "/admin/question/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  storeController.updateStore
+  faqController.updateQuestion
 );
 
 router.delete(
-  "/admin/store/:id",
+  "/admin/question/:id",
   isAuthenticatedUser,
   authorizeRoles("admin"),
-  storeController.deleteStore
+  faqController.deleteQuestion
 );
 
 module.exports = router;

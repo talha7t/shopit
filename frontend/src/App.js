@@ -17,7 +17,6 @@ import { Cart } from "./components/cart/Cart";
 import { ShippingInfo } from "./components/cart/ShippingInfo";
 import { ConfirmOrder } from "./components/cart/ConfirmOrder";
 import Payment from "./components/cart/Payment";
-// import { Payment } from "./components/cart/Payment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./components/order/OrderSuccess";
@@ -43,6 +42,8 @@ import StoreList from "./components/admin/StoreList";
 import NewStore from "./components/admin/NewStore";
 import UpdateStore from "./components/admin/UpdateStore";
 import Stores from "./components/Stores";
+import QuestionsList from "./components/admin/QuestionsList";
+import NewQuestion from "./components/admin/NewQuestion";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -167,6 +168,20 @@ function App() {
           path="/admin/store/:id"
           isAdmin={true}
           component={UpdateStore}
+          exact
+        />
+
+        <ProtectedRoute
+          path="/admin/questions"
+          isAdmin={true}
+          component={QuestionsList}
+          exact
+        />
+
+        <ProtectedRoute
+          path="/admin/question/new"
+          isAdmin={true}
+          component={NewQuestion}
           exact
         />
       </div>
