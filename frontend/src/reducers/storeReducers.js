@@ -25,26 +25,19 @@ import {
 
 export const storesReducer = (state = { stores: [] }, action) => {
   switch (action.type) {
-    //     case ALL_PRODUCTS_REQUEST:
+    case ALL_STORES_REQUEST:
     case ADMIN_STORES_REQUEST:
       return {
         loading: true,
         stores: [],
       };
-    //     case ALL_PRODUCTS_SUCCESS:
-    //       return {
-    //         loading: false,
-    //         products: action.payload.products,
-    //         productCount: action.payload.productCount,
-    //         filteredProductsCount: action.payload.filteredProductsCount,
-    //       };
-
+    case ALL_STORES_SUCCESS:
     case ADMIN_STORES_SUCCESS:
       return {
         loading: false,
         stores: action.payload,
       };
-    //     case ALL_PRODUCTS_FAIL:
+    case ALL_STORES_FAIL:
     case ADMIN_STORES_FAIL:
       return {
         loading: false,
@@ -80,6 +73,8 @@ export const storeDetailsReducer = (state = { store: {} }, action) => {
 
 export const newStoreReducer = (state = { store: {} }, action) => {
   switch (action.type) {
+    case NEW_STORE_REQUEST:
+      return { ...state, loading: true };
     case NEW_STORE_SUCCESS:
       return {
         loading: false,

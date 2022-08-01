@@ -13,17 +13,34 @@ import {
   NEW_STORE_REQUEST,
   NEW_STORE_SUCCESS,
   NEW_STORE_FAIL,
-  NEW_STORE_RESET,
   UPDATE_STORE_REQUEST,
   UPDATE_STORE_SUCCESS,
-  UPDATE_STORE_RESET,
   UPDATE_STORE_FAIL,
   DELETE_STORE_REQUEST,
   DELETE_STORE_SUCCESS,
-  DELETE_STORE_RESET,
   DELETE_STORE_FAIL,
   CLEAR_ERRORS,
 } from "../constants/storeConstants";
+
+export const getStores = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: ALL_STORES_REQUEST,
+    });
+    const { data } = await axios.get(`/api/stores`);
+
+    console.log(data);
+    dispatch({
+      type: ALL_STORES_SUCCESS,
+      payload: data.stores,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_STORES_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // get store details
 export const getStoreDetails = (id) => async (dispatch) => {

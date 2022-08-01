@@ -5,18 +5,20 @@ const router = express.Router();
 const storeController = require("../controllers/storeController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
-router.get(
-  "/admin/store/:id",
-  isAuthenticatedUser,
-  authorizeRoles("admin"),
-  storeController.getStore
-);
+router.get("/stores", storeController.getStores);
 
 router.get(
   "/admin/stores",
   isAuthenticatedUser,
   authorizeRoles("admin"),
   storeController.adminGetStores
+);
+
+router.get(
+  "/admin/store/:id",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  storeController.getStore
 );
 
 router.post(

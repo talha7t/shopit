@@ -2,6 +2,23 @@ const Store = require("../models/Store");
 const ErrorHandler = require("../utilities/ErrorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors");
 
+// @desc        get all stores
+// @route       GET /api/stores
+// @access      Public
+
+const getStores = catchAsyncErrors(async (req, res, next) => {
+  const stores = await Store.find().sort({ createdAt: -1, updatedAt: -1 });
+
+  if (!stores) {
+    return next(new ErrorHandler("Stores not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    stores,
+  });
+});
+
 // @desc        Get single store
 // @route       GET /api/admin/store/:id
 // @access      Private
@@ -77,6 +94,7 @@ const deleteStore = catchAsyncErrors(async (req, res, next) => {
 });
 
 module.exports = {
+  getStores,
   getStore,
   adminGetStores,
   createStore,

@@ -15,7 +15,7 @@ const footer = () => {
                 <Link to="/about">about us</Link>
               </li>
               <li>
-                <a href="/">our services</a>
+                <Link to="/stores">Store Locator</Link>
               </li>
               <li>
                 <a href="/">privacy policy</a>

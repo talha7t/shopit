@@ -42,6 +42,7 @@ import About from "./components/About";
 import StoreList from "./components/admin/StoreList";
 import NewStore from "./components/admin/NewStore";
 import UpdateStore from "./components/admin/UpdateStore";
+import Stores from "./components/Stores";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -73,6 +74,7 @@ function App() {
         <Route path="/password/reset/:token" component={NewPassword} exact />
 
         <Route path="/cart" component={Cart} exact />
+        <Route path="/stores" component={Stores} exact />
 
         <ProtectedRoute path="/shipping" component={ShippingInfo} />
         <ProtectedRoute path="/confirm" component={ConfirmOrder} />
