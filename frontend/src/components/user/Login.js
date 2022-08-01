@@ -27,6 +27,9 @@ export const Login = ({ history, location }) => {
       history.push(redirect);
     }
     if (error) {
+      if (error === "You must be logged in to use this feature") {
+        return;
+      }
       alert.error(error);
 
       dispatch(clearErrors());

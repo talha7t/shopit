@@ -12,24 +12,37 @@ const footer = () => {
             <h4>company</h4>
             <ul>
               <li>
-                <Link to="/about">about us</Link>
+                <Link to="/about">About Us</Link>
               </li>
               <li>
                 <Link to="/stores">Store Locator</Link>
               </li>
               <li>
-                <a href="/">privacy policy</a>
-              </li>
-              <li>
-                <a href="/">affiliate program</a>
+                <Link to="/privacy">privacy policy</Link>
               </li>
             </ul>
           </div>
+
+          <div className={footerStyles.footer_col}>
+            <h4>My Account</h4>
+            <ul>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/orders/me">Order History</Link>
+              </li>
+              <li>
+                <Link to="/me">Account Details</Link>
+              </li>
+            </ul>
+          </div>
+
           <div className={footerStyles.footer_col}>
             <h4>get help</h4>
             <ul>
               <li>
-                <a href="/">FAQ</a>
+                <Link to="/faq">FAQ</Link>
               </li>
               <li>
                 <a href="/">shipping</a>

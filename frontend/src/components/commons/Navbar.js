@@ -48,14 +48,17 @@ const Navbar = () => {
         </div>
         <div className="nav-links">
           <div className="sidebar-logo">
-            <Link to="/" className="logo-name text-link">
+            <Link to="/home" className="logo-name text-link">
               SHOP IT
             </Link>
             <i onClick={menuClose} className="bx bx-x"></i>
           </div>
           <ul className="links">
             <li>
-              <Link to="/">HOME</Link>
+              <Link to="/home">HOME</Link>
+            </li>
+            <li>
+              <Link to="/">PRODUCTS</Link>
             </li>
             <li>
               <Link to="/about">ABOUT US</Link>

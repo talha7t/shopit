@@ -1,0 +1,14 @@
+.privacy-text {
+  background-color: #f1f1f1;
+  border: 1px solid rgb(180, 178, 178);
+}
+.privacy-text h2,
+.privacy-text p {
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+}
+
+.privacy-text h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}

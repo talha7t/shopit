@@ -45,6 +45,9 @@ import Stores from "./components/Stores";
 import QuestionsList from "./components/admin/QuestionsList";
 import NewQuestion from "./components/admin/NewQuestion";
 import UpdateQuestion from "./components/admin/UpdateQuestion";
+import Faq from "./components/Faq";
+import Landing from "./components/Landing";
+import PrivacyPolicy from "./components/PrivacyPolicy";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -64,6 +67,7 @@ function App() {
       <div className="APP">
         <Navbar />
         <Route path="/" component={Home} exact />
+        <Route path="/home" component={Landing} exact />
         <Route path="/search/:keyword" component={Home} />
         <Route path="/products/:id" component={ProductDetails} exact />
         <Route path="/contact" component={Contact} />
@@ -96,6 +100,8 @@ function App() {
         />
 
         <Route path="/stores" component={Stores} exact />
+        <Route path="/privacy" component={PrivacyPolicy} exact />
+        <Route path="/faq" component={Faq} exact />
         <Footer />
 
         <ProtectedRoute
