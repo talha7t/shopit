@@ -15,7 +15,7 @@ const storeSchema = mongoose.Schema({
   storeAddress: {
     type: String,
     required: [true, "Please provide a name for your store"],
-    maxLength: [80, "Store address can not exceed 80 characters"],
+    maxLength: [150, "Store address can not exceed 150 characters"],
   },
   storeURL: {
     type: String,

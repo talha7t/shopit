@@ -74,7 +74,6 @@ function App() {
         <Route path="/password/reset/:token" component={NewPassword} exact />
 
         <Route path="/cart" component={Cart} exact />
-        <Route path="/stores" component={Stores} exact />
 
         <ProtectedRoute path="/shipping" component={ShippingInfo} />
         <ProtectedRoute path="/confirm" component={ConfirmOrder} />
@@ -94,6 +93,7 @@ function App() {
           exact
         />
 
+        <Route path="/stores" component={Stores} exact />
         <Footer />
 
         <ProtectedRoute
