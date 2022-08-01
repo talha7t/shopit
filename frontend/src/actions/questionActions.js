@@ -109,7 +109,7 @@ export const createQuestion = (questionData) => async (dispatch) => {
 };
 
 // admin update a question
-export const updateStore = (id, questionData) => async (dispatch) => {
+export const updateQuestion = (id, questionData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_QUESTION_REQUEST });
 
@@ -140,7 +140,6 @@ export const updateStore = (id, questionData) => async (dispatch) => {
 // Admin delete question
 export const deleteQuestion = (id) => async (dispatch) => {
   try {
-    console.log(id);
     dispatch({ type: DELETE_QUESTION_REQUEST });
 
     const { data } = await axios.delete(`/api/admin/question/${id}`);

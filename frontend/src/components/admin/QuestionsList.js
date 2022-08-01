@@ -72,7 +72,7 @@ const QuestionsList = ({ history }) => {
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li>
             <Link
-              to={`/admin/store/${data}`}
+              to={`/admin/question/${data}`}
               style={{ cursor: "pointer" }}
               className="dropdown-item"
             >

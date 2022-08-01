@@ -44,6 +44,7 @@ import UpdateStore from "./components/admin/UpdateStore";
 import Stores from "./components/Stores";
 import QuestionsList from "./components/admin/QuestionsList";
 import NewQuestion from "./components/admin/NewQuestion";
+import UpdateQuestion from "./components/admin/UpdateQuestion";
 
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -182,6 +183,13 @@ function App() {
           path="/admin/question/new"
           isAdmin={true}
           component={NewQuestion}
+          exact
+        />
+
+        <ProtectedRoute
+          path="/admin/question/:id"
+          isAdmin={true}
+          component={UpdateQuestion}
           exact
         />
       </div>
