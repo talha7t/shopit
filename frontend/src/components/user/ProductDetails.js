@@ -125,7 +125,7 @@ export const ProductDetails = ({ history, match }) => {
         </button>
       ) : (
         <div className="text-danger alert alert-danger mt-5">
-          You can review a product after it has been dellivered
+          You can review a product after it has been purchased and delivered
         </div>
       );
     }

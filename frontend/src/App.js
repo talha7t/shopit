@@ -43,10 +43,6 @@ import StoreList from "./components/admin/StoreList";
 import NewStore from "./components/admin/NewStore";
 import UpdateStore from "./components/admin/UpdateStore";
 import Stores from "./components/Stores";
-import QuestionsList from "./components/admin/QuestionsList";
-import NewQuestion from "./components/admin/NewQuestion";
-import UpdateQuestion from "./components/admin/UpdateQuestion";
-import Faq from "./components/Faq";
 import Landing from "./components/Landing";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import ShippingPolicy from "./components/ShippingPolicy";
@@ -105,7 +101,6 @@ function App() {
         <Route path="/privacy" component={PrivacyPolicy} exact />
         <Route path="/shipping-policy" component={ShippingPolicy} exact />
 
-        <Route path="/faq" component={Faq} exact />
         <Footer />
 
         <ProtectedRoute
@@ -179,27 +174,6 @@ function App() {
           path="/admin/store/:id"
           isAdmin={true}
           component={UpdateStore}
-          exact
-        />
-
-        <ProtectedRoute
-          path="/admin/questions"
-          isAdmin={true}
-          component={QuestionsList}
-          exact
-        />
-
-        <ProtectedRoute
-          path="/admin/question/new"
-          isAdmin={true}
-          component={NewQuestion}
-          exact
-        />
-
-        <ProtectedRoute
-          path="/admin/question/:id"
-          isAdmin={true}
-          component={UpdateQuestion}
           exact
         />
       </div>
