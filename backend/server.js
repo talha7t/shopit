@@ -8,7 +8,6 @@ const errorHandler = require("./middlewares/errors");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-const questionRoutes = require("./routes/questionRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
@@ -48,7 +47,6 @@ app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", paymentRoutes);
 app.use("/api", storeRoutes);
-app.use("/api", questionRoutes);
 
 app.use(errorHandler);
 
