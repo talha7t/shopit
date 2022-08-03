@@ -1,0 +1,246 @@
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import { useAlert } from "react-alert";
+import ToolkitProvider, {
+  Search,
+} from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
+import { DELETE_QUESTION_RESET } from "../../constants/questionConstants";
+import {
+  adminGetQuestions,
+  deleteQuestion,
+  clearErrors,
+} from "../../actions/questionActions";
+import { MetaData } from "../commons/MetaData";
+import Loader from "../commons/Loader";
+import SideBar from "./SideBar";
+
+import "../../styles/productslist.css";
+
+const QuestionsList = ({ history }) => {
+  const alert = useAlert();
+  const dispatch = useDispatch();
+
+  const { loading, error, questions } = useSelector((state) => state.questions);
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.manageQuestions
+  );
+
+  useEffect(() => {
+    dispatch(adminGetQuestions());
+
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
+    if (isDeleted) {
+      alert.success("Product deleted successfully");
+      history.push("/admin/questions");
+      dispatch({ type: DELETE_QUESTION_RESET });
+    }
+  }, [dispatch, error, alert, history, deleteError, isDeleted]);
+
+  // table related stuff
+  const headerClasses = "customize-header";
+  const rowClasses = "row-customize";
+  const { SearchBar } = Search;
+
+  const headerFormatter = (data) => {
+    return (
+      <span style={{ cursor: "pointer" }}>
+        {data.text} <i className="fas fa-angle-down"></i>
+      </span>
+    );
+  };
+
+  const actionFormatter = (data) => {
+    return (
+      <div className="dropdown">
+        <i
+          className="fa fa-cog 2x"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        ></i>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li>
+            <Link
+              to={`/admin/question/${data}`}
+              style={{ cursor: "pointer" }}
+              className="dropdown-item"
+            >
+              Update
+            </Link>
+          </li>
+          <li>
+            <span
+              style={{ cursor: "pointer" }}
+              className="dropdown-item text-danger"
+              onClick={() => deleteQuestionHandler(data)}
+            >
+              Delete
+            </span>
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
+  const sizePerPageRenderer = ({
+    values = [
+      {
+        text: "5",
+        page: 5,
+      },
+      {
+        text: "10",
+        page: 10,
+      },
+      {
+        text: "50",
+        page: 50,
+      },
+      {
+        text: "All",
+        page: questions.length,
+      },
+    ],
+    currSizePerPage,
+    onSizePerPageChange,
+  }) => (
+    <div className="btn-group" role="group">
+      {values.map((option) => {
+        const isSelect = currSizePerPage === `${option.page}`;
+        return (
+          <button
+            key={option.text}
+            type="button"
+            onClick={() => onSizePerPageChange(option.page)}
+            className={`btn ${isSelect ? "btn-selected" : "btn-unselected"}`}
+          >
+            {option.text}
+          </button>
+        );
+      })}
+    </div>
+  );
+
+  const options = {
+    paginationSize: 4,
+    // showTotal: true,
+    pageStartIndex: 1,
+    withFirstAndLast: true,
+    firstPageText: "First",
+    lastPageText: "Last",
+    firstPageTitle: "Next page",
+    lastPageTitle: "Last page",
+    disablePageTitle: true,
+    alwaysShowAllBtns: true,
+    sizePerPageRenderer,
+  };
+
+  const columns = [
+    {
+      dataField: "questionId",
+      text: "Question Id",
+      sort: true,
+      classes: "no-border-right text table-data-customize",
+      headerFormatter: headerFormatter,
+    },
+    {
+      dataField: "category",
+      text: "Category",
+      // sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+    },
+    {
+      dataField: "question",
+      text: "Question",
+      sort: true,
+      classes: "no-border-right no-border-left text table-data-customize",
+    },
+    {
+      dataField: "action",
+      text: "Actions",
+      classes: "no-border-left text table-data-customize",
+      formatter: actionFormatter,
+    },
+  ];
+
+  const setData = () => {
+    let data = [];
+
+    questions.forEach((question) => {
+      data.push({
+        questionId: question._id,
+        category: question.category,
+        question: question.question,
+        answer: question.answer,
+        action: question._id,
+      });
+    });
+    return data;
+  };
+
+  const deleteQuestionHandler = (id) => {
+    dispatch(deleteQuestion(id));
+  };
+
+  return (
+    <>
+      <MetaData title="All Questions" />
+
+      <SideBar />
+      <section className="admin-main-section py-3">
+        <div className="text d-flex justify-content-between p-0">
+          <h1 className="text admin-main-heading">All Questions</h1>
+          <button className="create-btn me-5 d-flex align-items-center">
+            <Link to="/admin/question/new" className="text-link px-3 py-0">
+              Add Question
+            </Link>
+          </button>
+        </div>
+
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="mx-5 mt-3">
+            <ToolkitProvider
+              data={setData()}
+              keyField="questionId"
+              columns={columns}
+              search
+            >
+              {(props) => (
+                <div>
+                  <SearchBar
+                    {...props.searchProps}
+                    className="custom-search-field"
+                  />
+                  <hr />
+                  <BootstrapTable
+                    classes="row-border-spacing"
+                    pagination={paginationFactory(options)}
+                    bordered={false}
+                    headerClasses={headerClasses}
+                    rowClasses={rowClasses}
+                    {...props.baseProps}
+                  />
+                </div>
+              )}
+            </ToolkitProvider>
+          </div>
+        )}
+      </section>
+    </>
+  );
+};
+
+export default QuestionsList;

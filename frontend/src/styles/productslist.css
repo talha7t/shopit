@@ -1,0 +1,85 @@
+.create-btn {
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  height: 3.5rem;
+  border: 2px solid var(--primary-color);
+}
+
+.create-btn a {
+  font-size: 1.25rem !important;
+  color: #fff;
+  font-weight: 500;
+}
+
+.filter-btn {
+  font-size: 1.25rem !important;
+  padding: 0 !important;
+  margin: 0 1rem;
+}
+
+.filter-btn.active {
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.customize-header {
+  background-color: #fff;
+  border-radius: 2px;
+}
+
+.no-border-right {
+  border-right: none;
+}
+
+.no-border-left {
+  border-left: none;
+}
+
+.row-border-spacing {
+  border-collapse: separate !important;
+  border-spacing: 0 30px !important;
+}
+
+.row-customize {
+  box-shadow: 0px 0px 0px 2px grey;
+  border-radius: 2px !important;
+  padding: 10px 0 !important;
+}
+
+.row-customize:hover {
+  background: var(--primary-color);
+  box-shadow: 0 -1px 0 1px var(--primary-color);
+}
+
+.table-data-customize.text {
+  font-size: 1rem !important;
+  padding-left: 5px !important;
+  padding-right: 0 !important;
+}
+
+.row-customize:hover .table-data-customize.text {
+  color: #fff;
+}
+
+/* pagination */
+
+/* .btn-unselected{
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--primary-color)
+}
+
+.btn-selected {
+  background-color: #fff;
+}
+
+*/
+
+/* .page-item a{ 
+  following styles affect bootstrap class for pagination button
+
+  background-color: var(--primary-color) !important;
+  color: #fff;
+}
+.page-item.disabled a{
+  color: #fff !important;
+} */
