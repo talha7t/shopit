@@ -12,8 +12,6 @@ const storeRoutes = require("./routes/storeRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
 
-var requestIp = require("request-ip");
-
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
   console.log(`ERROR: ${err.stack}`);

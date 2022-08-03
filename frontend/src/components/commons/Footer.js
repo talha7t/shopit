@@ -41,9 +41,9 @@ const footer = () => {
           <div className={footerStyles.footer_col}>
             <h4>get help</h4>
             <ul>
-              <li>
+              {/* <li>
                 <Link to="/faq">FAQ</Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/shipping-policy">Shipping</Link>
               </li>
