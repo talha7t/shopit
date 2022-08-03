@@ -22,8 +22,8 @@ process.on("uncaughtException", (err) => {
 });
 
 // setting up config file
-if (process.env.NODE_ENV === "PRODUCTION")
-  require("dotenv").dotenv.config({ path: ".env" }); // allows us to have dot env file with our variables
+if (process.env.NODE_ENV !== "PRODUCTION")
+  require("dotenv").config({ path: ".env" }); // allows us to have dot env file with our variables
 
 const PORT = process.env.port || 3000;
 connectDB();
@@ -47,7 +47,7 @@ app.use("/api", orderRoutes);
 app.use("/api", paymentRoutes);
 app.use("/api", storeRoutes);
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "PRODUCTION") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
   app.get("*", (req, res) => {
