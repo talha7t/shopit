@@ -1,5 +1,5 @@
 const express = require("express");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cloudinary = require("cloudinary");
 const fileUpload = require("express-fileupload");
@@ -9,10 +9,9 @@ const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const storeRoutes = require("./routes/storeRoutes");
+const path = require("path");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
-
-var requestIp = require("request-ip");
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -22,7 +21,10 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-dotenv.config(); // allows us to have dot env file with our variables
+// setting up config file
+if (process.env.NODE_ENV === "PRODUCTION")
+  require("dotenv").dotenv.config({ path: ".env" }); // allows us to have dot env file with our variables
+
 const PORT = process.env.port || 3000;
 connectDB();
 const app = express();
@@ -39,14 +41,19 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ip address to get middleware
-// app.use(requestIp.mw())
-
 app.use("/api", productRoutes);
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", paymentRoutes);
 app.use("/api", storeRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  });
+}
 
 app.use(errorHandler);
 

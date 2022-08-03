@@ -55,15 +55,6 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   });
   token.save();
 
-  // ---------------Send email---------- //
-  //for local host
-  // const confirmationURL = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
-
-  // for production
-  // const confirmationURL = `${req.protocol}://${req.get(
-  //   "host"
-  // )}/api/password/reset/${resetToken}`;
-
   const message =
     "Hello " +
     user.userName +
@@ -90,8 +81,6 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
-
-  // sendToken(user, 200, res);
 });
 
 // @desc        verfiy user email
@@ -100,7 +89,7 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
 
 const confirmEmail = catchAsyncErrors(async (req, res, next) => {
   const token = await Token.findOne({ token: req.params.token });
-  console.log(token);
+
   // token is not found into database i.e. token may have expired
   if (!token) {
     return next(
@@ -179,16 +168,6 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid Email or Password", 401));
   }
 
-  // if user is blocked dont let them login
-  // if (user.userStatus === "blocked") {
-  //   return next(
-  //     new ErrorHandler(
-  //       "Your account has been blocked due to suspicious activity please contact us if you think it was a mistake",
-  //       403
-  //     )
-  //   );
-  // }
-
   sendToken(user, 200, res);
 });
 
@@ -212,10 +191,10 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // create reset password URL
-  const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
-  // const resetUrl = `${req.protocol}://${req.get(
-  //   "host"
-  // )}/api/password/reset/${resetToken}`;
+  // const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/password/reset/${resetToken}`;
 
   const message = `Your password reset token is: ${resetUrl}\n\n`;
 
