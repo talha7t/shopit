@@ -87,12 +87,7 @@ const SideBar = () => {
                 </Link>
               </li>
 
-              <li className="nav-link sidenav-link">
-                <Link to="/admin/questions">
-                  <i class="far fa-question-circle icon"></i>
-                  <span className="text nav-text">Questions</span>
-                </Link>
-              </li>
+             
             </ul>
 
             {/* donot remove this  */}
