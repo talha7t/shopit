@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "fyp project",
   "main": "server.js",
+  "engines": {
+    "node": "16.17.0"
+  },
   "scripts": {
     "start": "nodemon backend/server.js",
     "server": "nodemon backend/server.js",
