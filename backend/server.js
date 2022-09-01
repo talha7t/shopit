@@ -11,6 +11,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
+const path = require('path');
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -47,6 +48,20 @@ app.use("/api", paymentRoutes);
 app.use("/api", storeRoutes);
 
 app.use(errorHandler);
+
+// Serve frontend
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+  app.get('*', (req, res) =>
+    res.sendFile(
+      path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')
+    )
+  );
+} else {
+  app.get('/', (req, res) => res.send('Please set to production'));
+}
+
 
 const server = app.listen(PORT, () =>
   console.log(`server started on port ${PORT}`)
