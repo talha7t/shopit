@@ -59,6 +59,7 @@
 
 .card-part-2 {
   margin: 1rem;
+  height: 5rem;
 }
 
 .product-name {
@@ -81,5 +82,11 @@
 @media screen and (max-width: 992px) {
   .icons {
     transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card-part-2 {
+    height: 6rem;
   }
 }

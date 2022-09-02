@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import Card from "./commons/Card";
@@ -52,6 +52,8 @@ const Home = ({ history, match }) => {
     "Slippers",
   ];
 
+  // const filters = useRef();
+
   const alert = useAlert();
   const dispatch = useDispatch();
   const {
@@ -88,6 +90,10 @@ const Home = ({ history, match }) => {
     setCurrentPage(pageNumber);
   }
 
+  // const handleTransition = (e) => {
+  //   filters.current
+  // };
+
   let count = productCount;
 
   if (keyword) {
@@ -109,8 +115,13 @@ const Home = ({ history, match }) => {
         <div className="row mt-5">
           {/* if keyword exists display the filters */}
           {/* {keyword ? ( */}
+          {/* <button className="filters-btn">filters</button> */}
           <>
-            <div className="col-6 col-md-3 mt-5 mb-5">
+            <div
+              className="col-6 col-md-3 mt-5 mb-5 filters-container"
+              // ref={filters}
+              // onClick={handleTransition}
+            >
               <div className="px-5">
                 <Range
                   marks={{

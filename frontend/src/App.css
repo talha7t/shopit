@@ -31,6 +31,25 @@ a {
   color: #fff;
 }
 
+/*  */
+
+/* .filters-btn {
+  display: none;
+}
+
+.filters-container {
+  transition: all 0.5s ease-in-out;
+} */
+
+/* @media screen and (max-width: 576px) {
+  .filters-btn {
+    display: block;
+  }
+  .filters-container {
+    transform: translateX(-100%);
+  }
+} */
+
 /* ======================PAGINATION =================*/
 
 /* pagination */

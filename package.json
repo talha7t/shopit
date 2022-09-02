@@ -8,9 +8,9 @@
   },
   "scripts": {
     "start": "nodemon backend/server.js",
-    "server": "nodemon backend/server.js",
+    "server": "node backend/server.js",
     "seeder": "node backend/utilities/seeder.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --legacy-peer-deps --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Talha",
   "license": "ISC",

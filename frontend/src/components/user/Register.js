@@ -29,11 +29,11 @@ export const Register = ({ history }) => {
   );
 
   useEffect(() => {
-    // if (isAuthenticated) {
-    //   history.push("/");
-    // }
-    // if (error !== "You must be logged in to use this feature") {
     if (error) {
+      if (error === "You must be logged in to use this feature") {
+        return;
+      }
+
       alert.error(error);
       dispatch(clearErrors());
     }

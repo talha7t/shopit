@@ -11,7 +11,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const connectDB = require("./utilities/db");
-const path = require('path');
+const path = require("path");
 
 // Handling uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -22,7 +22,6 @@ process.on("uncaughtException", (err) => {
 });
 
 dotenv.config(); // allows us to have dot env file with our variables
-const PORT = process.env.port || 3000;
 connectDB();
 const app = express();
 
@@ -50,21 +49,20 @@ app.use("/api", storeRoutes);
 app.use(errorHandler);
 
 // Serve frontend
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/build')));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-  app.get('*', (req, res) =>
+  app.get("*", (req, res) =>
     res.sendFile(
-      path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')
+      path.resolve(__dirname, "../", "frontend", "build", "index.html")
     )
   );
 } else {
-  app.get('/', (req, res) => res.send('Please set to production'));
+  app.get("/", (req, res) => res.send("Please set to production"));
 }
 
-
-const server = app.listen(PORT, () =>
-  console.log(`server started on port ${PORT}`)
+const server = app.listen(process.env.PORT || 5000, () =>
+  console.log(`server started on port ${process.env.PORT || 5000}`)
 );
 
 // Handlig unhandled promise rejections
